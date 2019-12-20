@@ -1,0 +1,559 @@
+CREATE TABLE `coletores` (
+  `id` int(6) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(50) DEFAULT NULL,
+  `apelido` varchar(50) DEFAULT NULL,
+  `cpf` varchar(11) DEFAULT NULL,
+  `rg` varchar(8) DEFAULT NULL,
+  `fone` varchar(10) DEFAULT NULL,
+  `celular` varchar(10) DEFAULT NULL,
+  `endereco` varchar(50) DEFAULT NULL,
+  `numero` varchar(5) DEFAULT NULL,
+  `bairro` varchar(30) DEFAULT NULL,
+  `estado` varchar(2) DEFAULT NULL,
+  `cidade` varchar(50) DEFAULT NULL,
+  `cep` varchar(10) DEFAULT NULL,
+  `codigofilial` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+
+CREATE TABLE `movcoleta` (
+  `numero` int(6) NOT NULL AUTO_INCREMENT,
+  `datacoleta` date DEFAULT NULL,
+  `codigoresp` varchar(6) DEFAULT NULL,
+  `responsavel` varchar(60) DEFAULT NULL,
+  `codigoveiculo` varchar(4) DEFAULT NULL,
+  `veiculo` varchar(60) DEFAULT NULL,
+  `placa` varchar(8) DEFAULT NULL,
+  `totalitroscoletados` decimal(8,2) DEFAULT '0.00',
+  `confirmada` char(1) DEFAULT 'N',
+  `dataconfirmacao` date DEFAULT NULL,
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `operador` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`numero`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `coleta` (
+  `id` int(6) NOT NULL AUTO_INCREMENT,
+  `numero` varchar(10) DEFAULT NULL,
+  `codigofornecedor` varchar(6) DEFAULT NULL,
+  `fornecedor` varchar(60) DEFAULT NULL,
+  `totalcoletado` decimal(8,2) DEFAULT '0.00',
+  `confirmada` char(1) DEFAULT 'N',
+  `custo` decimal(8,2) DEFAULT '0.00',
+  `data` date DEFAULT NULL,
+  `reservatorio` int(1) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
+
+
+
+CREATE TABLE `movanalise` (
+  `numero` int(6) NOT NULL AUTO_INCREMENT,
+  `data` date DEFAULT NULL,
+  `dataconfirmacao` date DEFAULT NULL,
+  `numerocoleta` varchar(8) DEFAULT '0',
+  `operador` varchar(30) DEFAULT NULL,
+  `confirmada` char(1) DEFAULT 'N',
+  `qtdtotalcoleta` decimal(8,2) DEFAULT '0.00',
+  `qtdtotalinformado` decimal(8,2) DEFAULT '0.00',
+  `qtdperca` decimal(8,2) DEFAULT '0.00',
+  `coletainformada` char(1) DEFAULT 'N',
+  `observacao` varchar(200) DEFAULT NULL,
+  `responsavel` varchar(50) DEFAULT NULL,
+  `descricao` varchar(100) DEFAULT NULL,
+  `frequencia` varchar(150) DEFAULT NULL,
+  `procedimento` varchar(150) DEFAULT NULL,
+  `acaocorretiva` varchar(150) DEFAULT NULL,
+  `codigofilial` varchar(5) DEFAULT NULL,
+  `operadorconfirmacao` varchar(30) DEFAULT NULL,
+  `conferido` varchar(1) DEFAULT NULL,
+  `operadorconferencia` varchar(20) DEFAULT NULL,
+  `dataconferencia` date DEFAULT NULL,
+  `finalizada` varchar(1) DEFAULT 'N',
+  `datafinalizacao` date DEFAULT NULL,
+  `operadorfinalizacao` varchar(20) DEFAULT NULL,
+  `nrEntrada` varchar(6) NOT NULL,
+  PRIMARY KEY (`numero`)
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
+
+
+
+
+CREATE TABLE `analise` (
+  `inc` int(6) NOT NULL AUTO_INCREMENT,
+  `numero` varchar(8) DEFAULT NULL,
+  `codigofornecedor` varchar(8) DEFAULT NULL,
+  `fornecedor` varchar(50) DEFAULT NULL,
+  `datacoleta` date DEFAULT NULL,
+  `data` date DEFAULT NULL,
+  `quantidade` decimal(8,2) DEFAULT '0.00',
+  `origem` varchar(50) DEFAULT NULL,
+  `temperatura` decimal(8,2) DEFAULT '0.00',
+  `dornic` decimal(8,2) DEFAULT '0.00',
+  `gordura` decimal(8,2) DEFAULT '0.00',
+  `proteina` decimal(8,2) DEFAULT '0.00',
+  `densidade` decimal(8,2) DEFAULT '0.00',
+  `crioscopia` decimal(8,2) DEFAULT '0.00',
+  `antibiotico` varchar(1) DEFAULT 'S',
+  `fosfatse` varchar(1) DEFAULT 'S',
+  `peroxidase` varchar(1) DEFAULT 'S',
+  `soda` varchar(1) DEFAULT 'S',
+  `amido` varchar(1) DEFAULT 'S',
+  `peroxido` varchar(1) DEFAULT 'S',
+  `naoconforme` varchar(1) DEFAULT 'S',
+  `agua` decimal(8,2) DEFAULT '0.00',
+  `alizarol` varchar(1) DEFAULT 'S',
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `confirmada` char(1) DEFAULT 'N',
+  `custo` decimal(8,2) DEFAULT '0.00',
+  `tipoleite` varchar(50) DEFAULT NULL,
+  `codigotipoleite` varchar(8) NOT NULL DEFAULT ' ',
+  `qtdconferida` decimal(8,2) DEFAULT '0.00',
+  `doclancado` char(1) DEFAULT 'N',
+  PRIMARY KEY (`inc`)
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=latin1;
+
+ ALTER TABLE  `analise`     ADD COLUMN `reservatorio` INT(3) NULL;
+
+CREATE TABLE `padroesanaliseleite` (
+  `id` int(2) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(300) DEFAULT NULL,
+  `frequencia` varchar(300) DEFAULT NULL,
+  `procedimento` varchar(300) DEFAULT NULL,
+  `acaocorretiva` varchar(300) DEFAULT NULL,
+  `responsavel` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `tiposleite` (
+  `id` int(6) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(70) DEFAULT NULL,
+  `codigoassociado` varchar(10) DEFAULT NULL,
+  `produtoassociado` varchar(70) DEFAULT NULL,
+  `codigofilial` varchar(5) DEFAULT NULL,
+  `custo` decimal(8,2) DEFAULT '0.00',	
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `depositos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `identificacao` varchar(30) DEFAULT NULL,
+  `estoque` decimal(8,2) DEFAULT '0.00',
+   `codigofilial` varchar(5) DEFAULT '00001',
+  `ultimaentrada` date DEFAULT NULL,
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `movdepositos` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `codigodeposito` varchar(6) DEFAULT NULL,
+  `deposito` varchar(30) DEFAULT NULL,
+  `reservatorioveiculo` varchar(30) DEFAULT NULL,
+  `nranalise` varchar(6) DEFAULT NULL,
+  `nrcoleta` varchar(6) DEFAULT NULL,
+  `data` date DEFAULT NULL,
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `quantidade` decimal(8,2) DEFAULT '0.00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+CREATE TABLE `movproducaodiaria` (
+  `numero` int(8) NOT NULL AUTO_INCREMENT,
+  `codigofilial` varchar(8) DEFAULT '00001',
+  `data` date DEFAULT NULL,
+  `hora` time DEFAULT NULL,
+  `operador` varchar(15) DEFAULT NULL,
+  `operadorfinalizacao` varchar(15) DEFAULT NULL,
+  `datafinalizacao` date DEFAULT NULL,
+  `horafinalizacao` time DEFAULT NULL,
+  `encerrada` char(1) DEFAULT 'N',
+  `validadelote` date DEFAULT NULL,
+  `lote` int(6) DEFAULT '0',
+  `itensderivadosconfirmados` char(1) DEFAULT 'N',
+  `itensconfirmados` char(1) DEFAULT 'N',
+  `preproducaoconfirmada` char(1) DEFAULT 'N',
+  `totalcustoproducao` decimal(12,2) DEFAULT '0.00',
+  PRIMARY KEY (`numero`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+
+
+
+
+CREATE TABLE `producaoitens` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(8) DEFAULT NULL,
+  `produto` varchar(50) DEFAULT NULL,
+  `unidade` varchar(3) DEFAULT 'KG',
+  `quantidademanteiga` decimal(8,2) DEFAULT '0.00',
+  `quantidadecreme` decimal(8,2) DEFAULT '0.00',
+  `quantidadeleite` decimal(8,2) DEFAULT '0.00',
+  `quantidadeproduzida` decimal(8,2) DEFAULT '0.00',
+  `totalproduzido` decimal(8,2) DEFAULT '0.00',
+  `quantidadesoro` decimal(8,2) DEFAULT '0.00',
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `numeroproducao` varchar(8) DEFAULT '0',
+  `lote` varchar(10) DEFAULT '0',
+  `validade` date DEFAULT '1899-12-30',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
+
+
+
+REATE TABLE `produtospreproducao` (
+  `codigo` int(6) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(50) DEFAULT NULL,
+  `unidade` varchar(3) DEFAULT 'UNI',
+  `codigofilial` varchar(5) DEFAULT '00001',
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+CREATE TABLE `produtosembalagens` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(8) DEFAULT NULL,
+  `descricao` varchar(50) DEFAULT NULL,
+  `unidade` varchar(3) DEFAULT 'KG',
+  `codprodpreproducao` varchar(8) DEFAULT NULL,
+  `descprodpreproducao` varchar(50) DEFAULT NULL,
+  `codProdindiceestoque` varchar(8) DEFAULT NULL,
+  `descProdindiceestoque` varchar(50) DEFAULT NULL,
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `quantidadeembalagem` decimal(8,3) DEFAULT '0.000',
+  `codigoembalagem` varchar(8) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+
+
+
+
+
+
+
+CREATE TABLE `composicaolaticinio` (
+  `id` int(6) NOT NULL AUTO_INCREMENT,
+  `codpreproducao` varchar(8) DEFAULT NULL,
+  `prodpreproducao` varchar(50) DEFAULT NULL,
+  `unidade` varchar(3) DEFAULT 'LT',
+  `tipoinsumo` varchar(20) DEFAULT '01-Leite',
+  `custo` decimal(8,2) DEFAULT '0.00',
+  `quantidade` decimal(8,2) DEFAULT '0.00',
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `codigo` varchar(8) DEFAULT NULL,
+  `produto` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+
+
+
+CREATE TABLE `resumoprodcreme` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(12) DEFAULT NULL,
+  `produto` varchar(50) DEFAULT NULL,
+  `quantidade` decimal(8,2) DEFAULT '0.00',
+  `quantidadeajustada` decimal(8,2) DEFAULT '0.00',
+  `codigofilial` varchar(5) DEFAULT NULL,
+  `numeroproducao` int(8) DEFAULT NULL,
+  `salvo` char(1) DEFAULT 'N',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `resumoprodleite` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(15) DEFAULT NULL,
+  `produto` varchar(50) DEFAULT NULL,
+  `quantidade` decimal(8,2) DEFAULT '0.00',
+  `quantidadeajustada` decimal(8,2) DEFAULT '0.00',
+  `codigofilial` varchar(5) DEFAULT NULL,
+  `numeroproducao` int(8) DEFAULT NULL,
+  `salvo` char(1) DEFAULT 'N',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `resumoprodmanteiga` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(15) DEFAULT NULL,
+  `produto` varchar(50) DEFAULT NULL,
+  `quantidade` decimal(8,2) DEFAULT '0.00',
+  `quantidadeajustada` decimal(8,2) DEFAULT '0.00',
+  `codigofilial` varchar(5) DEFAULT NULL,
+  `numeroproducao` int(8) DEFAULT NULL,
+  `salvo` char(1) DEFAULT 'N',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `dadosproducaomanteiga` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `numeroproducao` int(8) DEFAULT NULL,
+  `cremederretido` decimal(8,2) DEFAULT '0.00',
+  `manteigaobitida` decimal(8,2) DEFAULT '0.00',
+  `rendimento` decimal(8,2) DEFAULT '0.00',
+  `manteigautilizada` decimal(8,2) DEFAULT '0.00',
+  `destinado` decimal(8,2) DEFAULT '0.00',
+  `saldo` decimal(8,2) DEFAULT '0.00',
+  `estoque` decimal(8,2) DEFAULT '0.00',
+  `sobra` decimal(8,2) DEFAULT '0.00',
+  `perda` decimal(8,2) DEFAULT '0.00',
+  `salvo` char(1) DEFAULT 'N',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+
+
+
+
+CREATE TABLE `dadosproducaocreme` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `numeroproducao` int(8) DEFAULT '0',
+  `sobra` decimal(8,2) DEFAULT '0.00',
+  `comprado` decimal(8,2) DEFAULT '0.00',
+  `destinado` decimal(8,2) DEFAULT '0.00',
+  `desnatado` decimal(8,2) DEFAULT '0.00',
+  `padronizado` decimal(8,2) DEFAULT '0.00',
+  `soro` decimal(8,2) DEFAULT '0.00',
+  `sorocoalho` decimal(8,2) DEFAULT '0.00',
+  `vendido` decimal(8,2) DEFAULT '0.00',
+  `utilizado` decimal(8,2) DEFAULT '0.00',
+  `saldo` decimal(8,2) DEFAULT '0.00',
+  `estoque` decimal(8,2) DEFAULT '0.00',
+  `perda` decimal(8,2) DEFAULT '0.00',
+  `salvo` char(1) DEFAULT 'N',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+CREATE TABLE `dadosproducaoleite` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `numeroproducao` int(8) DEFAULT '0',
+  `sobra` decimal(8,2) DEFAULT '0.00',
+  `entrada` decimal(8,2) DEFAULT '0.00',
+  `destinado` decimal(8,2) DEFAULT '0.00',
+  `utilizado` decimal(8,2) DEFAULT '0.00',
+  `vendido` decimal(8,2) DEFAULT '0.00',
+  `sobrat` decimal(8,2) DEFAULT '0.00',
+  `perda` decimal(8,2) DEFAULT '0.00',
+  `salvo` char(1) DEFAULT 'N',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+
+CREATE TABLE `configlaticinio` (
+  `id` int(2) NOT NULL AUTO_INCREMENT,
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `usarprodpadraoleite` char(1) DEFAULT 'S',
+  `codprodpadraoleite` varchar(8) DEFAULT NULL,
+  `prodpadraoleite` varchar(50) DEFAULT NULL,
+  `destinardepositoentrada` char(1) DEFAULT 'S',
+  `codprodpadraocreme` varchar(8) DEFAULT NULL,
+  `prodpadraocreme` varchar(50) DEFAULT NULL,
+  `codprodpadraomanteiga` varchar(8) DEFAULT NULL,
+  `prodpadraomanteiga` varchar(50) DEFAULT NULL,
+  `producaopordia` char(1) DEFAULT 'S',
+  `codfornecedorentrada` varchar(8) DEFAULT NULL,
+  `fornecedorentrada` varchar(50) DEFAULT NULL,
+  `alterarcustoproducao` varchar(1) DEFAULT 'S',
+  `loteindividual` varchar(1) DEFAULT 'S',
+  `caminhobackground` varchar(200) DEFAULT 'c:\\sicelaticinio\\logos\\background.bmp',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+
+
+
+
+CREATE TABLE `produtospreproducao` (
+  `codigo` int(6) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(50) DEFAULT NULL,
+  `unidade` varchar(3) DEFAULT 'UNI',
+  `codigofilial` varchar(5) DEFAULT '00001',
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+
+
+
+
+CREATE TABLE `producaoderivados` (
+  `id` int(6) NOT NULL AUTO_INCREMENT,
+  `numeroproducao` int(6) DEFAULT NULL,
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `codigopreproducao` varchar(4) DEFAULT NULL,
+  `prodPreProducao` varchar(50) DEFAULT NULL,
+  `codigoderivado` varchar(6) DEFAULT NULL,
+  `produtoderivado` varchar(60) DEFAULT NULL,
+  `quantidadeembalagem` decimal(8,3) DEFAULT '0.000',
+  `quantidade` decimal(8,2) DEFAULT '0.00',
+  `custo` decimal(8,2) DEFAULT '0.00',
+  `qtdleiteinformada` decimal(8,2) DEFAULT '0.00',
+  `rendimento` decimal(8,2) DEFAULT '0.00',
+  `quantidadeTotal` decimal(8,2) DEFAULT '0.00',
+  `embadicionais` decimal(8,2) DEFAULT '0.00',
+  `embrequisitada` char(1) DEFAULT 'N',
+  `embadicinalrequisitada` char(1) DEFAULT 'N',
+  `operadorreqemb` varchar(20) DEFAULT NULL,
+  `operadorreqembadicional` varchar(20) DEFAULT NULL,
+  `codigoembalagem` varchar(8) DEFAULT NULL,
+  `produtoembalagem` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `caminhoimagens` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `logomarca` varchar(200) DEFAULT NULL,
+  `background` varchar(200) DEFAULT NULL,
+  `ip` varchar(20) DEFAULT NULL,
+  `codigofilial` varchar(5) DEFAULT '00001',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+CREATE TABLE `formacaoembalagem` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `codigoprodproducao` varchar(9) DEFAULT NULL,
+  `prodproducao` varchar(50) DEFAULT NULL,
+  `codidoderivado` varchar(9) DEFAULT NULL,
+  `produtoderivado` varchar(50) DEFAULT NULL,
+  `codigoembalagem` varchar(9) DEFAULT NULL,
+  `produtoembalagem` varchar(50) DEFAULT NULL,
+  `quantidade` decimal(10,4) DEFAULT '0.0000',
+  `codigofilial` varchar(5) DEFAULT '00001',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+
+
+
+CREATE TABLE `producaomovembalagem` (
+  `id` int(6) NOT NULL AUTO_INCREMENT,
+  `numeroproducao` int(6) DEFAULT NULL,
+  `codigopreproducao` varchar(8) DEFAULT NULL,
+  `descricaopreproducao` varchar(50) DEFAULT NULL,
+  `codigoderivado` varchar(8) DEFAULT NULL,
+  `descricaoderivado` varchar(50) DEFAULT NULL,
+  `codigoembalagem` varchar(8) DEFAULT NULL,
+  `descricaoembalagem` varchar(50) DEFAULT NULL,
+  `qtdnecessaria` decimal(12,5) DEFAULT '0.00',
+  `custounitario` decimal(12,5) DEFAULT '0.00',
+  `custototal` decimal(12,5) DEFAULT '0.00',
+  `qtdproduzido` decimal(12,5) DEFAULT '0.00',
+  `qtdutilizado` decimal(12,5) DEFAULT '0.00',
+  `tipo` varchar(15) DEFAULT 'Normal',
+  `solicitado` char(1) DEFAULT 'N',
+  `operadorsolicita` varchar(20) DEFAULT NULL,
+  `operadorsolicitaadicional` varchar(20) DEFAULT NULL,
+  `codigofilial` varchar(5) DEFAULT '00001',
+  `qtdanterior` decimal(12,5) DEFAULT '0.00',
+  `qtdatual` decimal(12,5) DEFAULT '0.00',
+  `datafinalizacao` date DEFAULT NULL,
+  `horafinalizacao` time DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE vendaprodlaticinios( 
+	  `id` INT(6) NOT NULL AUTO_INCREMENT ,   
+	  `codigopreproducao` VARCHAR(8) DEFAULT "0" , 
+	  `codigo` VARCHAR(8) DEFAULT "0" ,   
+	  `produto` VARCHAR(50) ,  
+	  `qtdanterior` DECIMAL(10,2) DEFAULT "0.00" ,    
+	  `qtdvendida` DECIMAL(10,2) DEFAULT "0.00" , 
+	  `ip` VARCHAR(20) ,     `operador` VARCHAR(20) ,   
+	  `codigofilial` VARCHAR(5) DEFAULT "00001" ,
+	  `documento` VARCHAR(8) DEFAULT "0" NULL,
+	   PRIMARY KEY (`id`)
+  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+
+
+[scripts]
+
+ALTER TABLE `configlaticinio`     CHANGE `producaopordia` `producaopordia` INT(3) DEFAULT '1' NULL ;
+
+ALTER TABLE `movproducaodiaria`     ADD COLUMN `custoembalagens` DECIMAL(12,2) DEFAULT '0.00' NULL;
+
+ALTER TABLE `producaomovmateria`     ADD COLUMN `totalmateriautilizada` DECIMAL(10,2) DEFAULT '0.00' NULL;
+
+ALTER TABLE `senhas`     ADD COLUMN `solicitarembalagensadicionais` CHAR(1) DEFAULT 'N' NULL; 
+ALTER TABLE `senhas`     ADD COLUMN `confirmarproducaoitens` CHAR(1) DEFAULT 'N' NULL;
+ALTER TABLE `senhas`    ADD COLUMN `encerrarproducao` CHAR(1) DEFAULT 'N' NULL ;
+ALTER TABLE `contaspagar`     ADD COLUMN `nrAnaliseLeite` VARCHAR(6) DEFAULT '0' NULL;
+
+ALTER TABLE `senhas`     ADD COLUMN `encerraranalise` CHAR(1) DEFAULT 'N' NULL;
+ALTER TABLE `senhas`     ADD COLUMN `ajustaranalise` CHAR(1) DEFAULT 'N' NULL;
+
+ALTER TABLE `senhas`     ADD COLUMN `atualizarestoquecoleta` CHAR(1) DEFAULT 'N' NULL;
+ALTER TABLE `senhas`     ADD COLUMN `confirmaranalise` CHAR(1) DEFAULT 'N' NULL;
+ALTER TABLE `composicaolaticinio`     CHANGE `custo` `custo` DECIMAL(10,4) DEFAULT '0.0000' NULL ;
+
+ALTER TABLE `composicaolaticinio`     CHANGE `quantidade` `quantidade` DECIMAL(10,4) DEFAULT '0.0000' NULL ;
+ALTER TABLE `movproducaodiaria`     ADD COLUMN `observacao` VARCHAR(100) DEFAULT ' ' NULL;
+ALTER TABLE `composicaolaticinio`     CHANGE `custo` `custo` DECIMAL(10,6) DEFAULT '0.000000' NULL ,     CHANGE `quantidade` `quantidade` DECIMAL(10,6) DEFAULT '0.000000' NULL ;
+ALTER TABLE `analise`     CHANGE `crioscopia` `crioscopia` DECIMAL(8,3) DEFAULT '0.000' NULL ;
+ALTER TABLE composicaolaticinio ADD COLUMN parametroleite DECIMAL(10,2) DEFAULT "0.00";
+ALTER TABLE `configlaticinio`     ADD COLUMN `parametroleite` VARCHAR(1) DEFAULT 'S' NULL;
+
+ALTER TABLE configlaticinio ADD COLUMN `adicionarqtdderivados` VARCHAR(1) DEFAULT 'S' NULL;
+ALTER TABLE `producaoitens`     ADD COLUMN `qtdadicional` DECIMAL(8,2) DEFAULT '0.00' NULL;
+ ALTER TABLE `movproducaodiaria`     ADD COLUMN `materiarequisitada` VARCHAR(1) DEFAULT 'N' NULL;
+
+ALTER TABLE `analise`     CHANGE `numero` `numero` INT(8) NULL ;
+ALTER TABLE  configlaticinio     ADD COLUMN `derivadoscadastrosice` VARCHAR(1) DEFAULT 'S' NULL;
+ALTER TABLE `analise` ADD CONSTRAINT `FK_analise` FOREIGN KEY (`numero`) REFERENCES `movanalise` (`numero`) ON DELETE CASCADE ;
+ALTER TABLE `produtosembalagens`     ADD COLUMN `origem` VARCHAR(4) DEFAULT 'sice' NULL;
+
+
+ALTER TABLE `producaoderivados`     CHANGE `codigopreproducao` `codigopreproducao` INT(6) NULL ;
+ALTER TABLE `producaoderivados` ADD CONSTRAINT `FK_producaoderivados` FOREIGN KEY (`codigopreproducao`) REFERENCES `produtospreproducao` (`codigo`) ON DELETE CASCADE ;
+
+
+ALTER TABLE `composicaolaticinio`     ADD COLUMN `tipoparametro` CHAR(1) DEFAULT 'L' NULL;
+
+
+----- 12/11/2019----------------------
+
+CREATE TABLE desnateleite (
+  `id` INT (8) NOT NULL AUTO_INCREMENT,
+  `dataabertura` DATE,
+  `dataencerramento` DATETIME,
+  `saldoleiteanterior` DECIMAL (8, 2),
+  `leitedestinado` DECIMAL (8, 2),
+  `saldodesnatado` DECIMAL (8, 2),
+  `cremeobtido` DECIMAL (8, 2),
+  `gordura` DECIMAL (8, 2), 
+ `codigofilial` VARCHAR (5) DEFAULT '00001',
+  `operador` VARCHAR (50),
+  `encerrada` CHAR(1) DEFAULT 'N',
+  PRIMARY KEY (`id`)
+) ;
+--------------------------------------
+
+----- 20/12/2019 ---------------------
+
+ALTER TABLE movproducaodiaria   ADD COLUMN descricao VARCHAR(80) NULL;
+
+--------------------------------------
+
+
+
+
+

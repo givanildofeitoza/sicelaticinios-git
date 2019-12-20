@@ -174,6 +174,18 @@ type
     dataProdAlt: TDateEdit;
     BitBtn17: TBitBtn;
     BitBtn18: TBitBtn;
+    txtdesc: TEdit;
+    Label41: TLabel;
+    BitBtn19: TBitBtn;
+    pnldescricao: TPanel;
+    txtaltdesc: TEdit;
+    BitBtn20: TBitBtn;
+    Panel3: TPanel;
+    Label42: TLabel;
+    BitBtn21: TBitBtn;
+    Label43: TLabel;
+    datapesqfim: TDateEdit;
+    Label44: TLabel;
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure BitBtn1Click(Sender: TObject);
@@ -228,6 +240,9 @@ type
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn18Click(Sender: TObject);
     procedure BitBtn17Click(Sender: TObject);
+    procedure BitBtn21Click(Sender: TObject);
+    procedure BitBtn19Click(Sender: TObject);
+    procedure BitBtn20Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -881,8 +896,9 @@ procedure T_frmProducaoLaticinio.BitBtn16Click(Sender: TObject);
 begin
    _dm2.ConnecDm2.Connected:=false;
        _dm2.cdsMovproducao.Close;
-       _dm2.sdsMovproducao.commandtext:='SELECT * FROM movproducaodiaria WHERE codigofilial='+quotedstr(glb_filial)+' AND data = '+quotedstr(formatdatetime('yyyy-mm-dd',datapesqini.Date));
+       _dm2.sdsMovproducao.commandtext:='SELECT * FROM movproducaodiaria WHERE codigofilial='+quotedstr(glb_filial)+' AND data BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',datapesqini.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',datapesqfim.Date));
       // _dm2.sdsMovproducao.commandtext:='SELECT * FROM movproducaodiaria WHERE codigofilial='+quotedstr(glb_filial)+' AND numero = '+quotedstr(_dm2.cdsMovproducaonumero.AsString);
+
        _dm2.sdsMovproducao.execsql;
        _dm2.cdsMovproducao.Open;
        _dm2.cdsMovproducao.refresh;
@@ -912,6 +928,27 @@ end;
 procedure T_frmProducaoLaticinio.BitBtn18Click(Sender: TObject);
 begin
 frm.ModalResult:=-1;
+end;
+
+procedure T_frmProducaoLaticinio.BitBtn19Click(Sender: TObject);
+begin
+      if( _dm2.cdsMovproducaoencerrada.AsString='S')then
+      begin
+      application.MessageBox('produção já encerrada!','Alerta',MB_ICONQUESTION+MB_ok);
+      exit;
+      end;
+
+          frm:=Tform.create(self);
+
+          frm.Width:=480;
+          frm.Height:=140;
+          frm.Position:=poDesktopCenter;
+          frm.BorderStyle:=bsDialog;
+
+          pnldescricao.Parent:=frm;
+          pnldescricao.visible:=true;
+          pnldescricao.Align:=alClient;
+          frm.ShowModal;
 end;
 
 procedure T_frmProducaoLaticinio.BitBtn1Click(Sender: TObject);
@@ -1095,13 +1132,39 @@ begin
 
 end;
 
+procedure T_frmProducaoLaticinio.BitBtn20Click(Sender: TObject);
+begin
+frm.ModalResult:=-1;
+end;
+
+procedure T_frmProducaoLaticinio.BitBtn21Click(Sender: TObject);
+begin
+
+
+      _dm.ConnecDm.Connected:=false;
+      _dm.qrPadrao.SQL.Clear;
+      _dm.qrPadrao.SQL.Add(' update  movproducaodiaria set descricao='+quotedstr(txtaltdesc.Text)+' where ');
+      _dm.qrPadrao.SQL.Add(' codigofilial='+quotedstr(glb_filial)+' and ');
+      _dm.qrPadrao.SQL.Add(' numero='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+      _dm.qrPadrao.ExecSQL();
+
+
+        _dm2.cdsMovproducao.refresh;
+        _dm2.cdsMovproducao.refresh;
+
+
+        txtdesc.Text:=  _dm2.cdsMovproducaodescricao.AsString;
+        frm.ModalResult:=-1;
+end;
+
 procedure T_frmProducaoLaticinio.BitBtn2Click(Sender: TObject);
 begin
 datapesqini.Date:=now;
+datapesqfim.Date:= IncMonth(now,1);
 continuar:='N';
      frm:=Tform.create(self);
 
-    frm.Width:=520;
+    frm.Width:=720;
     frm.Height:=360;
     frm.Position:=poDesktopCenter;
     frm.BorderStyle:=bsDialog;
@@ -1288,6 +1351,7 @@ continuar:='N';
         lblDatafim.Caption:=_dm2.cdsMovproducaodatafinalizacao.AsString+'  '+_dm2.cdsMovproducaohorafinalizacao.AsString;
         cboOperadorFim.Text:=  _dm2.cdsMovproducaooperadorfinalizacao.AsString;
         cboOperadorAbertura.Text:=_dm2.cdsMovproducaooperador.AsString;
+        txtdesc.Text:= _dm2.cdsMovproducaodescricao.AsString;
 
 
 

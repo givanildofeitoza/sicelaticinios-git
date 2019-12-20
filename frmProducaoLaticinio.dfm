@@ -91,7 +91,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
       end
       object pnlitens: TPanel
         Left = -4
-        Top = 129
+        Top = 156
         Width = 893
         Height = 462
         Align = alCustom
@@ -477,31 +477,99 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
             OnClick = BitBtn18Click
           end
         end
+        object pnldescricao: TPanel
+          Left = 408
+          Top = 323
+          Width = 467
+          Height = 121
+          TabOrder = 5
+          Visible = False
+          object Label43: TLabel
+            Left = 16
+            Top = 32
+            Width = 99
+            Height = 13
+            Caption = 'M'#225'ximo 60 carcteres'
+          end
+          object txtaltdesc: TEdit
+            Left = 16
+            Top = 48
+            Width = 433
+            Height = 21
+            CharCase = ecUpperCase
+            MaxLength = 60
+            TabOrder = 0
+          end
+          object BitBtn20: TBitBtn
+            Left = 376
+            Top = 75
+            Width = 75
+            Height = 25
+            Caption = 'Cancelar'
+            TabOrder = 1
+            OnClick = BitBtn20Click
+          end
+          object Panel3: TPanel
+            Left = 1
+            Top = 1
+            Width = 465
+            Height = 18
+            Align = alTop
+            Color = clMenuHighlight
+            ParentBackground = False
+            TabOrder = 2
+            ExplicitLeft = 2
+            ExplicitTop = 9
+            ExplicitWidth = 328
+            object Label42: TLabel
+              Left = 23
+              Top = 2
+              Width = 97
+              Height = 13
+              Caption = 'Alterar descri'#231#227'o'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWhite
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+          end
+          object BitBtn21: TBitBtn
+            Left = 184
+            Top = 75
+            Width = 75
+            Height = 25
+            Caption = 'Salvar'
+            TabOrder = 3
+            OnClick = BitBtn21Click
+          end
+        end
       end
       object pnlDadosFim: TPanel
-        Left = 432
+        Left = 572
         Top = 39
-        Width = 457
-        Height = 90
+        Width = 316
+        Height = 117
         Align = alCustom
         Enabled = False
         TabOrder = 2
         object Label7: TLabel
-          Left = 24
+          Left = 15
           Top = 19
           Width = 103
           Height = 13
           Caption = 'Operador finaliza'#231#227'o:'
         end
         object Label4: TLabel
-          Left = 24
+          Left = 15
           Top = 38
           Width = 61
           Height = 13
           Caption = 'Data e hora:'
         end
         object lblDatafim: TLabel
-          Left = 91
+          Left = 82
           Top = 38
           Width = 138
           Height = 14
@@ -514,7 +582,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           ParentFont = False
         end
         object Label6: TLabel
-          Left = 24
+          Left = 15
           Top = 0
           Width = 125
           Height = 14
@@ -527,7 +595,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           ParentFont = False
         end
         object cboOperadorFim: TComboBox
-          Left = 133
+          Left = 124
           Top = 17
           Width = 140
           Height = 21
@@ -538,8 +606,8 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
       object pnlAbertura: TPanel
         Left = 0
         Top = 39
-        Width = 417
-        Height = 90
+        Width = 566
+        Height = 117
         Enabled = False
         TabOrder = 3
         object Label8: TLabel
@@ -589,6 +657,13 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           Height = 13
           Caption = 'Filial:'
         end
+        object Label41: TLabel
+          Left = 16
+          Top = 96
+          Width = 50
+          Height = 13
+          Caption = 'Descri'#231#227'o:'
+        end
         object cboOperadorAbertura: TComboBox
           Left = 115
           Top = 36
@@ -615,32 +690,42 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           TabOrder = 2
           OnClick = BitBtn3Click
         end
+        object txtdesc: TEdit
+          Left = 73
+          Top = 90
+          Width = 485
+          Height = 21
+          CharCase = ecUpperCase
+          Enabled = False
+          TabOrder = 3
+        end
       end
       object bitLiberarDigitacao: TBitBtn
         Left = 3
-        Top = 594
-        Width = 186
+        Top = 621
+        Width = 150
         Height = 32
         Caption = 'Liberar digita'#231#227'o de itens'
         TabOrder = 4
         OnClick = bitLiberarDigitacaoClick
       end
       object pnlabrir: TPanel
-        Left = 770
-        Top = 228
-        Width = 486
+        Left = 782
+        Top = 147
+        Width = 650
         Height = 326
         TabOrder = 5
         Visible = False
         object Panel19: TPanel
           Left = 1
           Top = 1
-          Width = 484
+          Width = 648
           Height = 18
           Align = alTop
           Color = clMenuHighlight
           ParentBackground = False
           TabOrder = 0
+          ExplicitWidth = 484
           object Label60: TLabel
             Left = 23
             Top = 2
@@ -686,12 +771,19 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           end
         end
         object pnldata: TPanel
-          Left = 16
+          Left = 24
           Top = 80
-          Width = 457
+          Width = 609
           Height = 193
           TabOrder = 3
           Visible = False
+          object Label44: TLabel
+            Left = 155
+            Top = 24
+            Width = 16
+            Height = 13
+            Caption = 'at'#233
+          end
           object datapesqini: TDateEdit
             Left = 8
             Top = 16
@@ -702,8 +794,8 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           end
           object DBGrid1: TDBGrid
             Left = 8
-            Top = 43
-            Width = 449
+            Top = 44
+            Width = 593
             Height = 135
             DataSource = _dm2.DSourceMovproducao
             TabOrder = 1
@@ -735,6 +827,12 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
               end
               item
                 Expanded = False
+                FieldName = 'descricao'
+                Title.Caption = 'Descri'#231#227'o'
+                Visible = True
+              end
+              item
+                Expanded = False
                 FieldName = 'lote'
                 Title.Caption = 'Lote'
                 Width = 75
@@ -748,13 +846,21 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
               end>
           end
           object BitBtn16: TBitBtn
-            Left = 143
-            Top = 13
+            Left = 343
+            Top = 14
             Width = 75
             Height = 25
             Caption = 'Buscar'
             TabOrder = 2
             OnClick = BitBtn16Click
+          end
+          object datapesqfim: TDateEdit
+            Left = 200
+            Top = 16
+            Width = 121
+            Height = 21
+            NumGlyphs = 2
+            TabOrder = 3
           end
         end
         object btnabrir: TBitBtn
@@ -779,13 +885,22 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
       end
       object bitbtnConfirmar: TBitBtn
         Left = 692
-        Top = 596
+        Top = 623
         Width = 197
         Height = 33
         Caption = 'Confirmar itens da produ'#231#227'o'
         Enabled = False
         TabOrder = 6
         OnClick = bitbtnConfirmarClick
+      end
+      object BitBtn19: TBitBtn
+        Left = 163
+        Top = 621
+        Width = 112
+        Height = 32
+        Caption = 'Alterar descri'#231#227'o'
+        TabOrder = 7
+        OnClick = BitBtn19Click
       end
     end
     object tabDadosProducao: TTabSheet
@@ -1045,7 +1160,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           RowCount = 2
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -8
+          Font.Height = -12
           Font.Name = 'Tahoma'
           Font.Style = []
           Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
@@ -1419,7 +1534,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           RowCount = 2
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -8
+          Font.Height = -12
           Font.Name = 'Tahoma'
           Font.Style = []
           Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
@@ -1720,7 +1835,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           RowCount = 2
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -8
+          Font.Height = -12
           Font.Name = 'Tahoma'
           Font.Style = []
           Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]

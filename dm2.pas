@@ -304,6 +304,7 @@ type
     cdsDesnatecodigofilial: TWideStringField;
     cdsDesnateoperador: TWideStringField;
     cdsDesnateencerrada: TWideStringField;
+    cdsMovproducaodescricao: TWideStringField;
     procedure ConnecDm2BeforeConnect(Sender: TObject);
   private
     { Private declarations }

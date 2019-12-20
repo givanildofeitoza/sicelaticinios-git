@@ -120,6 +120,10 @@ object _dm2: T_dm2
       FieldName = 'materiarequisitada'
       Size = 1
     end
+    object cdsMovproducaodescricao: TWideStringField
+      FieldName = 'descricao'
+      Size = 80
+    end
   end
   object DSourceMovproducao: TDataSource
     DataSet = cdsMovproducao
