@@ -518,9 +518,6 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
             Color = clMenuHighlight
             ParentBackground = False
             TabOrder = 2
-            ExplicitLeft = 2
-            ExplicitTop = 9
-            ExplicitWidth = 328
             object Label42: TLabel
               Left = 23
               Top = 2
@@ -725,7 +722,6 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           Color = clMenuHighlight
           ParentBackground = False
           TabOrder = 0
-          ExplicitWidth = 484
           object Label60: TLabel
             Left = 23
             Top = 2
@@ -1166,8 +1162,10 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
           ParentFont = False
           TabOrder = 0
+          OnDblClick = gridLeiteDblClick
           OnDrawCell = gridLeiteDrawCell
           OnKeyPress = gridLeiteKeyPress
+          OnSelectCell = gridLeiteSelectCell
           ColWidths = (
             64)
         end
@@ -1540,8 +1538,10 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
           ParentFont = False
           TabOrder = 0
+          OnDblClick = gridCremeDblClick
           OnDrawCell = gridCremeDrawCell
           OnKeyPress = gridCremeKeyPress
+          OnSelectCell = gridCremeSelectCell
           ColWidths = (
             64)
         end
@@ -1841,8 +1841,10 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
           ParentFont = False
           TabOrder = 0
+          OnDblClick = gridManteigaDblClick
           OnDrawCell = gridManteigaDrawCell
           OnKeyPress = gridManteigaKeyPress
+          OnSelectCell = gridManteigaSelectCell
           ColWidths = (
             64)
         end

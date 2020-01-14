@@ -243,6 +243,15 @@ type
     procedure BitBtn21Click(Sender: TObject);
     procedure BitBtn19Click(Sender: TObject);
     procedure BitBtn20Click(Sender: TObject);
+    procedure gridLeiteSelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
+    procedure gridLeiteDblClick(Sender: TObject);
+    procedure gridCremeDblClick(Sender: TObject);
+    procedure gridManteigaDblClick(Sender: TObject);
+    procedure gridCremeSelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
+    procedure gridManteigaSelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
   private
     { Private declarations }
   public
@@ -2357,6 +2366,13 @@ begin
 
 end;
 
+procedure T_frmProducaoLaticinio.gridCremeDblClick(Sender: TObject);
+begin
+Application.HintHidePause:=20000;
+hint:=gridCreme.Cells[colLeite,0];
+ShowHint:=true;
+end;
+
 procedure T_frmProducaoLaticinio.gridCremeDrawCell(Sender: TObject; ACol,
   ARow: Integer; Rect: TRect; State: TGridDrawState);
      var
@@ -2412,6 +2428,20 @@ procedure T_frmProducaoLaticinio.gridCremeKeyPress(Sender: TObject;
   var Key: Char);
 begin
 validaNumeros(key);
+end;
+
+procedure T_frmProducaoLaticinio.gridCremeSelectCell(Sender: TObject; ACol,
+  ARow: Integer; var CanSelect: Boolean);
+begin
+colLeite:=acol;
+end;
+
+procedure T_frmProducaoLaticinio.gridLeiteDblClick(Sender: TObject);
+begin
+
+Application.HintHidePause:=20000;
+hint:=gridLeite.Cells[colLeite,0];
+ShowHint:=true;
 end;
 
 procedure T_frmProducaoLaticinio.gridLeiteDrawCell(Sender: TObject; ACol,
@@ -2472,6 +2502,20 @@ begin
 validaNumeros(key);
 end;
 
+procedure T_frmProducaoLaticinio.gridLeiteSelectCell(Sender: TObject; ACol,
+  ARow: Integer; var CanSelect: Boolean);
+begin
+colLeite:=acol;
+
+end;
+
+procedure T_frmProducaoLaticinio.gridManteigaDblClick(Sender: TObject);
+begin
+Application.HintHidePause:=20000;
+hint:=gridManteiga.Cells[colLeite,0];
+ShowHint:=true;
+end;
+
 procedure T_frmProducaoLaticinio.gridManteigaDrawCell(Sender: TObject; ACol,
   ARow: Integer; Rect: TRect; State: TGridDrawState);
      var
@@ -2528,6 +2572,12 @@ procedure T_frmProducaoLaticinio.gridManteigaKeyPress(Sender: TObject;
   var Key: Char);
 begin
 validaNumeros(key);
+end;
+
+procedure T_frmProducaoLaticinio.gridManteigaSelectCell(Sender: TObject; ACol,
+  ARow: Integer; var CanSelect: Boolean);
+begin
+colLeite:=acol;
 end;
 
 procedure T_frmProducaoLaticinio.gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
