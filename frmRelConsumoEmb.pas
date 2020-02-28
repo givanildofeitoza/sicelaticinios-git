@@ -131,9 +131,9 @@ imprimir:='N';
                 Begin
                    PLANILHA.Cells[Linha,1]:=   _dm2.cdsprodmovembalagemcodigoembalagem.asstring;
                    PLANILHA.Cells[linha,2] :=  _dm2.cdsprodmovembalagemdescricaoembalagem.asstring;
-                   PLANILHA.Cells[linha,3] := formatcurr('##0.00', _dm2.cdsprodmovembalagemqtdutilizado.ascurrency);
-                   PLANILHA.Cells[Linha,4] := formatcurr('##0.00', _dm2.cdsprodmovembalagemcustounitario.ascurrency);
-                   PLANILHA.Cells[Linha,5] := formatcurr('##0.00', _dm2.cdsprodmovembalagemcustototal.ascurrency);
+                   PLANILHA.Cells[linha,3] :=  _dm2.cdsprodmovembalagemqtdutilizado.asfloat;
+                   PLANILHA.Cells[Linha,4] :=  _dm2.cdsprodmovembalagemcustounitario.ascurrency;
+                   PLANILHA.Cells[Linha,5] :=  _dm2.cdsprodmovembalagemcustototal.ascurrency;
 
 
 

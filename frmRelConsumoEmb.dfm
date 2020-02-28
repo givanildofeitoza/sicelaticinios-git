@@ -51,7 +51,6 @@ object _frmRelConsumoEmb: T_frmRelConsumoEmb
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 423
   end
   object data1: TDateEdit
     Left = 16

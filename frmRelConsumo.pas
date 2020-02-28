@@ -27,6 +27,7 @@ type
     RvCustomConnection1: TRvCustomConnection;
     chkgrupo: TCheckBox;
     BitBtn4: TBitBtn;
+    chkEncerradas: TCheckBox;
     procedure BitBtn1Click(Sender: TObject);
     procedure btnImpClick(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
@@ -71,7 +72,52 @@ end;
 procedure T_frmRelConsumo.btnImpClick(Sender: TObject);
 var
 produto,sql:string;
+totalLeite, totalCreme,totalManteiga:currency;
 begin
+
+
+  _dm.ConnecDm.Connected:=false;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('SELECT SUM(d.utilizado) AS total,p.numero,p.DATA FROM dadosproducaoleite AS d, movproducaodiaria AS p '+
+    ' WHERE p.DATA BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" AND p.codigofilial = "'+glb_filial+'" '+
+    ' AND d.numeroproducao = p.numero  ');
+    if(chkEncerradas.Checked=true)then
+    _dm.qrPadrao.SQL.Add(' AND p.encerrada="S"');
+  _dm.qrPadrao.open;
+
+  totalLeite := _dm.qrPadrao.FieldByName('total').ascurrency;
+
+    _dm.ConnecDm.Connected:=false;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('SELECT SUM(d.utilizado) AS total,p.numero,p.DATA FROM dadosproducaocreme AS d, movproducaodiaria AS p '+
+    ' WHERE p.DATA BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" AND p.codigofilial = "'+glb_filial+'" '+
+    ' AND d.numeroproducao = p.numero  ');
+    if(chkEncerradas.Checked=true)then
+    _dm.qrPadrao.SQL.Add(' AND p.encerrada="S"');
+
+  _dm.qrPadrao.open;
+
+
+  totalCreme :=   _dm.qrPadrao.FieldByName('total').ascurrency;
+
+
+    _dm.ConnecDm.Connected:=false;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('SELECT SUM(d.manteigautilizada) AS total,p.numero,p.DATA FROM dadosproducaomanteiga AS d, movproducaodiaria AS p '+
+    ' WHERE p.DATA BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" AND p.codigofilial = "'+glb_filial+'" '+
+    ' AND d.numeroproducao = p.numero  ');
+      if(chkEncerradas.Checked=true)then
+    _dm.qrPadrao.SQL.Add(' AND p.encerrada="S"');
+
+  _dm.qrPadrao.open;
+
+
+  totalManteiga :=  _dm.qrPadrao.FieldByName('total').ascurrency;
+
+
+
+
+
 
 
     if(txtcod.Text<>'')then
@@ -95,7 +141,12 @@ begin
 
 
   _dm2.sdsMateria.CommandText:=_dm2.sdsMateria.CommandText+' avg(custounitario) as custounitario,DATA,operador from producaomovmateria'+
-  ' WHERE codigofilial="'+glb_filial+'"  AND data BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'"  AND finalizado="S" '+produto+' GROUP BY codigomateria';
+  ' WHERE codigofilial="'+glb_filial+'"  AND data BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" '+produto;
+
+  if(chkEncerradas.Checked=true)then
+  _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+'  AND finalizado="S" ';
+
+  _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+' GROUP BY codigomateria';
   _dm2.sdsMateria.ExecSQL();
  //clipboard.AsText:=  _dm2.sdsMateria.CommandText;
    _dm2.cdsmateria.Open;
@@ -117,11 +168,15 @@ begin
     _dm2.sdsMateria.CommandText:=_dm2.sdsMateria.CommandText+' quantidademateria as quantidademateria, (totalmateriautilizada) as totalmateriautilizada ,((totalmateriautilizada) * custounitario) as totalcustoproducao, custounitario,DATA,operador from producaomovmateria';
 
 
-    _dm2.sdsMateria.CommandText:=_dm2.sdsMateria.CommandText+' WHERE codigofilial="'+glb_filial+'"  AND data BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'"  AND finalizado="S" '+produto+' ORDER BY codigomateria';
+    _dm2.sdsMateria.CommandText:=_dm2.sdsMateria.CommandText+' WHERE codigofilial="'+glb_filial+'"  AND data BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" '+produto;
+
+   if(chkEncerradas.Checked=true)then
+   _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+'  AND finalizado="S" ';
+
+  _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+' GROUP BY codigomateria';
 
   _dm2.sdsMateria.ExecSQL();
- //clipboard.AsText:=  _dm2.sdsMateria.CommandText;
-   _dm2.cdsmateria.Open;
+  _dm2.cdsmateria.Open;
   _dm2.cdsmateria.refresh;
 
   RvPConsumo.SetParam('titcusto','[ Custo Unit. ]');
@@ -131,6 +186,11 @@ begin
 
   if(imprimir='S')then
   begin
+
+  RvPConsumo.SetParam('tleite',formatcurr('##0.00',totalLeite));
+  RvPConsumo.SetParam('tcreme',formatcurr('##0.00',totalCreme));
+  RvPConsumo.SetParam('tmanteiga',formatcurr('##0.00',totalManteiga));
+
   RvPConsumo.SetParam('data1',dataini.Text);
   RvPConsumo.SetParam('data2',datafim.Text);
   RvPConsumo.SetParam('produto',txtcod.text);
@@ -186,8 +246,8 @@ imprimir:='N';
                    PLANILHA.Cells[Linha,1]:=  _dm2.cdsMateriacodigomateria.asstring;
                    PLANILHA.Cells[linha,2] := _dm2.cdsMateriadescricaomateria.asstring;
                    PLANILHA.Cells[linha,3] := formatcurr('##0.00',_dm2.cdsMateriatotalmateriautilizada.ascurrency);
-                   PLANILHA.Cells[Linha,4] := formatcurr('##0.00',_dm2.cdsMateriacustounitario.ascurrency);
-                   PLANILHA.Cells[Linha,5] := formatcurr('##0.00',_dm2.cdsMateriatotalcustoproducao.ascurrency);
+                   PLANILHA.Cells[Linha,4] := _dm2.cdsMateriacustounitario.asfloat;
+                   PLANILHA.cells[Linha,5] :=_dm2.cdsMateriatotalcustoproducao.ascurrency;
 
 
 

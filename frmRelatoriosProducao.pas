@@ -107,11 +107,11 @@ imprimir:='N';
                    PLANILHA.Cells[Linha,5] := cdsrelProducaocodigo.asstring;
                    PLANILHA.Cells[Linha,6] := cdsrelProducaoproduto.asstring;
                    PLANILHA.Cells[Linha,7] := cdsrelProducaounidade.asstring;
-                   PLANILHA.Cells[Linha,8] := formatcurr('##0.00',cdsrelProducaoquantidadeproduzida.ascurrency);
-                   PLANILHA.Cells[Linha,9] := formatcurr('##0.00',cdsrelProducaoquantidadeleite.ascurrency);
-                   PLANILHA.Cells[Linha,10] := formatcurr('##0.00',cdsrelProducaorendleite.ascurrency);
-                   PLANILHA.Cells[Linha,11] := formatcurr('##0.00',cdsrelProducaorendcreme.ascurrency);
-                   PLANILHA.Cells[Linha,12] := formatcurr('##0.00',cdsrelProducaorendmanteiga.ascurrency);
+                   PLANILHA.Cells[Linha,8] := cdsrelProducaoquantidadeproduzida.asfloat;
+                   PLANILHA.Cells[Linha,9] := cdsrelProducaoquantidadeleite.asfloat;
+                   PLANILHA.Cells[Linha,10] := cdsrelProducaorendleite.asfloat;
+                   PLANILHA.Cells[Linha,11] := cdsrelProducaorendcreme.asfloat;
+                   PLANILHA.Cells[Linha,12] := cdsrelProducaorendmanteiga.asfloat;
 
 
 

@@ -5831,26 +5831,31 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
     end
     object cdsrelProducaoquantidadeproduzida: TFMTBCDField
       FieldName = 'quantidadeproduzida'
+      DisplayFormat = '##0.00'
       Precision = 10
       Size = 2
     end
     object cdsrelProducaorendleite: TFMTBCDField
       FieldName = 'rendleite'
+      DisplayFormat = '##0.00'
       Precision = 16
       Size = 6
     end
     object cdsrelProducaorendCreme: TFMTBCDField
       FieldName = 'rendCreme'
+      DisplayFormat = '##0.00'
       Precision = 16
       Size = 6
     end
     object cdsrelProducaorendmanteiga: TFMTBCDField
       FieldName = 'rendmanteiga'
+      DisplayFormat = '##0.00'
       Precision = 16
       Size = 6
     end
     object cdsrelProducaoquantidadeleite: TFMTBCDField
       FieldName = 'quantidadeleite'
+      DisplayFormat = '##0.00'
       Precision = 10
       Size = 2
     end

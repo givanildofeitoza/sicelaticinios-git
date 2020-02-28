@@ -1286,21 +1286,25 @@ object _dm2: T_dm2
     end
     object cdsprodmovembalagemqtdnecessaria: TFMTBCDField
       FieldName = 'qtdnecessaria'
+      DisplayFormat = '##0.00'
       Precision = 12
       Size = 2
     end
     object cdsprodmovembalagemcustototal: TFMTBCDField
       FieldName = 'custototal'
+      DisplayFormat = '##0.00'
       Precision = 12
       Size = 2
     end
     object cdsprodmovembalagemqtdproduzido: TFMTBCDField
       FieldName = 'qtdproduzido'
+      DisplayFormat = '##0.00'
       Precision = 12
       Size = 2
     end
     object cdsprodmovembalagemqtdutilizado: TFMTBCDField
       FieldName = 'qtdutilizado'
+      DisplayFormat = '##0.00'
       Precision = 12
       Size = 2
     end
@@ -1324,6 +1328,7 @@ object _dm2: T_dm2
     end
     object cdsprodmovembalagemcustounitario: TFMTBCDField
       FieldName = 'custounitario'
+      DisplayFormat = '##0.00'
       Precision = 12
       Size = 2
     end
@@ -1364,7 +1369,6 @@ object _dm2: T_dm2
     Top = 735
   end
   object cdsRelvenda: TClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dsrelvenda'
