@@ -295,11 +295,13 @@ begin
   if(Key=VK_DOWN)then
    begin
    cdsrelProducao.Next;
+   data1.SetFocus;
    end;
 
     if(Key=VK_up)then
    begin
   cdsrelProducao.Prior;
+   data1.SetFocus;
    end;
 end;
 
