@@ -2,28 +2,31 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  ClientHeight = 184
-  ClientWidth = 693
+  ClientHeight = 778
+  ClientWidth = 1092
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel10: TPanel
     Left = 0
     Top = 0
-    Width = 693
+    Width = 1092
     Height = 33
     Align = alTop
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
+    ExplicitWidth = 693
     object Label40: TLabel
       Left = 23
       Top = 7
@@ -40,51 +43,55 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   end
   object GroupBox1: TGroupBox
     Left = 0
-    Top = 39
-    Width = 685
-    Height = 138
+    Top = 664
+    Width = 1092
+    Height = 114
+    Align = alBottom
     Caption = 'Por Produto'
     TabOrder = 1
+    ExplicitLeft = 8
+    ExplicitTop = 656
+    ExplicitWidth = 1076
     object Label1: TLabel
-      Left = 16
-      Top = 29
+      Left = 24
+      Top = 27
       Width = 25
       Height = 13
       Caption = 'In'#237'cio'
     end
     object Label2: TLabel
-      Left = 234
-      Top = 29
+      Left = 205
+      Top = 27
       Width = 16
       Height = 13
       Caption = 'Fim'
     end
     object Label3: TLabel
-      Left = 10
-      Top = 64
+      Left = 18
+      Top = 56
       Width = 38
       Height = 13
       Caption = 'Produto'
     end
     object data1: TDateEdit
-      Left = 56
-      Top = 24
+      Left = 64
+      Top = 22
       Width = 121
       Height = 21
       NumGlyphs = 2
       TabOrder = 0
     end
     object data2: TDateEdit
-      Left = 256
-      Top = 24
+      Left = 227
+      Top = 22
       Width = 121
       Height = 21
       NumGlyphs = 2
       TabOrder = 1
     end
     object txtcod: TEdit
-      Left = 56
-      Top = 56
+      Left = 64
+      Top = 49
       Width = 61
       Height = 21
       Enabled = False
@@ -92,16 +99,16 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Text = '0'
     end
     object txtprod: TEdit
-      Left = 129
-      Top = 56
+      Left = 137
+      Top = 49
       Width = 248
       Height = 21
       Enabled = False
       TabOrder = 3
     end
     object BitBtn2: TBitBtn
-      Left = 383
-      Top = 54
+      Left = 391
+      Top = 47
       Width = 43
       Height = 25
       Caption = '...'
@@ -109,23 +116,126 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       OnClick = BitBtn2Click
     end
     object btnimprimir: TBitBtn
-      Left = 54
-      Top = 83
-      Width = 123
-      Height = 30
+      Left = 798
+      Top = 56
+      Width = 115
+      Height = 33
       Caption = 'Imprimir'
       TabOrder = 5
       OnClick = btnimprimirClick
     end
     object BitBtn1: TBitBtn
-      Left = 576
-      Top = 104
-      Width = 99
-      Height = 25
+      Left = 936
+      Top = 56
+      Width = 105
+      Height = 33
       Caption = 'Exportar Excel'
       TabOrder = 6
       OnClick = BitBtn1Click
     end
+    object BitBtn3: TBitBtn
+      Left = 62
+      Top = 76
+      Width = 91
+      Height = 25
+      Caption = 'Filtrar'
+      TabOrder = 7
+      OnClick = BitBtn3Click
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 33
+    Width = 1092
+    Height = 631
+    Align = alClient
+    DataSource = dSourcerelProducao
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    OnDrawColumnCell = DBGrid1DrawColumnCell
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'dataproducao'
+        Title.Caption = 'Data in'#237'cio'
+        Width = 98
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'horaproducao'
+        Title.Caption = 'Hora in'#237'cio'
+        Width = 95
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'datafimproducao'
+        Title.Caption = 'Data finaliza'#231#227'o'
+        Width = 103
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'horafimproducao'
+        Title.Caption = 'Hora finaliza'#231#227'o'
+        Width = 98
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'codigo'
+        Title.Caption = 'C'#243'digo'
+        Width = 63
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'produto'
+        Title.Caption = 'Produto'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'unidade'
+        Title.Caption = 'Unidade'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'quantidadeproduzida'
+        Title.Caption = 'Qtd. produzida'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'rendleite'
+        Title.Caption = 'Rend. leite'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'rendCreme'
+        Title.Caption = 'Rend. Creme'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'rendmanteiga'
+        Title.Caption = 'Rend. manteiga'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'quantidadeleite'
+        Title.Caption = ' Qtd. de leite'
+        Visible = True
+      end>
   end
   object RvPRelProd: TRvProject
     Engine = RvSRelProd
