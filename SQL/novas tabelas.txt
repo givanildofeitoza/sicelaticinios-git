@@ -547,4 +547,37 @@ CREATE TABLE desnateleite (
 ) ;
 --------------------------------------
 
+----- 20/12/2019 ---------------------
+
+ALTER TABLE movproducaodiaria   ADD COLUMN descricao VARCHAR(80) NULL;
+
+--------------------------------------
+
+
+----- 04/03/2020----------------------
+
+CREATE TABLE cadetapaproducao (
+  `id` INT (4) NOT NULL AUTO_INCREMENT,
+  `codigofilial` VARCHAR (5) DEFAULT '00001',
+  `processo` VARCHAR (50),
+  `ordem` INT (2),
+  `duracaoestimada` DECIMAL (10, 2),
+  `codigoproduto` VARCHAR (6),
+  PRIMARY KEY (`id`)
+) ;
+
+CREATE TABLE fluxogramaproducao (
+  `id` INT (6) NOT NULL AUTO_INCREMENT,
+  `codigofilial` VARCHAR (5) DEFAULT '00001',
+  `numeroproducao` VARCHAR (6),
+  `codigoetapaprod` VARCHAR (6),
+  `horainicio` DATETIME,
+  `horatermino` DATETIME,
+  `operadorinicio` VARCHAR (20),
+  `operadortermino` VARCHAR (20),
+  PRIMARY KEY (`id`)
+) ;
+
+---------------------------------------
+
 
