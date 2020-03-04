@@ -32,6 +32,7 @@ type
     BitBtn6: TBitBtn;
     btnExcluir: TBitBtn;
     BitBtn3: TBitBtn;
+    BitBtn7: TBitBtn;
     procedure btnfecharClick(Sender: TObject);
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -47,6 +48,7 @@ type
     procedure gridProdPreKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure BitBtn3Click(Sender: TObject);
+    procedure BitBtn7Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -61,7 +63,7 @@ implementation
 
 {$R *.dfm}
  uses
- main,dm,dm2,frmComposicao,frmProdEmbalagens,clipbrd;
+ main,dm,dm2,frmComposicao,frmProdEmbalagens,frmProcProducao;
  procedure incluirAuditoria(local:string; documento:string; acao:string; tabela:string);
 begin
 
@@ -271,6 +273,23 @@ end;
 procedure T_frmProdPreProducao.BitBtn6Click(Sender: TObject);
 begin
 frm.ModalResult:=-1;
+end;
+
+procedure T_frmProdPreProducao.BitBtn7Click(Sender: TObject);
+begin
+
+
+ _dm2.sdsProcProducao.Close;
+ _dm2.cdsProcProducao.Close;
+ _dm2.sdsProcProducao.CommandText:='SELECT * FROM cadetapaproducao WHERE codigoproduto='+quotedstr(_dm.cdsPrd2codigo.AsString)+' AND codigofilial='+quotedstr(glb_filial);
+ _dm2.sdsProcProducao.ExecSQL();
+  _dm2.sdsProcProducao.open;
+ _dm2.cdsProcProducao.Open;
+ _dm2.cdsProcProducao.refresh;
+
+_frmProcProducao:=T_frmProcProducao.Create(Self);
+_frmProcProducao.ShowModal();
+_frmProcProducao.release;
 end;
 
 procedure T_frmProdPreProducao.txtNomePesquisaChange(Sender: TObject);

@@ -423,21 +423,21 @@ object _dm2: T_dm2
     Params = <>
     SQLConnection = ConnecDm2
     Left = 576
-    Top = 80
+    Top = 6
   end
   object qrCreme: TSQLQuery
     MaxBlobSize = -1
     Params = <>
     SQLConnection = ConnecDm2
     Left = 648
-    Top = 80
+    Top = 6
   end
   object qrManteiga: TSQLQuery
     MaxBlobSize = -1
     Params = <>
     SQLConnection = ConnecDm2
     Left = 720
-    Top = 80
+    Top = 6
   end
   object sdsresumoleite: TSQLDataSet
     CommandText = 
@@ -447,19 +447,19 @@ object _dm2: T_dm2
     Params = <>
     SQLConnection = ConnecDm2
     Left = 536
-    Top = 152
+    Top = 78
   end
   object dsResumoleite: TDataSetProvider
     DataSet = sdsresumoleite
     Left = 640
-    Top = 152
+    Top = 78
   end
   object cdsResumoleite: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsResumoleite'
     Left = 728
-    Top = 152
+    Top = 78
     object cdsResumoleiteid: TIntegerField
       FieldName = 'id'
     end
@@ -496,14 +496,14 @@ object _dm2: T_dm2
   object dSourceResumoLeite: TDataSource
     DataSet = cdsResumoleite
     Left = 848
-    Top = 152
+    Top = 78
   end
   object cdsresumocreme: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsresumocreme'
     Left = 760
-    Top = 216
+    Top = 142
     object cdsresumocremeid: TIntegerField
       FieldName = 'id'
     end
@@ -540,12 +540,12 @@ object _dm2: T_dm2
   object dsourceresumocreme: TDataSource
     DataSet = cdsresumocreme
     Left = 856
-    Top = 216
+    Top = 142
   end
   object dsresumocreme: TDataSetProvider
     DataSet = sdsresumocreme
     Left = 648
-    Top = 216
+    Top = 142
   end
   object sdsresumocreme: TSQLDataSet
     CommandText = 
@@ -555,12 +555,12 @@ object _dm2: T_dm2
     Params = <>
     SQLConnection = ConnecDm2
     Left = 544
-    Top = 216
+    Top = 142
   end
   object dsresumomanteiga: TDataSetProvider
     DataSet = sdsresumomanteiga
     Left = 648
-    Top = 280
+    Top = 206
   end
   object sdsresumomanteiga: TSQLDataSet
     CommandText = 
@@ -570,19 +570,19 @@ object _dm2: T_dm2
     Params = <>
     SQLConnection = ConnecDm2
     Left = 544
-    Top = 280
+    Top = 206
   end
   object dsourceresumomanteiga: TDataSource
     DataSet = cdsresumomanteiga
     Left = 856
-    Top = 280
+    Top = 206
   end
   object cdsresumomanteiga: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsresumomanteiga'
     Left = 744
-    Top = 280
+    Top = 206
     object cdsresumomanteigaid: TIntegerField
       FieldName = 'id'
     end
@@ -624,19 +624,19 @@ object _dm2: T_dm2
     Params = <>
     SQLConnection = ConnecDm2
     Left = 527
-    Top = 392
+    Top = 318
   end
   object dsProducaoManteiga: TDataSetProvider
     DataSet = sdsProducaoManteiga
     Left = 656
-    Top = 392
+    Top = 318
   end
   object cdsProducaoManteiga: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsProducaoManteiga'
     Left = 782
-    Top = 392
+    Top = 318
     object cdsProducaoManteigaid: TIntegerField
       FieldName = 'id'
     end
@@ -709,24 +709,24 @@ object _dm2: T_dm2
   object dsourceProducaoManteiga: TDataSource
     DataSet = cdsProducaoManteiga
     Left = 912
-    Top = 392
+    Top = 318
   end
   object dsProducaoCreme: TDataSetProvider
     DataSet = sdsProducaoCreme
     Left = 656
-    Top = 448
+    Top = 374
   end
   object SourceProducaoCreme: TDataSource
     DataSet = cdsProducaoCreme
     Left = 912
-    Top = 448
+    Top = 374
   end
   object cdsProducaoCreme: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsProducaoCreme'
     Left = 782
-    Top = 448
+    Top = 374
     object cdsProducaoCremeid: TIntegerField
       FieldName = 'id'
     end
@@ -822,24 +822,24 @@ object _dm2: T_dm2
     Params = <>
     SQLConnection = ConnecDm2
     Left = 527
-    Top = 448
+    Top = 374
   end
   object dsProducaoLeite: TDataSetProvider
     DataSet = sdsProducaoLeite
     Left = 656
-    Top = 504
+    Top = 430
   end
   object SourceProducaoLeite: TDataSource
     DataSet = cdsProducaoLeite
     Left = 912
-    Top = 504
+    Top = 430
   end
   object cdsProducaoLeite: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsProducaoLeite'
     Left = 782
-    Top = 504
+    Top = 430
     object cdsProducaoLeiteid: TIntegerField
       FieldName = 'id'
     end
@@ -911,14 +911,14 @@ object _dm2: T_dm2
     Params = <>
     SQLConnection = ConnecDm2
     Left = 527
-    Top = 504
+    Top = 430
   end
   object qrPadrao: TSQLQuery
     MaxBlobSize = -1
     Params = <>
     SQLConnection = ConnecDm2
     Left = 856
-    Top = 88
+    Top = 14
   end
   object sdsProducaoDerivados: TSQLDataSet
     CommandText = 
@@ -929,19 +929,19 @@ object _dm2: T_dm2
     Params = <>
     SQLConnection = ConnecDm2
     Left = 503
-    Top = 576
+    Top = 502
   end
   object dsProducaoDerivados: TDataSetProvider
     DataSet = sdsProducaoDerivados
     Left = 632
-    Top = 576
+    Top = 502
   end
   object cdsProducaoDerivados: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsProducaoDerivados'
     Left = 758
-    Top = 576
+    Top = 502
     object cdsProducaoDerivadosid: TIntegerField
       FieldName = 'id'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -1037,14 +1037,14 @@ object _dm2: T_dm2
   object DSourceProducaoDerivados: TDataSource
     DataSet = cdsProducaoDerivados
     Left = 888
-    Top = 576
+    Top = 502
   end
   object qrPadrao2: TSQLQuery
     MaxBlobSize = -1
     Params = <>
     SQLConnection = ConnecDm2
     Left = 912
-    Top = 88
+    Top = 14
   end
   object sdsMateria: TSQLDataSet
     CommandText = 
@@ -1132,14 +1132,14 @@ object _dm2: T_dm2
   object dSourceImagens: TDataSource
     DataSet = cdsImagens
     Left = 872
-    Top = 640
+    Top = 566
   end
   object cdsImagens: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsImagens'
     Left = 742
-    Top = 640
+    Top = 566
     object cdsImagensid: TIntegerField
       FieldName = 'id'
     end
@@ -1162,7 +1162,7 @@ object _dm2: T_dm2
   object dsImagens: TDataSetProvider
     DataSet = sdsImagens
     Left = 616
-    Top = 640
+    Top = 566
   end
   object sdsImagens: TSQLDataSet
     CommandText = 'select * from caminhoimagens where codigofilial='#39'00001'#39' limit 1'
@@ -1170,7 +1170,7 @@ object _dm2: T_dm2
     Params = <>
     SQLConnection = ConnecDm2
     Left = 511
-    Top = 640
+    Top = 566
   end
   object sdsCompEmbalagem: TSQLDataSet
     CommandText = 'SELECT * FROM    formacaoembalagem LIMIT 1'
@@ -1360,20 +1360,20 @@ object _dm2: T_dm2
     MaxBlobSize = -1
     Params = <>
     SQLConnection = ConnecDm2
-    Left = 527
-    Top = 735
+    Left = 623
+    Top = 639
   end
   object dsrelvenda: TDataSetProvider
     DataSet = sdsrelvenda
-    Left = 610
-    Top = 735
+    Left = 706
+    Top = 639
   end
   object cdsRelvenda: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsrelvenda'
-    Left = 698
-    Top = 735
+    Left = 794
+    Top = 639
     object cdsRelvendacodigo: TWideStringField
       FieldName = 'codigo'
       Size = 8
@@ -1411,8 +1411,8 @@ object _dm2: T_dm2
   end
   object dSourceRelvenda: TDataSource
     DataSet = cdsRelvenda
-    Left = 778
-    Top = 735
+    Left = 874
+    Top = 639
   end
   object sdsvendageral: TSQLDataSet
     CommandText = 
@@ -1421,20 +1421,20 @@ object _dm2: T_dm2
     MaxBlobSize = -1
     Params = <>
     SQLConnection = ConnecDm2
-    Left = 535
-    Top = 788
+    Left = 631
+    Top = 692
   end
   object dspVendageral: TDataSetProvider
     DataSet = sdsvendageral
-    Left = 618
-    Top = 788
+    Left = 714
+    Top = 692
   end
   object cdsvendageral: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspVendageral'
-    Left = 706
-    Top = 788
+    Left = 802
+    Top = 692
     object cdsvendageralcodigo: TWideStringField
       FieldName = 'codigo'
       Size = 8
@@ -1451,8 +1451,8 @@ object _dm2: T_dm2
   end
   object DSourceVendageral: TDataSource
     DataSet = cdsvendageral
-    Left = 786
-    Top = 788
+    Left = 882
+    Top = 692
   end
   object dSourceDesnate: TDataSource
     DataSet = cdsDesnate
@@ -1524,5 +1524,103 @@ object _dm2: T_dm2
     SQLConnection = ConnecDm2
     Left = 55
     Top = 768
+  end
+  object sdsProcProducao: TSQLDataSet
+    CommandText = 'SELECT * FROM cadetapaproducao LIMIT 1;'
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = ConnecDm2
+    Left = 567
+    Top = 767
+  end
+  object dspProcProducao: TDataSetProvider
+    DataSet = sdsProcProducao
+    Left = 682
+    Top = 767
+  end
+  object cdsProcProducao: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspProcProducao'
+    Left = 794
+    Top = 767
+    object cdsProcProducaoid: TIntegerField
+      FieldName = 'id'
+    end
+    object cdsProcProducaocodigofilial: TWideStringField
+      FieldName = 'codigofilial'
+      Size = 5
+    end
+    object cdsProcProducaoprocesso: TWideStringField
+      FieldName = 'processo'
+      Size = 50
+    end
+    object cdsProcProducaoordem: TIntegerField
+      FieldName = 'ordem'
+    end
+    object cdsProcProducaocodigoproduto: TWideStringField
+      FieldName = 'codigoproduto'
+      Size = 6
+    end
+    object cdsProcProducaoduracaoestimada: TTimeField
+      FieldName = 'duracaoestimada'
+    end
+  end
+  object dsProcProducao: TDataSource
+    DataSet = cdsProcProducao
+    Left = 914
+    Top = 767
+  end
+  object sqlFulxogramaProducao: TSQLDataSet
+    CommandText = 'SELECT * FROM fluxogramaproducao LIMIT 1;'
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = ConnecDm2
+    Left = 535
+    Top = 820
+  end
+  object dspFulxogramaProducao: TDataSetProvider
+    DataSet = sqlFulxogramaProducao
+    Left = 674
+    Top = 820
+  end
+  object cdsFulxogramaProducao: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspFulxogramaProducao'
+    Left = 810
+    Top = 820
+    object cdsFulxogramaProducaoid: TIntegerField
+      FieldName = 'id'
+    end
+    object cdsFulxogramaProducaocodigofilial: TWideStringField
+      FieldName = 'codigofilial'
+      Size = 5
+    end
+    object cdsFulxogramaProducaonumeroproducao: TWideStringField
+      FieldName = 'numeroproducao'
+      Size = 6
+    end
+    object cdsFulxogramaProducaocodigoetapaprod: TWideStringField
+      FieldName = 'codigoetapaprod'
+      Size = 6
+    end
+    object cdsFulxogramaProducaohorainicio: TSQLTimeStampField
+      FieldName = 'horainicio'
+    end
+    object cdsFulxogramaProducaohoratermino: TSQLTimeStampField
+      FieldName = 'horatermino'
+    end
+    object cdsFulxogramaProducaooperadorinicio: TWideStringField
+      FieldName = 'operadorinicio'
+    end
+    object cdsFulxogramaProducaooperadortermino: TWideStringField
+      FieldName = 'operadortermino'
+    end
+  end
+  object dsFulxogramaProducao: TDataSource
+    DataSet = cdsFulxogramaProducao
+    Left = 930
+    Top = 820
   end
 end

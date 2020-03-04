@@ -305,6 +305,28 @@ type
     cdsDesnateoperador: TWideStringField;
     cdsDesnateencerrada: TWideStringField;
     cdsMovproducaodescricao: TWideStringField;
+    sdsProcProducao: TSQLDataSet;
+    dspProcProducao: TDataSetProvider;
+    cdsProcProducao: TClientDataSet;
+    dsProcProducao: TDataSource;
+    sqlFulxogramaProducao: TSQLDataSet;
+    dspFulxogramaProducao: TDataSetProvider;
+    cdsFulxogramaProducao: TClientDataSet;
+    dsFulxogramaProducao: TDataSource;
+    cdsProcProducaoid: TIntegerField;
+    cdsProcProducaocodigofilial: TWideStringField;
+    cdsProcProducaoprocesso: TWideStringField;
+    cdsProcProducaoordem: TIntegerField;
+    cdsProcProducaocodigoproduto: TWideStringField;
+    cdsFulxogramaProducaoid: TIntegerField;
+    cdsFulxogramaProducaocodigofilial: TWideStringField;
+    cdsFulxogramaProducaonumeroproducao: TWideStringField;
+    cdsFulxogramaProducaocodigoetapaprod: TWideStringField;
+    cdsFulxogramaProducaohorainicio: TSQLTimeStampField;
+    cdsFulxogramaProducaohoratermino: TSQLTimeStampField;
+    cdsFulxogramaProducaooperadorinicio: TWideStringField;
+    cdsFulxogramaProducaooperadortermino: TWideStringField;
+    cdsProcProducaoduracaoestimada: TTimeField;
     procedure ConnecDm2BeforeConnect(Sender: TObject);
   private
     { Private declarations }

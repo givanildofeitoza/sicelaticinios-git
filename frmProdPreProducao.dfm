@@ -67,6 +67,7 @@ object _frmProdPreProducao: T_frmProdPreProducao
         Expanded = False
         FieldName = 'descricao'
         Title.Caption = 'Descricao'
+        Width = 64
         Visible = True
       end
       item
@@ -154,7 +155,7 @@ object _frmProdPreProducao: T_frmProdPreProducao
     end
     object btnfechar: TBitBtn
       Left = 209
-      Top = 96
+      Top = 140
       Width = 136
       Height = 38
       Caption = 'Fechar'
@@ -188,6 +189,15 @@ object _frmProdPreProducao: T_frmProdPreProducao
       Caption = 'Produtos derivados'
       TabOrder = 5
       OnClick = BitBtn3Click
+    end
+    object BitBtn7: TBitBtn
+      Left = 209
+      Top = 97
+      Width = 136
+      Height = 37
+      Caption = 'Ordem de produ'#231#227'o'
+      TabOrder = 6
+      OnClick = BitBtn7Click
     end
   end
   object pnlProdPreProducao: TPanel
