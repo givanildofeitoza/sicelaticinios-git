@@ -309,7 +309,7 @@ type
     dspProcProducao: TDataSetProvider;
     cdsProcProducao: TClientDataSet;
     dsProcProducao: TDataSource;
-    sqlFulxogramaProducao: TSQLDataSet;
+    sdsFulxogramaProducao: TSQLDataSet;
     dspFulxogramaProducao: TDataSetProvider;
     cdsFulxogramaProducao: TClientDataSet;
     dsFulxogramaProducao: TDataSource;
@@ -327,6 +327,14 @@ type
     cdsFulxogramaProducaooperadorinicio: TWideStringField;
     cdsFulxogramaProducaooperadortermino: TWideStringField;
     cdsProcProducaoduracaoestimada: TTimeField;
+    cdsFulxogramaProducaoprocesso: TWideStringField;
+    cdsFulxogramaProducaoiniciado: TWideStringField;
+    cdsFulxogramaProducaofinalizado: TWideStringField;
+    cdsFulxogramaProducaostatus: TIntegerField;
+    cdsFulxogramaProducaocodigoproduto: TWideStringField;
+    cdsFulxogramaProducaoduracaoestimada: TTimeField;
+    cdsFulxogramaProducaoduracao: TWideStringField;
+    cdsproducaoitensmateriarequisitada: TWideStringField;
     procedure ConnecDm2BeforeConnect(Sender: TObject);
   private
     { Private declarations }

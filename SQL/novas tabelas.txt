@@ -566,6 +566,10 @@ CREATE TABLE cadetapaproducao (
   PRIMARY KEY (`id`)
 ) ;
 
+ALTER TABLE `cadetapaproducao`     CHANGE `duracaoestimada` `duracaoestimada` TIME DEFAULT '00:00:00' NULL ;
+
+
+
 CREATE TABLE fluxogramaproducao (
   `id` INT (6) NOT NULL AUTO_INCREMENT,
   `codigofilial` VARCHAR (5) DEFAULT '00001',
@@ -579,5 +583,9 @@ CREATE TABLE fluxogramaproducao (
 ) ;
 
 ---------------------------------------
-
-
+----- 05/03/2020-----------------------
+ ALTER TABLE producaoitens     ADD COLUMN materiarequisitada CHAR(1) DEFAULT 'N' NULL; 
+ALTER TABLE fluxogramaproducao     ADD COLUMN codigoproduto VARCHAR(6) NULL ;
+ALTER TABLE fluxogramaproducao     ADD COLUMN `status` INT(1) DEFAULT '0' NULL;
+ ALTER TABLE fluxogramaproducao   ADD COLUMN `iniciado` CHAR(1) DEFAULT 'N' NULL ,     ADD COLUMN finalizado CHAR(1) DEFAULT 'N' NULL ;
+---------------------------------------

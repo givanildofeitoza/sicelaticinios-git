@@ -138,8 +138,10 @@ end;
    );
     _dm2.qrPadrao.ExecSQL();
 
+   txtProcesso.Text:='';
+   txtduracao.Text:='00:00:00';
 
-
+   _dm2.cdsProcProducao.refresh;
 
    end
    else  if(acao='A')then
@@ -154,6 +156,8 @@ end;
    ' WHERE id='+quotedstr(_dm2.cdsProcProducaoid.AsString));
    _dm2.qrPadrao.ExecSQL();
 
+   _dm2.cdsProcProducao.refresh;
+    frm.ModalResult:=-1;
 
    end;
 
@@ -164,7 +168,6 @@ end;
 
 
    //_dm2.cdsProcProducao.Open;
-   _dm2.cdsProcProducao.refresh;
 
 
 

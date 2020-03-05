@@ -160,12 +160,12 @@ object _frmProcProducao: T_frmProcProducao
     object txtDuracao: TMaskEdit
       Left = 18
       Top = 113
-      Width = 118
+      Width = 114
       Height = 21
-      EditMask = '!90:00:00>LL;1;_'
-      MaxLength = 10
+      EditMask = '!90:00:00;1;_'
+      MaxLength = 8
       TabOrder = 2
-      Text = '  :  :    '
+      Text = '  :  :  '
     end
     object BitBtn4: TBitBtn
       Left = 20

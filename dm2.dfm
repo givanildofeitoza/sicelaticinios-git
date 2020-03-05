@@ -219,6 +219,10 @@ object _dm2: T_dm2
       Precision = 10
       Size = 2
     end
+    object cdsproducaoitensmateriarequisitada: TWideStringField
+      FieldName = 'materiarequisitada'
+      Size = 1
+    end
   end
   object DSourceproducaoitens: TDataSource
     DataSet = cdsproducaoitens
@@ -1456,15 +1460,15 @@ object _dm2: T_dm2
   end
   object dSourceDesnate: TDataSource
     DataSet = cdsDesnate
-    Left = 376
-    Top = 792
+    Left = 296
+    Top = 760
   end
   object cdsDesnate: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspDesnate'
-    Left = 270
-    Top = 776
+    Left = 206
+    Top = 760
     object cdsDesnateid: TIntegerField
       FieldName = 'id'
     end
@@ -1514,16 +1518,16 @@ object _dm2: T_dm2
   end
   object dspDesnate: TDataSetProvider
     DataSet = sdsDesnate
-    Left = 160
-    Top = 784
+    Left = 120
+    Top = 760
   end
   object sdsDesnate: TSQLDataSet
     CommandText = 'SELECT * FROM desnateleite LIMIT 1;'
     MaxBlobSize = -1
     Params = <>
     SQLConnection = ConnecDm2
-    Left = 55
-    Top = 768
+    Left = 31
+    Top = 760
   end
   object sdsProcProducao: TSQLDataSet
     CommandText = 'SELECT * FROM cadetapaproducao LIMIT 1;'
@@ -1571,8 +1575,17 @@ object _dm2: T_dm2
     Left = 914
     Top = 767
   end
-  object sqlFulxogramaProducao: TSQLDataSet
-    CommandText = 'SELECT * FROM fluxogramaproducao LIMIT 1;'
+  object sdsFulxogramaProducao: TSQLDataSet
+    CommandText = 
+      'SELECT id,'#13#10'codigoproduto,'#13#10'codigofilial,'#13#10'numeroproducao,'#13#10'codi' +
+      'goetapaprod,'#13#10'IFNULL( IF(STATUS=0,TIMEDIFF(TIMESTAMP(CURRENT_DAT' +
+      'E,CURRENT_TIME),horainicio),TIMEDIFF(horatermino,horainicio)),'#39'0' +
+      '0:00:00'#39') AS duracao,'#13#10'(SELECT processo FROM cadetapaproducao WH' +
+      'ERE id=codigoetapaprod) AS processo,'#13#10'(SELECT duracaoestimada FR' +
+      'OM cadetapaproducao WHERE id=codigoetapaprod) AS duracaoestimada' +
+      ','#13#10'horainicio,'#13#10'horatermino,'#13#10'operadorinicio,'#13#10'operadortermino,'#13 +
+      #10'iniciado,'#13#10'finalizado,'#13#10'status'#13#10' FROM fluxogramaproducao limit ' +
+      '1;'
     MaxBlobSize = -1
     Params = <>
     SQLConnection = ConnecDm2
@@ -1580,7 +1593,7 @@ object _dm2: T_dm2
     Top = 820
   end
   object dspFulxogramaProducao: TDataSetProvider
-    DataSet = sqlFulxogramaProducao
+    DataSet = sdsFulxogramaProducao
     Left = 674
     Top = 820
   end
@@ -1616,6 +1629,32 @@ object _dm2: T_dm2
     end
     object cdsFulxogramaProducaooperadortermino: TWideStringField
       FieldName = 'operadortermino'
+    end
+    object cdsFulxogramaProducaoprocesso: TWideStringField
+      FieldName = 'processo'
+      Size = 50
+    end
+    object cdsFulxogramaProducaoiniciado: TWideStringField
+      FieldName = 'iniciado'
+      Size = 1
+    end
+    object cdsFulxogramaProducaofinalizado: TWideStringField
+      FieldName = 'finalizado'
+      Size = 1
+    end
+    object cdsFulxogramaProducaostatus: TIntegerField
+      FieldName = 'status'
+    end
+    object cdsFulxogramaProducaocodigoproduto: TWideStringField
+      FieldName = 'codigoproduto'
+      Size = 6
+    end
+    object cdsFulxogramaProducaoduracaoestimada: TTimeField
+      FieldName = 'duracaoestimada'
+    end
+    object cdsFulxogramaProducaoduracao: TWideStringField
+      FieldName = 'duracao'
+      Size = 23
     end
   end
   object dsFulxogramaProducao: TDataSource

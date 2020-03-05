@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls,
   Vcl.StdCtrls, Vcl.Buttons, Vcl.Grids, Vcl.DBGrids, Vcl.Mask, RxToolEdit,
-  RxCurrEdit;
+  RxCurrEdit, Data.DB, Vcl.Imaging.pngimage;
 
 type
   T_frmProducaoLaticinio = class(TForm)
@@ -186,6 +186,20 @@ type
     Label43: TLabel;
     datapesqfim: TDateEdit;
     Label44: TLabel;
+    TabSheet2: TTabSheet;
+    Panel7: TPanel;
+    Label45: TLabel;
+    dsProdutos: TDataSource;
+    Label46: TLabel;
+    dsFluxos: TDataSource;
+    Panel8: TPanel;
+    DBGrid2: TDBGrid;
+    DBGrid3: TDBGrid;
+    Panel10: TPanel;
+    imgMateria: TImage;
+    lblmateria: TLabel;
+    lblProdMarcado: TLabel;
+    bitRequisitar: TBitBtn;
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure BitBtn1Click(Sender: TObject);
@@ -252,6 +266,12 @@ type
       var CanSelect: Boolean);
     procedure gridManteigaSelectCell(Sender: TObject; ACol, ARow: Integer;
       var CanSelect: Boolean);
+    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid3DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure dsProdutosDataChange(Sender: TObject; Field: TField);
+    procedure bitRequisitarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -661,7 +681,7 @@ begin
                   _frmProducaoLaticinio.gridleite.Cells[c,1]:= formatcurr('##0.00',_dm2.cdsResumoleitequantidadeajustada.ascurrency);
 
 
-                  _frmProducaoLaticinio.gridleite.ColWidths[c]:=160;
+                  _frmProducaoLaticinio.gridleite.ColWidths[c]:=300;
                    c:=c+1;
                   _frmProducaoLaticinio.gridleite.ColCount:=_frmProducaoLaticinio.gridleite.ColCount+1;
 
@@ -723,7 +743,7 @@ begin
                   else
                   _frmProducaoLaticinio.gridcreme.Cells[c,1]:= formatcurr('##0.00',_dm2.cdsResumocremequantidadeajustada.ascurrency);
 
-                  _frmProducaoLaticinio.gridcreme.ColWidths[c]:=160;
+                  _frmProducaoLaticinio.gridcreme.ColWidths[c]:=300;
                   c:=c+1;
                   _frmProducaoLaticinio.gridcreme.ColCount:=_frmProducaoLaticinio.gridcreme.ColCount+1;
 
@@ -776,7 +796,7 @@ begin
                   else
                   _frmProducaoLaticinio.gridmanteiga.Cells[c,1]:= formatcurr('##0.00',_dm2.cdsResumomanteigaquantidadeajustada.ascurrency);
 
-                  _frmProducaoLaticinio.gridmanteiga.ColWidths[c]:=160;
+                  _frmProducaoLaticinio.gridmanteiga.ColWidths[c]:=300;
                   c:=c+1;
                   _frmProducaoLaticinio.gridmanteiga.ColCount:=_frmProducaoLaticinio.gridmanteiga.ColCount+1;
 
@@ -1468,6 +1488,218 @@ exit;
 
 end;
 
+procedure T_frmProducaoLaticinio.bitRequisitarClick(Sender: TObject);
+var
+sqlInsert,sqlcustosleite,sqlcustoscreme,sqlcustosmanteiga:string;
+quantidadeProduzida,custoCreme,CustoManteiga,totalcustoproducao,custoLeite,qtdleite,qtdcreme,qtdmanteiga:currency;//,totalcustoproducao:currency;
+begin
+
+   if(  _dm2.cdsMovproducaopreproducaoconfirmada.AsString<>'S')then
+   begin
+        application.MessageBox('Confirme a pré-produção para requisitar os insumos!','Pergunta',MB_ICONEXCLAMATION+MB_OK);
+        exit;
+   end;
+
+   if(application.MessageBox('Confirmar baixa nos insumos de produção?','Pergunta',MB_ICONQUESTION+MB_YESNO)=id_no)then
+    exit;
+
+
+
+    sqlcustosleite:=' SELECT SUM(quantidadeajustada * (SELECT custo FROM produtos WHERE codigo = '+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+')) as custoLeite FROM resumoprodleite    WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+    sqlcustoscreme:=' SELECT SUM(quantidadeajustada * (SELECT custo FROM produtos WHERE codigo = '+quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial)+')) as custoCreme FROM resumoprodcreme    WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+    sqlcustosmanteiga:=' SELECT SUM(quantidadeajustada * (SELECT custo FROM produtos WHERE codigo = '+quotedstr(_dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+' AND codigofilial='+quotedstr(glb_filial)+')) as custoManteiga FROM resumoprodmanteiga    WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+
+    _dm2.ConnecDm2.Connected:=false;
+    _dm2.qrPadrao2.SQL.Clear;
+    _dm2.qrPadrao2.SQL.add(sqlcustosleite);
+    _dm2.qrPadrao2.open;
+    custoLeite:= _dm2.qrPadrao2.FieldByName('custoLeite').AsCurrency;
+
+
+    _dm2.ConnecDm2.Connected:=false;
+    _dm2.qrPadrao2.SQL.Clear;
+    _dm2.qrPadrao2.SQL.add(sqlcustoscreme);
+    _dm2.qrPadrao2.open;
+    custoCreme:= _dm2.qrPadrao2.FieldByName('custoCreme').AsCurrency;
+
+
+    _dm2.ConnecDm2.Connected:=false;
+    _dm2.qrPadrao2.SQL.Clear;
+    _dm2.qrPadrao2.SQL.add(sqlcustosmanteiga);
+    _dm2.qrPadrao2.open;
+    CustoManteiga:= _dm2.qrPadrao2.FieldByName('custoManteiga').AsCurrency;
+
+
+
+
+     // _dm2.ConnecDm2.Connected:=false;
+   _dm2.qrPadrao2.SQL.Clear;
+   _dm2.qrPadrao2.SQL.add('SELECT quantidadeajustada FROM resumoprodleite WHERE  numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' and codigofilial="'+glb_filial+'"');
+   _dm2.qrPadrao2.open;
+    qtdleite:= _dm2.qrPadrao2.FieldByName('quantidadeajustada').AsCurrency;
+
+
+
+    // _dm2.ConnecDm2.Connected:=false;
+   _dm2.qrPadrao2.SQL.Clear;
+   _dm2.qrPadrao2.SQL.add('SELECT quantidadeajustada FROM resumoprodcreme WHERE  numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' and codigofilial="'+glb_filial+'"');
+   _dm2.qrPadrao2.open;
+    qtdcreme:= _dm2.qrPadrao2.FieldByName('quantidadeajustada').AsCurrency;
+
+
+
+    // _dm2.ConnecDm2.Connected:=false;
+   _dm2.qrPadrao2.SQL.Clear;
+   _dm2.qrPadrao2.SQL.add('SELECT quantidadeajustada FROM resumoprodmanteiga WHERE  numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' and codigofilial="'+glb_filial+'"');
+   _dm2.qrPadrao2.open;
+    qtdmanteiga:= _dm2.qrPadrao2.FieldByName('quantidadeajustada').AsCurrency;
+
+
+
+
+ //================================================ produtos do padrão leite ==============================================================
+               sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
+                          ' SELECT ';
+
+              _dm2.ConnecDm2.Connected:=false;
+              _dm2.qrPadrao.SQL.Clear;
+              _dm2.qrPadrao.sql.add(sqlInsert);
+              _dm2.qrPadrao.sql.add(quotedstr(glb_filial)+','); // codigofilial
+              _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsMovproducaonumero.AsString)+','); //  idproducao
+              _dm2.qrPadrao.sql.add('codpreproducao,'); //   codigoproduto
+              _dm2.qrPadrao.sql.add('codigo,');  // codigomateria
+              _dm2.qrPadrao.sql.add('produto,');  //  descricaomateria
+              _dm2.qrPadrao.sql.add(quotedstr(formatcurr('###0.000',_dm2.cdsproducaoitensquantidadeproduzida.AsCurrency))+','); //  quantidade
+             if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
+              _dm2.qrPadrao.sql.add('quantidade,') //quantidademateria  quando o parâmetro for por KG
+              else
+              _dm2.qrPadrao.sql.add(quotedstr('0.00')+','); //quantidademateria     quando o parâmetro for leite utilizado
+
+              _dm2.qrPadrao.sql.add('custo,'); // custounitario
+              _dm2.qrPadrao.sql.add('current_date,');//  data
+
+              //_dm2.qrPadrao.sql.add('(quantidade * '+currtostr(quantidadeProduzida)+'),');
+              if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
+              _dm2.qrPadrao.sql.add('(quantidade * '+currtostr(_dm2.cdsproducaoitensquantidadeproduzida.AsCurrency)+'),')// total utilizado de materia quando cácluculo for por KG produzida
+              else
+              _dm2.qrPadrao.sql.add('((quantidade / parametroleite) * '+formatcurr('##0.00',qtdleite)+' ),'); //  quantidade   utilizado de materia
+
+              _dm2.qrPadrao.sql.add(quotedstr(glb_usuario)+' FROM composicaolaticinio WHERE codpreproducao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND tipoinsumo ="outros" '+
+               ' AND tipoparametro ="L" ');  //  operador
+              _dm2.qrPadrao.execsql;
+ //=========================================  produtos do padrão creme  =====================================================================
+
+               sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
+                          ' SELECT ';
+
+              _dm2.ConnecDm2.Connected:=false;
+              _dm2.qrPadrao.SQL.Clear;
+              _dm2.qrPadrao.sql.add(sqlInsert);
+              _dm2.qrPadrao.sql.add(quotedstr(glb_filial)+','); // codigofilial
+              _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsMovproducaonumero.AsString)+','); //  idproducao
+              _dm2.qrPadrao.sql.add('codpreproducao,'); //   codigoproduto
+              _dm2.qrPadrao.sql.add('codigo,');  // codigomateria
+              _dm2.qrPadrao.sql.add('produto,');  //  descricaomateria
+              _dm2.qrPadrao.sql.add(quotedstr(formatcurr('###0.000',_dm2.cdsproducaoitensquantidadeproduzida.AsCurrency))+','); //  quantidade
+             if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
+              _dm2.qrPadrao.sql.add('quantidade,') //quantidademateria  quando o parâmetro for por KG
+              else
+              _dm2.qrPadrao.sql.add(quotedstr('0.00')+','); //quantidademateria     quando o parâmetro for leite utilizado
+
+              _dm2.qrPadrao.sql.add('custo,'); // custounitario
+              _dm2.qrPadrao.sql.add('current_date,');//  data
+
+              //_dm2.qrPadrao.sql.add('(quantidade * '+currtostr(quantidadeProduzida)+'),');
+              if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
+              _dm2.qrPadrao.sql.add('(quantidade * '+currtostr(_dm2.cdsproducaoitensquantidadeproduzida.AsCurrency)+'),')// total utilizado de materia quando cácluculo for por KG produzida
+              else
+              _dm2.qrPadrao.sql.add('((quantidade / parametroleite) * '+formatcurr('##0.00',qtdcreme)+' ),'); //  quantidade   utilizado de materia
+
+              _dm2.qrPadrao.sql.add(quotedstr(glb_usuario)+' FROM composicaolaticinio WHERE codpreproducao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND tipoinsumo ="outros" '+
+               ' AND tipoparametro ="C" ');  //  operador
+              _dm2.qrPadrao.execsql;
+ //========================================  produtos do padrão manteiga  ======================================================================
+              sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
+                          ' SELECT ';
+
+              _dm2.ConnecDm2.Connected:=false;
+              _dm2.qrPadrao.SQL.Clear;
+              _dm2.qrPadrao.sql.add(sqlInsert);
+              _dm2.qrPadrao.sql.add(quotedstr(glb_filial)+','); // codigofilial
+              _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsMovproducaonumero.AsString)+','); //  idproducao
+              _dm2.qrPadrao.sql.add('codpreproducao,'); //   codigoproduto
+              _dm2.qrPadrao.sql.add('codigo,');  // codigomateria
+              _dm2.qrPadrao.sql.add('produto,');  //  descricaomateria
+              _dm2.qrPadrao.sql.add(quotedstr(formatcurr('###0.000',_dm2.cdsproducaoitensquantidadeproduzida.AsCurrency))+','); //  quantidade
+             if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
+              _dm2.qrPadrao.sql.add('quantidade,') //quantidademateria  quando o parâmetro for por KG
+              else
+              _dm2.qrPadrao.sql.add(quotedstr('0.00')+','); //quantidademateria     quando o parâmetro for leite utilizado
+
+              _dm2.qrPadrao.sql.add('custo,'); // custounitario
+              _dm2.qrPadrao.sql.add('current_date,');//  data
+
+              //_dm2.qrPadrao.sql.add('(quantidade * '+currtostr(quantidadeProduzida)+'),');
+              if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
+              _dm2.qrPadrao.sql.add('(quantidade * '+currtostr(_dm2.cdsproducaoitensquantidadeproduzida.AsCurrency)+'),')// total utilizado de materia quando cácluculo for por KG produzida
+              else
+              _dm2.qrPadrao.sql.add('((quantidade / parametroleite) * '+formatcurr('##0.00',qtdmanteiga)+' ),'); //  quantidade   utilizado de materia
+
+              _dm2.qrPadrao.sql.add(quotedstr(glb_usuario)+' FROM composicaolaticinio WHERE codpreproducao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND tipoinsumo ="outros" '+
+               ' AND tipoparametro ="M" ');  //  operador
+              _dm2.qrPadrao.execsql;
+ //==============================================================================================================
+
+         //2-BAIXA DOS INSUMOS
+         _dm.ConnecDm.Connected:=false;
+         _dm.qrPadrao.SQL.Clear;
+         _dm.qrPadrao.SQL.Add('SELECT codigomateria,descricaomateria,SUM(totalmateriautilizada) as materiautilizada FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigofilial='+glb_filial+' AND codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+'  GROUP BY codigomateria');
+         _dm.qrPadrao.open;
+
+
+         _dm.qrPadrao.first;
+         while not _dm.qrPadrao.eof do
+         begin
+
+            _dm.qrpadrao2.sql.clear;
+            _dm.qrpadrao2.sql.add(' UPDATE '+glb_produtos+' SET quantidade = quantidade - '+quotedstr(_dm.qrPadrao.FieldByName('materiautilizada').AsString)+' WHERE codigo ='+quotedstr( _dm.qrPadrao.FieldByName('codigomateria').AsString)+' AND codigofilial='+quotedstr(glb_filial));
+            _dm.qrpadrao2.ExecSQL();
+
+             _dm.qrPadrao.next;
+
+         end;
+
+            //baixa no leite creme em manteiga
+            _dm.qrpadrao2.sql.clear;
+            _dm.qrpadrao2.sql.add(' UPDATE '+glb_produtos+' SET quantidade = quantidade - '+quotedstr(formatcurr('##0.00',qtdleite))+' WHERE codigo ='+quotedstr( _dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial));
+            _dm.qrpadrao2.ExecSQL();
+
+            _dm.qrpadrao2.sql.clear;
+            _dm.qrpadrao2.sql.add(' UPDATE '+glb_produtos+' SET quantidade = quantidade - '+quotedstr(formatcurr('##0.00',qtdcreme))+' WHERE codigo ='+quotedstr( _dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial));
+            _dm.qrpadrao2.ExecSQL();
+
+            _dm.qrpadrao2.sql.clear;
+            _dm.qrpadrao2.sql.add(' UPDATE '+glb_produtos+' SET quantidade = quantidade - '+quotedstr(formatcurr('##0.00',qtdmanteiga))+' WHERE codigo ='+quotedstr( _dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+' AND codigofilial='+quotedstr(glb_filial));
+            _dm.qrpadrao2.ExecSQL();
+
+
+
+
+     //atualiza a tabela produção itens para item requisitado
+            _dm.qrpadrao2.sql.clear;
+            _dm.qrpadrao2.sql.add(' UPDATE producaoitens SET materiarequisitada = "S"  WHERE codigo ='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND codigofilial='+quotedstr(glb_filial)+' AND numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+            _dm.qrpadrao2.ExecSQL();
+
+     _dm2.cdsproducaoitens.Refresh;
+
+     lblmateria.Caption:='Insumos já requisitados';
+     lblProdMarcado.Caption:='Produto:  '+_dm2.cdsproducaoitensproduto.AsString;
+     bitRequisitar.Enabled:=false;
+
+
+
+end;
+
 procedure T_frmProducaoLaticinio.BitBtn5Click(Sender: TObject);
 begin
 
@@ -2118,6 +2350,7 @@ begin
     _dm.qrPadrao.SQL.Add(' update movproducaodiaria set preproducaoconfirmada="S" where numero='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
     _dm.qrPadrao.execsql;
 
+    _dm2.cdsMovproducao.Refresh;
       tabDadosProducao.Enabled:=false;
 
 
@@ -2233,6 +2466,117 @@ begin
     _frmProdPreProducao.release;
 end;
 
+procedure T_frmProducaoLaticinio.DBGrid2DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+With DBGrid2.Canvas do
+  begin
+ // If Brush.Color = clhighlight then
+  if gdSelected in State then
+    Begin
+      Brush.Color := $0045CFF3;
+      Font.Color:=clBlack;
+    end
+  else
+  Begin
+  If Odd(DBGrid2.DataSource.DataSet.RecNo) Then
+    Begin
+     Brush.Color:= $00E4E7CD
+
+    End
+  else
+    Begin
+      Brush.Color:= $00F5F5F5;
+
+    End;
+  End;
+ DBGrid2.DefaultDrawDataCell(Rect, DBGrid2.Columns[DataCol].Field, State);
+end;
+
+end;
+
+procedure T_frmProducaoLaticinio.DBGrid3DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+With DBGrid3.Canvas do
+  begin
+ // If Brush.Color = clhighlight then
+  if gdSelected in State then
+    Begin
+      Brush.Color := $0045CFF3;
+      Font.Color:=clBlack;
+    end
+  else
+  Begin
+  If Odd(DBGrid3.DataSource.DataSet.RecNo) Then
+    Begin
+     Brush.Color:= $00E4E7CD
+
+    End
+  else
+    Begin
+      Brush.Color:= $00F5F5F5;
+
+    End;
+  End;
+ DBGrid3.DefaultDrawDataCell(Rect, DBGrid3.Columns[DataCol].Field, State);
+end;
+
+end;
+
+procedure T_frmProducaoLaticinio.dsProdutosDataChange(Sender: TObject;
+  Field: TField);
+begin
+   _dm2.ConnecDm2.Connected:=false;
+   _dm2.cdsFulxogramaProducao.Close;
+   _dm2.sdsFulxogramaProducao.CommandText:='SELECT '+
+      'id,'+
+      'codigoproduto,'+
+      'codigofilial,'+
+      'numeroproducao,'+
+      'codigoetapaprod,'+
+      'IFNULL( IF(STATUS=0,TIMEDIFF(TIMESTAMP(CURRENT_DATE,CURRENT_TIME),horainicio),TIMEDIFF(horatermino,horainicio)),"00:00:00") AS duracao,'+
+      '(SELECT processo FROM cadetapaproducao WHERE id=codigoetapaprod) AS processo,'+
+      '(SELECT duracaoestimada FROM cadetapaproducao WHERE id=codigoetapaprod) AS duracaoestimada,'+
+      'horainicio,'+
+      'horatermino,'+
+      'operadorinicio,'+
+      'operadortermino,'+
+      'iniciado,'+
+      'status,'+
+      'finalizado FROM fluxogramaproducao WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+   _dm2.sdsFulxogramaProducao.execsql;
+   _dm2.cdsFulxogramaProducao.Open;
+   _dm2.cdsFulxogramaProducao.Refresh;
+
+
+
+   if(_dm2.cdsproducaoitensmateriarequisitada.asstring='S')then
+   begin
+
+      try
+           imgMateria.Picture.LoadFromFile('C:\iqsistemas\SICElaticinios\logos\circulo_1_80.png');
+      except
+      end;
+      lblmateria.Caption:='Insumos já requisitados';
+      lblProdMarcado.Caption:='Produto:  '+_dm2.cdsproducaoitensproduto.AsString;
+      bitRequisitar.Enabled:=false;
+   end
+   else
+   begin
+
+      try
+        imgMateria.Picture.LoadFromFile('C:\iqsistemas\SICElaticinios\logos\circulo_2_80.png');
+        except
+      end;
+        lblmateria.Caption:='Insumos não requisitados';
+        lblProdMarcado.Caption:='Produto:   '+_dm2.cdsproducaoitensproduto.AsString;
+        bitRequisitar.Enabled:=true;
+   end;
+
+
+end;
+
 procedure T_frmProducaoLaticinio.btnlancClick(Sender: TObject);
 begin
 {    if(txtqtdleite.Value=0)then
@@ -2293,6 +2637,25 @@ begin
 
 
 
+
+
+
+
+    _dm.qrPadrao.SQL.Clear;
+    _dm.qrPadrao.SQL.Add('INSERT INTO fluxogramaproducao(codigoproduto,codigofilial,numeroproducao,codigoetapaprod)'+
+     'SELECT '+quotedstr(_dm.cdsPrd2codigo.AsString)+','+
+     quotedstr(glb_filial)+','+
+     quotedstr(_dm2.cdsMovproducaonumero.AsString)+
+     ',id FROM cadetapaproducao WHERE codigoproduto='+quotedstr(_dm.cdsPrd2codigo.AsString)+
+     ' AND codigofilial='+quotedstr(glb_filial)+' ORDER BY ordem');
+     _dm.qrPadrao.ExecSQL;
+
+
+
+
+
+
+
     _dm2.cdsproducaoitens.close;
     _dm2.sdsproducaoitens.CommandText:='select * from producaoitens where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString);
     _dm2.cdsproducaoitens.open;
@@ -2306,7 +2669,7 @@ begin
     lblProd.Caption:='...';
 
     btnlancprod.SetFocus;
-
+    _dm.ConnecDm.Connected:=false;
 end;
 
 procedure T_frmProducaoLaticinio.BitBtn9Click(Sender: TObject);
