@@ -582,6 +582,7 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
       Caption = 'Requisitar Mat'#233'ria'
       Enabled = False
       TabOrder = 1
+      Visible = False
       OnClick = btnConfirmarDerivadosClick
     end
     object BitBtn2: TBitBtn
@@ -631,7 +632,7 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
       Top = 2
       Width = 290
       Height = 14
-      Caption = 'Derivados (Embalagens) - Destinar quantidades'
+      Caption = 'Distribui'#231#227'o em pacotes - Destinar quantidades'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
       Font.Height = -12
@@ -698,7 +699,7 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
       Top = 0
       Width = 559
       Height = 222
-      DataSource = _dm2.DSourceproducaoitens
+      DataSource = dsProducaoItens
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
@@ -846,21 +847,22 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
     end
   end
   object pnlAbertura: TPanel
-    Left = 1016
-    Top = 16
-    Width = 493
-    Height = 308
+    Left = 1034
+    Top = 147
+    Width = 711
+    Height = 448
     TabOrder = 7
     Visible = False
     object Panel9: TPanel
       Left = 1
       Top = 1
-      Width = 491
+      Width = 709
       Height = 16
       Align = alTop
       Color = clMenuHighlight
       ParentBackground = False
       TabOrder = 0
+      ExplicitWidth = 491
       object Label13: TLabel
         Left = 22
         Top = 2
@@ -878,7 +880,7 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
     object RadioGroup1: TRadioGroup
       Left = 24
       Top = 23
-      Width = 425
+      Width = 456
       Height = 34
       Columns = 2
       Items.Strings = (
@@ -888,12 +890,19 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
       OnClick = RadioGroup1Click
     end
     object pnlData: TPanel
-      Left = 24
+      Left = 5
       Top = 63
-      Width = 425
-      Height = 234
+      Width = 700
+      Height = 378
       TabOrder = 2
       Visible = False
+      object Label20: TLabel
+        Left = 167
+        Top = 15
+        Width = 16
+        Height = 13
+        Caption = 'at'#233
+      end
       object dataPesq: TDateEdit
         Left = 8
         Top = 12
@@ -903,8 +912,8 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
         TabOrder = 0
       end
       object BitBtn1: TBitBtn
-        Left = 327
-        Top = 199
+        Left = 607
+        Top = 343
         Width = 75
         Height = 25
         Caption = 'Abrir'
@@ -914,8 +923,8 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
       object DBGrid5: TDBGrid
         Left = 8
         Top = 48
-        Width = 409
-        Height = 145
+        Width = 681
+        Height = 289
         DataSource = _dm2.DSourceMovproducao
         TabOrder = 2
         TitleFont.Charset = DEFAULT_CHARSET
@@ -935,6 +944,13 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
             FieldName = 'data'
             Title.Caption = 'Data'
             Width = 97
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'descricao'
+            Title.Caption = 'Descricao'
+            Width = 298
             Visible = True
           end
           item
@@ -965,20 +981,28 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
           end>
       end
       object BitBtn5: TBitBtn
-        Left = 167
-        Top = 11
+        Left = 348
+        Top = 9
         Width = 75
         Height = 25
         Caption = 'Buscar'
         TabOrder = 3
         OnClick = BitBtn5Click
       end
+      object dataPesqF: TDateEdit
+        Left = 189
+        Top = 12
+        Width = 153
+        Height = 21
+        NumGlyphs = 2
+        TabOrder = 4
+      end
     end
     object pnlNumero: TPanel
-      Left = 24
+      Left = 13
       Top = 63
-      Width = 425
-      Height = 233
+      Width = 684
+      Height = 358
       TabOrder = 3
       Visible = False
       object txtPesqNum: TEdit
@@ -8908,5 +8932,11 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
     DataSet = _dm2.cdsProducaoDerivados
     Left = 392
     Top = 438
+  end
+  object dsProducaoItens: TDataSource
+    DataSet = _dm2.cdsproducaoitens
+    OnDataChange = dsProducaoItensDataChange
+    Left = 328
+    Top = 351
   end
 end

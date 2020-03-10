@@ -3,7 +3,7 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
   Top = 0
   BorderStyle = bsDialog
   ClientHeight = 696
-  ClientWidth = 1020
+  ClientWidth = 1302
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,12 +17,13 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
   object Panel10: TPanel
     Left = 0
     Top = 0
-    Width = 1020
+    Width = 1302
     Height = 44
     Align = alTop
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
+    ExplicitWidth = 1020
     object Label40: TLabel
       Left = 23
       Top = 10
@@ -40,7 +41,7 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
   object DBGrid1: TDBGrid
     Left = 0
     Top = 325
-    Width = 1020
+    Width = 1302
     Height = 262
     Align = alTop
     DataSource = _dm2.dSourceMateria
@@ -84,7 +85,7 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
   object DBGrid2: TDBGrid
     Left = 0
     Top = 85
-    Width = 1020
+    Width = 1302
     Height = 199
     Align = alTop
     DataSource = _dm2.DSourceproducaoitens
@@ -132,15 +133,22 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
         Title.Caption = 'Leite Utilizado'
         Width = 136
         Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'materiarequisitada'
+        Title.Caption = 'Requisitado'
+        Visible = True
       end>
   end
   object Panel1: TPanel
     Left = 0
     Top = 44
-    Width = 1020
+    Width = 1302
     Height = 41
     Align = alTop
     TabOrder = 3
+    ExplicitWidth = 1020
     object Label2: TLabel
       Left = 23
       Top = 12
@@ -158,10 +166,11 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
   object Panel2: TPanel
     Left = 0
     Top = 284
-    Width = 1020
+    Width = 1302
     Height = 41
     Align = alTop
     TabOrder = 4
+    ExplicitWidth = 1020
     object Label1: TLabel
       Left = 23
       Top = 16
@@ -195,8 +204,8 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
     OnClick = BitBtn2Click
   end
   object pnlInsumo: TPanel
-    Left = 412
-    Top = 331
+    Left = 892
+    Top = 251
     Width = 549
     Height = 329
     TabOrder = 7
@@ -204,9 +213,9 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
     object lblinsumo: TLabel
       Left = 32
       Top = 51
-      Width = 45
+      Width = 52
       Height = 16
-      Caption = 'insumo'
+      Caption = 'insumos'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -333,9 +342,9 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
       object Label4: TLabel
         Left = 25
         Top = 21
-        Width = 97
+        Width = 87
         Height = 14
-        Caption = 'Total Produzido'
+        Caption = 'Total utilizado'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -354,6 +363,19 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
         Font.Height = -12
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label6: TLabel
+        Left = 27
+        Top = 136
+        Width = 225
+        Height = 13
+        Caption = 'Para diminuir informe uma quantidade negativa'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
         ParentFont = False
       end
       object txtqtdprod: TCurrencyEdit
@@ -394,7 +416,7 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
     end
     object rgAjuste: TRadioGroup
       Left = 24
-      Top = 74
+      Top = 73
       Width = 505
       Height = 49
       Caption = 'Ajustar quantidades de insumos'

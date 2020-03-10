@@ -103,7 +103,7 @@ type
 var
     _main: T_main;
    // Handle: THandle;
-    glb_versao:string='1.5.4';
+    glb_versao:string='1.5.7';
     glb_grupo:string='1';
     glb_filial:string='00001';
     glb_usuario:string='IQ';
@@ -120,6 +120,7 @@ var
     login:string='N';
     glb_acao:string;
     glb_ID:string='';
+    glb_sql2:string='';
 
 implementation
 
@@ -556,9 +557,11 @@ end;
 
 procedure T_main.Relatriodeconsumodeinsumos1Click(Sender: TObject);
 begin
+
 _frmRelConsumo:=T_frmRelConsumo.create(self);
 _frmRelConsumo.showmodal;
 _frmRelConsumo.release;
+
 end;
 
 procedure T_main.Relatriodeproduodederivados1Click(Sender: TObject);

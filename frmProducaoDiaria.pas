@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons,
   Vcl.Grids, Vcl.DBGrids, Vcl.Mask, RxToolEdit, RpBase, RpSystem, RpRave,
   RpDefine, RpCon, RpConDS, Vcl.Menus, RxCtrls, RpRender, RpRenderPDF,
-  RxCurrEdit;
+  RxCurrEdit, Data.DB;
 
 type
   T_frmProducaoDiaria = class(TForm)
@@ -103,6 +103,9 @@ type
     lblprod: TLabel;
     Label19: TLabel;
     btnDerivados2: TBitBtn;
+    dataPesqF: TDateEdit;
+    Label20: TLabel;
+    dsProducaoItens: TDataSource;
     procedure btnabrirClick(Sender: TObject);
     procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -141,6 +144,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnDerivados2Click(Sender: TObject);
     procedure RxSpeedButton1Click(Sender: TObject);
+    procedure dsProducaoItensDataChange(Sender: TObject; Field: TField);
   private
     { Private declarations }
   public
@@ -452,12 +456,13 @@ totalItensDerivados:integer;
 begin
     filtro:='';
 
-    datapesq.Date:=now;
+    datapesq.Date:=IncMonth(now,-1);
+    datapesqf.Date:=now;
 
     frm:=Tform.create(self);
 
-    frm.Width:=510;
-    frm.Height:=330;
+    frm.Width:=730;
+    frm.Height:=470;
     frm.Position:=poDesktopCenter;
     frm.BorderStyle:=bsDialog;
 
@@ -717,6 +722,17 @@ begin
        end;
 
 
+
+   _dm2.ConnecDm2.Connected:=false;
+   _dm2.qrPadrao2.SQL.Clear;
+   _dm2.qrPadrao2.SQL.add('SELECT SUM(totalmateriautilizada * custounitario) AS totalProducao FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+   _dm2.qrPadrao2.open;
+
+   // soma valor dos insumos predefinidos com o leite, creme e manteiga
+  //  totalcustoproducao:= _dm2.qrPadrao2.FieldByName('totalProducao').AsCurrency + custoLeite + custocreme + customanteiga;
+ //   txtcustoproducao.Value:=  _dm2.qrPadrao2.FieldByName('totalProducao').AsCurrency + custoLeite + custocreme + customanteiga;;
+
+
 end;
 
 procedure T_frmProducaoDiaria.btnencerrarClick(Sender: TObject);
@@ -741,8 +757,8 @@ begin
    // exit;
 
     //VERIFICA SE TEM PERMISSÃO
+    {
     glb_campo:='encerrarproducao';
-
     _frmLogin:=T_frmLogin.Create(self);
         _frmLogin.lblfuncao.Caption:='Encerrar produção diária';
     _frmLogin.ShowModal;
@@ -750,7 +766,7 @@ begin
 
     if(glb_permissao='N')then
     exit;
-
+     }
 
 
     //VERIFICA OS LOTES E VENCIMENTOS
@@ -1304,7 +1320,7 @@ var
 sqlInsert,sqlcustosleite,sqlcustoscreme,sqlcustosmanteiga:string;
 quantidadeProduzida,custoCreme,CustoManteiga,totalcustoproducao,custoLeite,qtdleite,qtdcreme,qtdmanteiga:currency;//,totalcustoproducao:currency;
 begin
-
+   //verifica se já solicitaram a materia ante em outra configuração=============================================
     _dm2.ConnecDm2.Connected:=false;
     _dm2.qrPadrao2.SQL.Clear;
     _dm2.qrPadrao2.SQL.add('select count(1) as total from producaomovmateria where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
@@ -1328,7 +1344,7 @@ begin
              else
                exit;
      end;
-
+ //===============================================================================
 
 //if(_dm.cdsConfigLaticinioadicionarqtdderivados.AsString='S')then
 //begin
@@ -1632,7 +1648,7 @@ begin
 
 
 
-  SQL:= 'SELECT p.qtdadicional,p.totalproduzido, p.id, p.codigo,  p.produto, p.unidade,p.quantidadesoro,'+
+  SQL:= 'SELECT p.qtdadicional,p.totalproduzido, p.id, p.codigo,  p.produto, p.unidade,p.quantidadesoro,p.materiarequisitada,'+
         '(SELECT lote FROM producaoitens where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' LIMIT 1) AS lote,(SELECT validade FROM producaoitens where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' LIMIT 1) AS validade,'+
         ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodleite WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidadeleite ,'+
         ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodcreme WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidadeCreme ,'+
@@ -1641,12 +1657,12 @@ begin
         ' WHERE p.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString);
 
 
-   sql2:='';
-   sql2:=  'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,';
+   glb_sql2:='';
+   glb_sql2:=  'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,';
    if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
-   sql2:=sql2+' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador from producaomovmateria'  //quando o parâmetro for por KG produzido
+   glb_sql2:=glb_sql2+' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador from producaomovmateria'  //quando o parâmetro for por KG produzido
    else
-    sql2:=sql2+' quantidademateria, totalmateriautilizada,(totalmateriautilizada * custounitario) as custounitario,DATA,operador from producaomovmateria';
+    glb_sql2:=glb_sql2+' quantidademateria, totalmateriautilizada,(totalmateriautilizada * custounitario) as custounitario,DATA,operador from producaomovmateria';
 
     _dm2.ConnecDm2.Connected:=false;
     _dm2.cdsproducaoitens.Close;
@@ -1659,7 +1675,7 @@ begin
 
   _dm2.ConnecDm2.Connected:=false;
   _dm2.cdsmateria.Close;
-  _dm2.sdsMateria.CommandText:=sql2+//'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,'+
+  _dm2.sdsMateria.CommandText:=glb_sql2+//'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,'+
 // if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
  // ' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador from producaomovmateria'+
  //else
@@ -1818,7 +1834,7 @@ procedure T_frmProducaoDiaria.BitBtn5Click(Sender: TObject);
 begin
        _dm2.ConnecDm2.Connected:=false;
        _dm2.cdsMovproducao.Close;
-       _dm2.sdsMovproducao.commandtext:='SELECT * FROM movproducaodiaria WHERE codigofilial='+quotedstr(glb_filial)+' AND data = '+quotedstr(formatdatetime('yyyy-mm-dd',datapesq.Date));
+       _dm2.sdsMovproducao.commandtext:='SELECT * FROM movproducaodiaria WHERE codigofilial='+quotedstr(glb_filial)+' AND data BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',datapesq.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',datapesqf.Date));
       // _dm2.sdsMovproducao.commandtext:='SELECT * FROM movproducaodiaria WHERE codigofilial='+quotedstr(glb_filial)+' AND numero = '+quotedstr(_dm2.cdsMovproducaonumero.AsString);
        _dm2.sdsMovproducao.execsql;
        _dm2.cdsMovproducao.Open;
@@ -1934,6 +1950,19 @@ begin
    filtro:=' WHERE numero='+quotedstr(txtPesqNum.Text);
    pnlAbertura.Visible:=false;
    frm.ModalResult:=-1;
+end;
+
+procedure T_frmProducaoDiaria.dsProducaoItensDataChange(Sender: TObject;
+  Field: TField);
+begin
+
+  if(dbgrid1.Visible=true)then
+  begin
+  verDerivados(_dm2.cdsproducaoitenscodigo.AsString);
+    // txtlote.Text:= _dm2.cdsproducaoitenscodigo.AsString+_dm2.cdsmov
+  end;
+
+
 end;
 
 procedure T_frmProducaoDiaria.DBGrid1CellClick(Column: TColumn);

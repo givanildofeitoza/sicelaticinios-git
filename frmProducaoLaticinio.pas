@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls,
   Vcl.StdCtrls, Vcl.Buttons, Vcl.Grids, Vcl.DBGrids, Vcl.Mask, RxToolEdit,
-  RxCurrEdit, Data.DB, Vcl.Imaging.pngimage;
+  RxCurrEdit, Data.DB, Vcl.Imaging.pngimage, Vcl.ImgList;
 
 type
   T_frmProducaoLaticinio = class(TForm)
@@ -195,11 +195,24 @@ type
     Panel8: TPanel;
     DBGrid2: TDBGrid;
     DBGrid3: TDBGrid;
-    Panel10: TPanel;
+    pnlacoesinsumos: TPanel;
     imgMateria: TImage;
     lblmateria: TLabel;
     lblProdMarcado: TLabel;
     bitRequisitar: TBitBtn;
+    BitBtn22: TBitBtn;
+    BitBtn23: TBitBtn;
+    imgstatus: TImageList;
+    Panel11: TPanel;
+    Image1: TImage;
+    Image2: TImage;
+    Image3: TImage;
+    Label47: TLabel;
+    Label48: TLabel;
+    Label49: TLabel;
+    BitBtn24: TBitBtn;
+    Label50: TLabel;
+    lbltotprod: TLabel;
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure BitBtn1Click(Sender: TObject);
@@ -272,6 +285,9 @@ type
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure dsProdutosDataChange(Sender: TObject; Field: TField);
     procedure bitRequisitarClick(Sender: TObject);
+    procedure BitBtn22Click(Sender: TObject);
+    procedure BitBtn23Click(Sender: TObject);
+    procedure BitBtn24Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -289,7 +305,7 @@ implementation
 
 {$R *.dfm}
 uses
-main,dm,dm2,clipbrd,frmprodutos,frmsilos,frmlogin,frmProdPreProducao;
+main,dm,dm2,clipbrd,frmprodutos,frmsilos,frmlogin,frmProdPreProducao,frmInsumosdeproducao;
 procedure totalizarValores(tipo:string; nrProducao:string);
 begin
 
@@ -1110,7 +1126,7 @@ begin
         pnlAbertura.Enabled:=true;
         pnlDadosFim.Enabled:=true;
         pnlitens.Enabled:=true;
-
+        pnlacoesinsumos.enabled:=true;
 
 
         //cria dados da produção
@@ -1146,7 +1162,7 @@ begin
      txtleitesobra.Value:= ultimoSaldoLeite;
      txtcremesobra.Value:= ultimoSaldocreme;
      txtmanteigasobra.Value:= ultimoSaldomanteiga;
-
+     lbltotprod.Caption:=formatcurr('##0.00',_dm2.cdsMovproducaototalcustoproducao.AsCurrency);
 
 
      datatxtaproducao.Date:=now;
@@ -1186,6 +1202,112 @@ begin
         frm.ModalResult:=-1;
 end;
 
+procedure T_frmProducaoLaticinio.BitBtn22Click(Sender: TObject);
+begin
+
+   if(_dm2.cdsFulxogramaProducaostatus.asinteger=0)then
+   begin
+
+    _dm2.qrPadrao.SQL.Clear;
+    _dm2.qrPadrao.SQL.Add('UPDATE fluxogramaproducao '+
+      ' SET horainicio= TIMESTAMP(CURRENT_DATE,CURRENT_TIME),'+
+      ' operadorinicio='+quotedstr(glb_usuario)+' , STATUS="1" '+
+      ' WHERE id='+quotedstr(_dm2.cdsFulxogramaProducaoid.AsString));
+    _dm2.qrPadrao.ExecSQL();
+
+    _dm2.cdsFulxogramaProducao.Refresh;
+
+   end;
+
+
+
+
+
+end;
+
+procedure T_frmProducaoLaticinio.BitBtn23Click(Sender: TObject);
+begin
+
+
+   if(_dm2.cdsFulxogramaProducaostatus.asinteger=1)then
+   begin
+
+    _dm2.qrPadrao.SQL.Clear;
+    _dm2.qrPadrao.SQL.Add('UPDATE fluxogramaproducao '+
+      ' SET horatermino= TIMESTAMP(CURRENT_DATE,CURRENT_TIME),'+
+      ' operadortermino='+quotedstr(glb_usuario)+' , STATUS="2" '+
+      ' WHERE id='+quotedstr(_dm2.cdsFulxogramaProducaoid.AsString));
+    _dm2.qrPadrao.ExecSQL();
+
+    _dm2.cdsFulxogramaProducao.Refresh;
+
+   end;
+
+
+
+end;
+
+procedure T_frmProducaoLaticinio.BitBtn24Click(Sender: TObject);
+var
+SQL:string;
+begin
+
+
+
+
+
+    if(_dm2.cdsMovproducaonumero.AsString='')then
+    exit;
+   // if(_dm2.cdsMovproducaoitensderivadosconfirmados.AsString<>'S') and (_dm.cdsConfigLaticinioadicionarqtdderivados.AsString='S')then
+  //  exit;
+
+  SQL:= '  SELECT p.qtdadicional,p.totalproduzido, p.id, p.codigo,  p.produto, p.unidade,p.quantidadesoro,p.materiarequisitada,'+
+        ' (SELECT lote FROM producaoitens where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' LIMIT 1) AS lote,(SELECT validade FROM producaoitens where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' LIMIT 1) AS validade,'+
+        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodleite WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidadeleite ,'+
+        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodcreme WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidadeCreme ,'+
+        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodmanteiga WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidademanteiga ,'+
+        '  p.quantidadeproduzida, p.codigofilial, p.numeroproducao,p.materiarequisitada FROM producaoitens as p'+
+        '  WHERE p.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString);
+
+
+   glb_sql2:='';
+   glb_sql2:=  'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,';
+   if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
+   glb_sql2:=glb_sql2+' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador from producaomovmateria'  //quando o parâmetro for por KG produzido
+   else
+    glb_sql2:=glb_sql2+' quantidademateria, totalmateriautilizada,(totalmateriautilizada * custounitario) as custounitario,DATA,operador from producaomovmateria';
+
+    _dm2.ConnecDm2.Connected:=false;
+    _dm2.cdsproducaoitens.Close;
+    _dm2.sdsproducaoitens.commandtext:=SQL;
+    _dm2.sdsproducaoitens.execsql;
+    _dm2.cdsproducaoitens.open;
+    _dm2.cdsproducaoitens.refresh;
+
+
+
+  _dm2.ConnecDm2.Connected:=false;
+  _dm2.cdsmateria.Close;
+  _dm2.sdsMateria.CommandText:=glb_sql2+//'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,'+
+// if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
+ // ' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador from producaomovmateria'+
+ //else
+  //' quantidademateria, totalmateriautilizada,(totalmateriautilizada * custounitario) as custounitario,DATA,operador from producaomovmateria'+
+  ' where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+  _dm2.sdsMateria.ExecSQL();
+  _dm2.cdsmateria.Open;
+  _dm2.cdsmateria.refresh;
+
+
+
+_frmInsumosdeproducao:=  T_frmInsumosdeproducao.create(Self);
+_frmInsumosdeproducao.ShowModal;
+_frmInsumosdeproducao.release;
+
+
+
+end;
+
 procedure T_frmProducaoLaticinio.BitBtn2Click(Sender: TObject);
 begin
 datapesqini.Date:=now;
@@ -1193,8 +1315,8 @@ datapesqfim.Date:= IncMonth(now,1);
 continuar:='N';
      frm:=Tform.create(self);
 
-    frm.Width:=720;
-    frm.Height:=360;
+    frm.Width:=980;
+    frm.Height:=610;
     frm.Position:=poDesktopCenter;
     frm.BorderStyle:=bsDialog;
 
@@ -1219,6 +1341,16 @@ continuar:='N';
 
 
 
+
+
+       if(_dm2.cdsMovproducao.RecordCount=0)then
+       begin
+         application.MessageBox('Produção não encontrada!','Alerta',MB_ICONEXCLAMATION+MB_OK);
+         txtNumero.text:='0';
+         lblnrproducao.Caption:='0';
+         gerarGrids(_dm2.cdsMovproducaonumero.AsString);
+
+
        _dm2.ConnecDm2.Connected:=false;
        _dm2.cdsproducaoitens.Close;
        //_dm2.sdsproducaoitens.commandtext:='SELECT * FROM producaoitens WHERE codigofilial='+quotedstr(glb_filial)+' AND numeroproducao = '+quotedstr(_dm2.cdsMovproducaonumero.AsString);
@@ -1227,17 +1359,24 @@ continuar:='N';
        _dm2.cdsproducaoitens.Open;
        _dm2.cdsproducaoitens.refresh;
 
-       if(_dm2.cdsMovproducao.RecordCount=0)then
-       begin
-         application.MessageBox('Produção não encontrada!','Alerta',MB_ICONEXCLAMATION+MB_OK);
-         txtNumero.text:='0';
-         lblnrproducao.Caption:='0';
-         gerarGrids(_dm2.cdsMovproducaonumero.AsString);
+
          exit;
        end;
 
+       _dm2.ConnecDm2.Connected:=false;
+       _dm2.cdsproducaoitens.Close;
+       //_dm2.sdsproducaoitens.commandtext:='SELECT * FROM producaoitens WHERE codigofilial='+quotedstr(glb_filial)+' AND numeroproducao = '+quotedstr(_dm2.cdsMovproducaonumero.AsString);
+       _dm2.sdsproducaoitens.commandtext:='SELECT * FROM producaoitens WHERE codigofilial='+quotedstr(glb_filial)+' AND numeroproducao = '+quotedstr(numeroPesq);
+       _dm2.sdsproducaoitens.execsql;
+       _dm2.cdsproducaoitens.Open;
+       _dm2.cdsproducaoitens.refresh;
 
-
+       {
+       if(_dm2.cdsMovproducaomateriarequisitada.AsString='S')then
+       pnlacoesinsumos.enabled:=false
+       else
+       pnlacoesinsumos.enabled:=true;
+        }
 
       //DADOS DA PRODUÇÃO
 
@@ -1381,7 +1520,7 @@ continuar:='N';
         cboOperadorFim.Text:=  _dm2.cdsMovproducaooperadorfinalizacao.AsString;
         cboOperadorAbertura.Text:=_dm2.cdsMovproducaooperador.AsString;
         txtdesc.Text:= _dm2.cdsMovproducaodescricao.AsString;
-
+        lbltotprod.Caption:=formatcurr('##0.00',_dm2.cdsMovproducaototalcustoproducao.AsCurrency);
 
 
 
@@ -1493,6 +1632,8 @@ var
 sqlInsert,sqlcustosleite,sqlcustoscreme,sqlcustosmanteiga:string;
 quantidadeProduzida,custoCreme,CustoManteiga,totalcustoproducao,custoLeite,qtdleite,qtdcreme,qtdmanteiga:currency;//,totalcustoproducao:currency;
 begin
+   totalcustoproducao:=0;
+
 
    if(  _dm2.cdsMovproducaopreproducaoconfirmada.AsString<>'S')then
    begin
@@ -1530,7 +1671,7 @@ begin
     CustoManteiga:= _dm2.qrPadrao2.FieldByName('custoManteiga').AsCurrency;
 
 
-
+   // totalcustoproducao:=   custoLeite+  custoCreme +CustoManteiga;
 
      // _dm2.ConnecDm2.Connected:=false;
    _dm2.qrPadrao2.SQL.Clear;
@@ -1650,6 +1791,28 @@ begin
               _dm2.qrPadrao.execsql;
  //==============================================================================================================
 
+
+
+       //Obtem custo da produção
+       _dm2.ConnecDm2.Connected:=false;
+       _dm2.qrPadrao2.SQL.Clear;
+       _dm2.qrPadrao2.SQL.add('SELECT SUM(totalmateriautilizada * custounitario) AS totalProducao FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString));
+       _dm2.qrPadrao2.open;
+
+
+       // soma valor dos insumos predefinidos com o leite, creme e manteiga
+        totalcustoproducao:= _dm2.qrPadrao2.FieldByName('totalProducao').AsCurrency + custoLeite + custocreme + customanteiga;
+
+        _dm.ConnecDm.Connected:=false;
+        _dm.qrPadrao.SQL.Clear;
+        _dm.qrPadrao.SQL.Add('UPDATE movproducaodiaria SET totalcustoproducao=totalcustoproducao + '+quotedstr(formatcurr('##0.00',totalcustoproducao))+'  WHERE numero='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+        _dm.qrPadrao.execsql;
+
+         //====================
+
+
+
+
          //2-BAIXA DOS INSUMOS
          _dm.ConnecDm.Connected:=false;
          _dm.qrPadrao.SQL.Clear;
@@ -1690,11 +1853,26 @@ begin
             _dm.qrpadrao2.sql.add(' UPDATE producaoitens SET materiarequisitada = "S"  WHERE codigo ='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND codigofilial='+quotedstr(glb_filial)+' AND numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
             _dm.qrpadrao2.ExecSQL();
 
-     _dm2.cdsproducaoitens.Refresh;
+           _dm2.cdsproducaoitens.Refresh;
 
-     lblmateria.Caption:='Insumos já requisitados';
-     lblProdMarcado.Caption:='Produto:  '+_dm2.cdsproducaoitensproduto.AsString;
-     bitRequisitar.Enabled:=false;
+
+         _dm2.qrPadrao.SQL.Clear;
+         _dm2.qrPadrao.SQL.add('SELECT COUNT(1) as total FROM producaoitens WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigofilial="'+glb_filial+'" AND materiarequisitada="N"');
+         _dm2.qrPadrao.open;
+
+         if( _dm2.qrPadrao.FieldByName('total').AsInteger = 0)then
+         begin
+            _dm.qrpadrao2.sql.clear;
+            _dm.qrpadrao2.sql.add(' UPDATE movproducaodiaria SET materiarequisitada = "S"  WHERE  codigofilial='+quotedstr(glb_filial)+' AND numero='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+            _dm.qrpadrao2.ExecSQL();
+         end;
+
+
+           _dm2.cdsMovproducao.Refresh;
+           lbltotprod.Caption:=formatcurr('##0.00',_dm2.cdsMovproducaototalcustoproducao.AsCurrency);
+           lblmateria.Caption:='Insumos já requisitados';
+           lblProdMarcado.Caption:='Produto:  '+_dm2.cdsproducaoitensproduto.AsString;
+           bitRequisitar.Enabled:=false;
 
 
 
@@ -2325,6 +2503,8 @@ begin
  //   exit;
 
 
+
+  {
     glb_campo:='encerrarproducao';
 
     _frmLogin:=T_frmLogin.Create(self);
@@ -2333,7 +2513,7 @@ begin
     _frmLogin.Release;
 
     if(glb_permissao='N')then
-    exit;
+    exit;   }
 
 
 
@@ -2344,6 +2524,13 @@ begin
     //SALVA DADOS DA PRÉ-PRODUÇÃO
     salvardados('T',_dm2.cdsMovproducaonumero.AsString);
 
+
+       {
+      _dm.ConnecDm.Connected:=false;
+        _dm.qrPadrao.SQL.Clear;
+        _dm.qrPadrao.SQL.Add('UPDATE movproducaodiaria SET totalcustoproducao=totalcustoproducao + '+quotedstr(formatcurr('##0.00',totalcustoproducao))+'  WHERE numero='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+        _dm.qrPadrao.execsql;
+         }
 
     _dm.ConnecDm.Connected:=false;
     _dm.qrPadrao.SQL.Clear;
@@ -2521,6 +2708,33 @@ With DBGrid3.Canvas do
   End;
  DBGrid3.DefaultDrawDataCell(Rect, DBGrid3.Columns[DataCol].Field, State);
 end;
+
+
+
+
+     if (Column.Field=_dm2.cdsFulxogramaProducaostatus) then
+  begin
+    if (_dm2.cdsFulxogramaProducaostatus.AsInteger = 0)then
+     begin
+     DBGrid3.Canvas.FillRect(Rect);
+     imgstatus.Draw(DBGrid3.Canvas,Rect.Left+10,Rect.Top+1,0);
+     end
+     else if _dm2.cdsFulxogramaProducaostatus.AsInteger = 1 then
+     begin
+     DBGrid3.Canvas.FillRect(Rect);
+     imgstatus.Draw(DBGrid3.Canvas,Rect.Left+10,Rect.Top+1,1);
+     end
+     else if _dm2.cdsFulxogramaProducaostatus.AsInteger = 2 then
+     begin
+     DBGrid3.Canvas.FillRect(Rect);
+     imgstatus.Draw(DBGrid3.Canvas,Rect.Left+10,Rect.Top+1,2);
+     end
+
+    else
+      DBGrid3.Canvas.FillRect(Rect);
+  end;
+
+
 
 end;
 
