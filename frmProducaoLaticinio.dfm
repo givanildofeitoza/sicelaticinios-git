@@ -80,13 +80,12 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           OnClick = BitBtn2Click
         end
         object BitBtn4: TBitBtn
-          Left = 788
-          Top = 0
+          Left = 444
+          Top = 1
           Width = 101
           Height = 26
           Caption = 'Imprimir'
           TabOrder = 3
-          Visible = False
         end
       end
       object pnlitens: TPanel

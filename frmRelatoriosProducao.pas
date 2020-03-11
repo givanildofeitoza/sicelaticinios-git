@@ -45,6 +45,8 @@ type
     BitBtn1: TBitBtn;
     DBGrid1: TDBGrid;
     BitBtn3: TBitBtn;
+    Label4: TLabel;
+    cboEncerradas: TComboBox;
     procedure BitBtn2Click(Sender: TObject);
     procedure btnimprimirClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
@@ -177,7 +179,7 @@ filtroProd:='';
 
 
     if(txtcod.Text<>'0')then
-   filtroProd:=' and p.codigo='+quotedstr(txtcod.Text);
+    filtroProd:=' and p.codigo='+quotedstr(txtcod.Text);
 
 
 
@@ -197,7 +199,7 @@ filtroProd:='';
    '  AND p.numeroproducao=m.numero ' +
    '  AND p.codigofilial=m.codigofilial '+
     filtroProd+
-   ' and m.encerrada="S" order by m.data, m.numero';
+   ' and m.encerrada='+quotedstr(cboEncerradas.Text)+' order by m.data, m.numero';
     sdsrelProducao.ExecSQL();
    // clipboard.astext:=sdsrelProducao.CommandText;
     cdsrelProducao.Open;
@@ -311,6 +313,7 @@ imprimir:='S';
 end;
 
 end.
+
 
 
 

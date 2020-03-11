@@ -1,9 +1,8 @@
 object _frmRelatoriosProducao: T_frmRelatoriosProducao
   Left = 0
   Top = 0
-  BorderStyle = bsDialog
-  ClientHeight = 778
-  ClientWidth = 1092
+  ClientHeight = 768
+  ClientWidth = 1082
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,6 +12,7 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   KeyPreview = True
   OldCreateOrder = False
   Position = poDesktopCenter
+  WindowState = wsMaximized
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
@@ -20,13 +20,12 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   object Panel10: TPanel
     Left = 0
     Top = 0
-    Width = 1092
+    Width = 1082
     Height = 33
     Align = alTop
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 693
     object Label40: TLabel
       Left = 23
       Top = 7
@@ -43,15 +42,12 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   end
   object GroupBox1: TGroupBox
     Left = 0
-    Top = 664
-    Width = 1092
+    Top = 654
+    Width = 1082
     Height = 114
     Align = alBottom
     Caption = 'Por Produto'
     TabOrder = 1
-    ExplicitLeft = 8
-    ExplicitTop = 656
-    ExplicitWidth = 1076
     object Label1: TLabel
       Left = 24
       Top = 27
@@ -72,6 +68,13 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Width = 38
       Height = 13
       Caption = 'Produto'
+    end
+    object Label4: TLabel
+      Left = 373
+      Top = 25
+      Width = 53
+      Height = 13
+      Caption = 'Encerrada:'
     end
     object data1: TDateEdit
       Left = 64
@@ -101,13 +104,13 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
     object txtprod: TEdit
       Left = 137
       Top = 49
-      Width = 248
+      Width = 352
       Height = 21
       Enabled = False
       TabOrder = 3
     end
     object BitBtn2: TBitBtn
-      Left = 391
+      Left = 501
       Top = 47
       Width = 43
       Height = 25
@@ -142,12 +145,23 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       TabOrder = 7
       OnClick = BitBtn3Click
     end
+    object cboEncerradas: TComboBox
+      Left = 432
+      Top = 20
+      Width = 57
+      Height = 21
+      TabOrder = 8
+      Text = 'S'
+      Items.Strings = (
+        'S'
+        'N')
+    end
   end
   object DBGrid1: TDBGrid
     Left = 0
     Top = 33
-    Width = 1092
-    Height = 631
+    Width = 1082
+    Height = 621
     Align = alClient
     DataSource = dSourcerelProducao
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]

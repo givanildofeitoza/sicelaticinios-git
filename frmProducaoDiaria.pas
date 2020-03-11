@@ -106,6 +106,8 @@ type
     dataPesqF: TDateEdit;
     Label20: TLabel;
     dsProducaoItens: TDataSource;
+    PopMlotes: TPopupMenu;
+    Gerarloteparaoproduto1: TMenuItem;
     procedure btnabrirClick(Sender: TObject);
     procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -145,6 +147,7 @@ type
     procedure btnDerivados2Click(Sender: TObject);
     procedure RxSpeedButton1Click(Sender: TObject);
     procedure dsProducaoItensDataChange(Sender: TObject; Field: TField);
+    procedure Gerarloteparaoproduto1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1790,19 +1793,16 @@ begin
  if(_dm2.cdsMovproducaonumero.AsString='')then
     exit;
 
-
   if(_dm2.cdsMovproducaoencerrada.AsString='S')then
    exit;
 
 
    if(_dm.cdsConfigLaticinioloteindividual.AsString='N')then
    begin
-
     _dm2.ConnecDm2.Connected:=false;
     _dm2.qrPadrao.SQL.Clear;
     _dm2.qrPadrao.sql.add('update movproducaodiaria set lote='+quotedstr(txtlote.Text)+', validadelote='+quotedstr(formatdatetime('yyyy-mm-dd',txtvalidade.Date))+' where numero='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
     _dm2.qrPadrao.execsql;
-
    end
    else
    begin
@@ -1811,12 +1811,7 @@ begin
     _dm2.qrPadrao.SQL.Clear;
     _dm2.qrPadrao.sql.add('update producaoitens set lote='+quotedstr(txtlote.Text)+', validade='+quotedstr(formatdatetime('yyyy-mm-dd',txtvalidade.Date))+' where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and id='+quotedstr(_dm2.cdsproducaoitensid.AsString));
     _dm2.qrPadrao.execsql;
-
-
    end;
-
-
-
 
     //_dm2.cdsproducaoitens.Close;
     //_dm2.cdsproducaoitens.Open;
@@ -1826,7 +1821,7 @@ begin
     //_dm2.cdsMovproducao.open;
     _dm2.cdsMovproducao.refresh;
 
-    application.MessageBox('Lote foi informado!','Alerta',MB_ICONINFORMATION+MB_ok);
+
 
 end;
 
@@ -1957,10 +1952,8 @@ procedure T_frmProducaoDiaria.dsProducaoItensDataChange(Sender: TObject;
 begin
 
   if(dbgrid1.Visible=true)then
-  begin
   verDerivados(_dm2.cdsproducaoitenscodigo.AsString);
-    // txtlote.Text:= _dm2.cdsproducaoitenscodigo.AsString+_dm2.cdsmov
-  end;
+
 
 
 end;
@@ -2182,6 +2175,57 @@ begin
 
 
 
+end;
+
+procedure T_frmProducaoDiaria.Gerarloteparaoproduto1Click(Sender: TObject);
+var
+lote:string;
+begin
+
+
+   if(_dm2.cdsMovproducaonumero.AsString='')then
+    exit;
+
+
+   if(_dm2.cdsMovproducaoencerrada.AsString='S')then
+   exit;
+
+   if(_dm.cdsConfigLaticinioloteindividual.AsString='S')then
+   begin
+
+             lote:='0';
+
+              if(application.MessageBox('Gerar para todos os produtos?','Pergunta',MB_ICONQUESTION+MB_YESNO)=IDno)then
+              begin
+                   lote:= _dm2.cdsMovproducaonumero.AsString.PadLeft(6,'0')+_dm2.cdsproducaoitenscodigo.AsString+_dm2.cdsMovproducaodata.AsString.Replace('/','');
+
+                   txtlote.Text:=lote;
+                   //aciona o botão salvar lote
+                   BitBtn4Click(sender);
+
+                    application.MessageBox('Lote foi informado! Informe a validade','Alerta',MB_ICONINFORMATION+MB_ok);
+
+              end
+              else
+              begin
+
+                   _dm2.cdsproducaoitens.First;
+                   while not _dm2.cdsproducaoitens.Eof do
+                   begin
+
+                   lote:= _dm2.cdsMovproducaonumero.AsString.PadLeft(6,'0')+_dm2.cdsproducaoitenscodigo.AsString+_dm2.cdsMovproducaodata.AsString.Replace('/','');
+                   txtlote.Text:=lote;
+
+                   //aciona o botão salvar lote
+                   BitBtn4Click(sender);
+
+                   _dm2.cdsproducaoitens.Next;
+                   end;
+
+                    application.MessageBox('Todos os produtos receberam seus lotes! Informe a validade individualmente.','Alerta',MB_ICONINFORMATION+MB_ok);
+              end;
+
+   end;
 end;
 
 procedure T_frmProducaoDiaria.gridDerivadosDrawCell(Sender: TObject; ACol,

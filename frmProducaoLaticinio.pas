@@ -1205,6 +1205,9 @@ end;
 procedure T_frmProducaoLaticinio.BitBtn22Click(Sender: TObject);
 begin
 
+  if(txtNumero.Text='0')then
+  exit;
+
    if(_dm2.cdsFulxogramaProducaostatus.asinteger=0)then
    begin
 
@@ -1228,6 +1231,8 @@ end;
 procedure T_frmProducaoLaticinio.BitBtn23Click(Sender: TObject);
 begin
 
+  if(txtNumero.Text='0')then
+  exit;
 
    if(_dm2.cdsFulxogramaProducaostatus.asinteger=1)then
    begin
@@ -1252,6 +1257,9 @@ var
 SQL:string;
 begin
 
+
+  if(txtNumero.Text='0')then
+  exit;
 
 
 

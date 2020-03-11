@@ -701,6 +701,7 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
       Height = 222
       DataSource = dsProducaoItens
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      PopupMenu = PopMlotes
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
@@ -8938,5 +8939,13 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
     OnDataChange = dsProducaoItensDataChange
     Left = 328
     Top = 351
+  end
+  object PopMlotes: TPopupMenu
+    Left = 144
+    Top = 327
+    object Gerarloteparaoproduto1: TMenuItem
+      Caption = 'Gerar lote para o produto'
+      OnClick = Gerarloteparaoproduto1Click
+    end
   end
 end
