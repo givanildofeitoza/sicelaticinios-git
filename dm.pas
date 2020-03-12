@@ -1045,6 +1045,17 @@ type
     cdsprd2margemLucroAtacado: TFMTBCDField;
     cdsConfigLaticinioderivadoscadastrosice: TWideStringField;
     cdsAnalisenrEntrada: TWideStringField;
+    sdsOrdem: TSQLDataSet;
+    dspOrdem: TDataSetProvider;
+    cdsOrdem: TClientDataSet;
+    cdsOrdemcodPre: TWideStringField;
+    cdsOrdemprodPre: TWideStringField;
+    cdsOrdemcodigo: TWideStringField;
+    cdsOrdemproduto: TWideStringField;
+    cdsOrdemquantidade: TFMTBCDField;
+    cdsOrdemparametroleite: TFMTBCDField;
+    cdsOrdemquantidadeajustada: TFMTBCDField;
+    cdsOrdemutilizado: TFMTBCDField;
     procedure ConnecDmBeforeConnect(Sender: TObject);
   private
     { Private declarations }

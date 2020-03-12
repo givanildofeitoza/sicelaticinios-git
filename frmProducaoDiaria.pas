@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons,
   Vcl.Grids, Vcl.DBGrids, Vcl.Mask, RxToolEdit, RpBase, RpSystem, RpRave,
   RpDefine, RpCon, RpConDS, Vcl.Menus, RxCtrls, RpRender, RpRenderPDF,
-  RxCurrEdit, Data.DB;
+  RxCurrEdit, Data.DB,DateUtils;
 
 type
   T_frmProducaoDiaria = class(TForm)
@@ -2180,6 +2180,7 @@ end;
 procedure T_frmProducaoDiaria.Gerarloteparaoproduto1Click(Sender: TObject);
 var
 lote:string;
+vencimento:Tdate;
 begin
 
 
@@ -2197,13 +2198,23 @@ begin
 
               if(application.MessageBox('Gerar para todos os produtos?','Pergunta',MB_ICONQUESTION+MB_YESNO)=IDno)then
               begin
+                   _dm2.qrPadrao.SQL.Clear;
+                   _dm2.qrPadrao.SQL.Add('SELECT diasparavencimento FROM '+glb_produtos+' WHERE codigo="'+_dm2.cdsproducaoitenscodigo.AsString+'" AND codigofilial="'+glb_filial+'"');
+                   _dm2.qrPadrao.Open();
+
+                   if(_dm2.qrPadrao.FieldByName('diasparavencimento').AsInteger>0)then
+                   begin
+                   vencimento:= incDay( now, _dm2.qrPadrao.FieldByName('diasparavencimento').AsInteger);
+                   txtvalidade.Date:=vencimento;
+                   end;
+
                    lote:= _dm2.cdsMovproducaonumero.AsString.PadLeft(6,'0')+_dm2.cdsproducaoitenscodigo.AsString+_dm2.cdsMovproducaodata.AsString.Replace('/','');
 
                    txtlote.Text:=lote;
                    //aciona o botão salvar lote
                    BitBtn4Click(sender);
 
-                    application.MessageBox('Lote foi informado! Informe a validade','Alerta',MB_ICONINFORMATION+MB_ok);
+                    application.MessageBox('Lote foi informado!','Alerta',MB_ICONINFORMATION+MB_ok);
 
               end
               else
@@ -2212,6 +2223,16 @@ begin
                    _dm2.cdsproducaoitens.First;
                    while not _dm2.cdsproducaoitens.Eof do
                    begin
+
+                   _dm2.qrPadrao.SQL.Clear;
+                   _dm2.qrPadrao.SQL.Add('SELECT diasparavencimento FROM '+glb_produtos+' WHERE codigo="'+_dm2.cdsproducaoitenscodigo.AsString+'" AND codigofilial="'+glb_filial+'"');
+                   _dm2.qrPadrao.Open();
+
+                    if(_dm2.qrPadrao.FieldByName('diasparavencimento').AsInteger>0)then
+                   begin
+                   vencimento:= incDay( now, _dm2.qrPadrao.FieldByName('diasparavencimento').AsInteger);
+                   txtvalidade.Date:=vencimento;
+                   end;
 
                    lote:= _dm2.cdsMovproducaonumero.AsString.PadLeft(6,'0')+_dm2.cdsproducaoitenscodigo.AsString+_dm2.cdsMovproducaodata.AsString.Replace('/','');
                    txtlote.Text:=lote;
@@ -2222,7 +2243,7 @@ begin
                    _dm2.cdsproducaoitens.Next;
                    end;
 
-                    application.MessageBox('Todos os produtos receberam seus lotes! Informe a validade individualmente.','Alerta',MB_ICONINFORMATION+MB_ok);
+                    application.MessageBox('Lotes informados!','Alerta',MB_ICONINFORMATION+MB_ok);
               end;
 
    end;

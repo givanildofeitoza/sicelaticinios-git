@@ -1481,9 +1481,9 @@ object _main: T_main
     object Label7: TLabel
       Left = 41
       Top = 493
-      Width = 82
+      Width = 122
       Height = 20
-      Caption = 'Pr'#233'-produ'#231#227'o'
+      Caption = 'Ordem de produ'#231#227'o'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -16

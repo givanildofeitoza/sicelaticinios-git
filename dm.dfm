@@ -1,7 +1,7 @@
 object _dm: T_dm
   OldCreateOrder = False
-  Height = 702
-  Width = 879
+  Height = 722
+  Width = 1087
   object ConnecDm: TSQLConnection
     ConnectionName = 'MySQLConnection'
     DriverName = 'DevartMySQLDirect'
@@ -4461,5 +4461,70 @@ object _dm: T_dm
     DataSet = cdsprd2
     Left = 296
     Top = 184
+  end
+  object sdsOrdem: TSQLDataSet
+    CommandText = 
+      'SELECT rp.codigo AS codPre,rp.produto AS prodPre,cp.codigo,cp.pr' +
+      'oduto,cp.quantidade,cp.parametroleite,rp.quantidadeajustada,((cp' +
+      '.quantidade /cp.parametroleite)*rp.quantidadeajustada) AS utiliz' +
+      'ado FROM resumoprodleite AS rp,composicaolaticinio AS cp '#13#10'WHERE' +
+      ' cp.codpreproducao=rp.codigo'#13#10'AND  rp.numeroproducao='#39#39';'
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = ConnecDm
+    Left = 911
+    Top = 360
+  end
+  object dspOrdem: TDataSetProvider
+    DataSet = sdsOrdem
+    Left = 911
+    Top = 432
+  end
+  object cdsOrdem: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspOrdem'
+    Left = 911
+    Top = 504
+    object cdsOrdemcodPre: TWideStringField
+      FieldName = 'codPre'
+      Size = 15
+    end
+    object cdsOrdemprodPre: TWideStringField
+      FieldName = 'prodPre'
+      Size = 50
+    end
+    object cdsOrdemcodigo: TWideStringField
+      FieldName = 'codigo'
+      Size = 8
+    end
+    object cdsOrdemproduto: TWideStringField
+      FieldName = 'produto'
+      Size = 50
+    end
+    object cdsOrdemquantidade: TFMTBCDField
+      FieldName = 'quantidade'
+      DisplayFormat = '##0.00000'
+      Precision = 12
+      Size = 6
+    end
+    object cdsOrdemparametroleite: TFMTBCDField
+      FieldName = 'parametroleite'
+      DisplayFormat = '##0.00000'
+      Precision = 12
+      Size = 2
+    end
+    object cdsOrdemquantidadeajustada: TFMTBCDField
+      FieldName = 'quantidadeajustada'
+      DisplayFormat = '##0.00'
+      Precision = 10
+      Size = 2
+    end
+    object cdsOrdemutilizado: TFMTBCDField
+      FieldName = 'utilizado'
+      DisplayFormat = '##0.00'
+      Precision = 26
+      Size = 12
+    end
   end
 end

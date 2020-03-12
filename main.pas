@@ -103,7 +103,7 @@ type
 var
     _main: T_main;
    // Handle: THandle;
-    glb_versao:string='1.5.7';
+    glb_versao:string='1.5.8';
     glb_grupo:string='1';
     glb_filial:string='00001';
     glb_usuario:string='IQ';
@@ -221,8 +221,8 @@ end;
 procedure T_main.Anlisedoleite1Click(Sender: TObject);
 begin
       _frmProdutos:=T_frmProdutos.Create(self);
-       _frmProdutos.ShowModal();
-       _frmProdutos.Release;
+      _frmProdutos.ShowModal();
+      _frmProdutos.Release;
 end;
 
 procedure T_main.Buscarproduoporlote1Click(Sender: TObject);
@@ -472,7 +472,7 @@ lblFilial.Caption:=glb_filial+' - '+_dm.cdsFiliaisfantasia.AsString;
 
  _dm.ConnecDm.Connected:=false;
  _dm.cdsFiliais.Close;
- _dm.sdsFiliais.CommandText:='SELECT * FROM filiais WHERE codigofilial='+quotedstr(glb_filial)+' and grupo ='+quotedstr(glb_grupo);
+ _dm.sdsFiliais.CommandText:='SELECT * FROM filiais WHERE codigofilial='+quotedstr(glb_filial)+' and grupo =abs('+quotedstr(glb_grupo)+')';
  _dm.sdsFiliais.ExecSQL();
  _dm.cdsFiliais.Open;
  _dm.cdsFiliais.refresh;

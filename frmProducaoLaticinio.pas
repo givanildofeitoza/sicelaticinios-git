@@ -6,7 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls,
   Vcl.StdCtrls, Vcl.Buttons, Vcl.Grids, Vcl.DBGrids, Vcl.Mask, RxToolEdit,
-  RxCurrEdit, Data.DB, Vcl.Imaging.pngimage, Vcl.ImgList;
+  RxCurrEdit, Data.DB, Vcl.Imaging.pngimage, Vcl.ImgList, RDprint, Data.FMTBcd,
+  Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr, RpCon, RpConDS, RpBase,
+  RpSystem, RpDefine, RpRave;
 
 type
   T_frmProducaoLaticinio = class(TForm)
@@ -130,7 +132,6 @@ type
     Label21: TLabel;
     Label25: TLabel;
     Label27: TLabel;
-    BitBtn4: TBitBtn;
     txtLeiteSobra: TCurrencyEdit;
     Label22: TLabel;
     txtManteigaSaldo: TCurrencyEdit;
@@ -160,7 +161,7 @@ type
     datacoleta: TDateEdit;
     gridColeta: TStringGrid;
     BitBtn8: TBitBtn;
-    BitBtn13: TBitBtn;
+    obtersaldoleite: TBitBtn;
     Label38: TLabel;
     txtSaldoColeta: TCurrencyEdit;
     BitBtn15: TBitBtn;
@@ -213,6 +214,18 @@ type
     BitBtn24: TBitBtn;
     Label50: TLabel;
     lbltotprod: TLabel;
+    BitBtn4: TBitBtn;
+    RvPordem: TRvProject;
+    RvSordem: TRvSystem;
+    RvDdsOrdem: TRvDataSetConnection;
+    pnlparam: TPanel;
+    Panel12: TPanel;
+    Label51: TLabel;
+    rgparam: TRadioGroup;
+    BitBtn25: TBitBtn;
+    rvpOerdemSimples: TRvProject;
+    RvSystem1: TRvSystem;
+    chktipo: TCheckBox;
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure BitBtn1Click(Sender: TObject);
@@ -258,7 +271,7 @@ type
     procedure txtManteigaEstoqueExit(Sender: TObject);
     procedure BitBtn7Click(Sender: TObject);
     procedure BitBtn8Click(Sender: TObject);
-    procedure BitBtn13Click(Sender: TObject);
+    procedure obtersaldoleiteClick(Sender: TObject);
     procedure BitBtn15Click(Sender: TObject);
     procedure BitBtn14Click(Sender: TObject);
     procedure BitBtn16Click(Sender: TObject);
@@ -288,6 +301,9 @@ type
     procedure BitBtn22Click(Sender: TObject);
     procedure BitBtn23Click(Sender: TObject);
     procedure BitBtn24Click(Sender: TObject);
+    procedure RDproducaoBeforeNewPage(Sender: TObject; Pagina: Integer);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn25Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -873,12 +889,12 @@ begin
 
 end;
 
-procedure T_frmProducaoLaticinio.BitBtn13Click(Sender: TObject);
+procedure T_frmProducaoLaticinio.obtersaldoleiteClick(Sender: TObject);
 begin
 
 
-        if(application.MessageBox('Obter saldo atual do leite?','Pergunta',MB_ICONQUESTION+MB_YESNO)=id_yes)then
-        begin
+      //  if(application.MessageBox('Obter saldo atual do leite?','Pergunta',MB_ICONQUESTION+MB_YESNO)=id_yes)then
+     //   begin
 
             _dm.ConnecDm.Connected:=false;
             _dm.qrPadrao.SQL.Clear;
@@ -888,7 +904,7 @@ begin
 
             txtLeiteEntrada.Value:=  _dm.qrPadrao.FieldByName('quantidade').AsCurrency;
 
-        end
+    {   end
         else
         begin
 
@@ -911,7 +927,7 @@ begin
             pnlSobraColeta.Align:=alClient;
             frm.ShowModal;
 
-        end;
+        end;  }
 
 end;
 
@@ -1316,6 +1332,100 @@ _frmInsumosdeproducao.release;
 
 end;
 
+procedure T_frmProducaoLaticinio.BitBtn25Click(Sender: TObject);
+var
+parametro:string;
+begin
+
+     case rgparam.ItemIndex of
+          0:parametro:='L';
+          1:parametro:='M';
+          2:parametro:='C';
+     end;
+
+
+
+   _dm.ConnecDm.Connected:=false;
+   _dm.cdsOrdem.Close;
+
+   if(chktipo.Checked=true)then
+   begin
+   _dm.sdsOrdem.CommandText:=' SELECT rp.codigo AS codPre,rp.produto AS prodPre,cp.codigo,cp.produto,cp.quantidade,cp.parametroleite,rp.quantidadeajustada,((cp.quantidade /cp.parametroleite)*rp.quantidadeajustada) AS utilizado FROM resumoprodleite AS rp,composicaolaticinio AS cp  '+
+                        ' WHERE cp.codpreproducao=rp.codigo AND cp.tipoinsumo ="OUTROS" AND cp.tipoparametro='+quotedstr(parametro)+
+                        ' AND  rp.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString);
+
+   end
+   else
+   begin
+
+   _dm.sdsOrdem.CommandText:='SELECT rp.codigo AS codPre,rp.produto AS prodPre,cp.codigo,cp.produto,cp.quantidade,cp.parametroleite,rp.quantidadeajustada,sum(((cp.quantidade /cp.parametroleite)*rp.quantidadeajustada)) AS utilizado FROM resumoprodleite AS rp,composicaolaticinio AS cp  '+
+                        ' WHERE cp.codpreproducao=rp.codigo AND cp.tipoinsumo ="OUTROS" AND cp.tipoparametro='+quotedstr(parametro)+
+                        ' AND  rp.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' GROUP BY codigo';
+
+   end;
+
+
+   _dm.sdsOrdem.ExecSQL();
+   _dm.cdsOrdem.Open;
+   _dm.cdsOrdem.Refresh;
+
+
+  if(parametro='L')then
+  BEGIN
+   if(chktipo.Checked=false)then
+   rvpOerdemSimples.SetParam('parametro','Insumos de LEITE');
+
+   RvPordem.SetParam('parametro','Insumos de LEITE');
+   RvPordem.SetParam('destinado','Leite destinado:');
+  END;
+
+  if(parametro='C')then
+  begin
+   if(chktipo.Checked=false)then
+     rvpOerdemSimples.SetParam('parametro','Insumos de CREME');
+
+    RvPordem.SetParam('parametro','Insumos de CREME');
+    RvPordem.SetParam('destinado','Creme destinado:');
+  end;
+
+
+  if(parametro='M')then
+  begin
+  if(chktipo.Checked=false)then
+  rvpOerdemSimples.SetParam('parametro','Insumos de MANTEIGA');
+
+   RvPordem.SetParam('parametro','Insumos de MANTEIGA');
+    RvPordem.SetParam('destinado','Manteiga destinada:');
+  end;
+
+   if(chktipo.Checked=true)then
+   begin
+   RvPordem.SetParam('empresa',_dm.cdsFiliaisfantasia.AsString);
+   RvPordem.SetParam('data','Data: '+_dm2.cdsMovproducaodata.AsString);
+   RvPordem.SetParam('operador','Operador: '+_dm2.cdsMovproducaooperador.AsString);
+   RvPordem.SetParam('descricao','Descrição: '+_dm2.cdsMovproducaodescricao.AsString);
+   RvPordem.SetParam('numero','Número: '+_dm2.cdsMovproducaonumero.AsString);
+
+   RvPordem.Execute;
+
+   end
+   else
+   begin
+
+   rvpOerdemSimples.SetParam('empresa',_dm.cdsFiliaisfantasia.AsString);
+   rvpOerdemSimples.SetParam('data','Data: '+_dm2.cdsMovproducaodata.AsString);
+   rvpOerdemSimples.SetParam('operador','Operador: '+_dm2.cdsMovproducaooperador.AsString);
+   rvpOerdemSimples.SetParam('descricao','Descrição: '+_dm2.cdsMovproducaodescricao.AsString);
+   rvpOerdemSimples.SetParam('numero','Número: '+_dm2.cdsMovproducaonumero.AsString);
+
+   rvpOerdemSimples.Execute;
+   end;
+
+
+   frm.ModalResult:=-1;
+
+end;
+
 procedure T_frmProducaoLaticinio.BitBtn2Click(Sender: TObject);
 begin
 datapesqini.Date:=now;
@@ -1603,6 +1713,34 @@ begin
           pnlAlterarData.Align:=alClient;
           frm.ShowModal;
           end;
+end;
+
+procedure T_frmProducaoLaticinio.BitBtn4Click(Sender: TObject);
+
+begin
+
+if(txtNumero.Text='0')then
+exit;
+
+    frm:=Tform.create(self);
+
+          frm.Width:=250;
+          frm.Height:=180;
+          frm.Position:=poDesktopCenter;
+          frm.BorderStyle:=bsDialog;
+
+          pnlparam.Parent:=frm;
+          pnlparam.visible:=true;
+          pnlparam.Align:=alClient;
+          rgparam.ItemIndex:=0;
+          frm.ShowModal;
+
+
+
+
+
+
+
 end;
 
 procedure T_frmProducaoLaticinio.bitLiberarDigitacaoClick(Sender: TObject);
@@ -2086,6 +2224,8 @@ begin
 
 
         application.MessageBox('Itens confirmados','Mensagem',MB_ICONINFORMATION+MB_OK);
+
+       obtersaldoleiteClick(sender);
 
        bitbtnConfirmar.enabled:=false;
        pnlFerramentasPreproducao.Enabled:=false;
@@ -2949,13 +3089,16 @@ begin
     _dm2.cdsproducaoitens.Open;
     _dm2.cdsproducaoitens.Refresh;
 
+
+
+
 end;
 
 procedure T_frmProducaoLaticinio.gridCremeDblClick(Sender: TObject);
 begin
-Application.HintHidePause:=20000;
+{Application.HintHidePause:=20000;
 hint:=gridCreme.Cells[colLeite,0];
-ShowHint:=true;
+ShowHint:=true;  }
 end;
 
 procedure T_frmProducaoLaticinio.gridCremeDrawCell(Sender: TObject; ACol,
@@ -3023,10 +3166,10 @@ end;
 
 procedure T_frmProducaoLaticinio.gridLeiteDblClick(Sender: TObject);
 begin
-
+                 {
 Application.HintHidePause:=20000;
 hint:=gridLeite.Cells[colLeite,0];
-ShowHint:=true;
+ShowHint:=true; }
 end;
 
 procedure T_frmProducaoLaticinio.gridLeiteDrawCell(Sender: TObject; ACol,
@@ -3096,9 +3239,9 @@ end;
 
 procedure T_frmProducaoLaticinio.gridManteigaDblClick(Sender: TObject);
 begin
-Application.HintHidePause:=20000;
+{Application.HintHidePause:=20000;
 hint:=gridManteiga.Cells[colLeite,0];
-ShowHint:=true;
+ShowHint:=true; }
 end;
 
 procedure T_frmProducaoLaticinio.gridManteigaDrawCell(Sender: TObject; ACol,
@@ -3191,6 +3334,26 @@ With gridProdPre.Canvas do
   End;
  gridProdPre.DefaultDrawDataCell(Rect, gridProdPre.Columns[DataCol].Field, State);
 end;
+
+end;
+
+procedure T_frmProducaoLaticinio.RDproducaoBeforeNewPage(Sender: TObject;
+  Pagina: Integer);
+begin
+     {
+
+    with RDproducao do
+    begin
+    imp(1,1,_dm.cdsFiliaisfantasia.AsString);
+    imp(2,1,_dm.cdsFiliaisfantasia.AsString);
+    imp(3,1,_dm.cdsFiliaisfantasia.AsString);
+    imp(4,1,_dm.cdsFiliaisfantasia.AsString);
+    imp(5,1,_dm.cdsFiliaisfantasia.AsString);
+
+    end;
+
+       }
+
 
 end;
 
