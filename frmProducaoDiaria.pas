@@ -638,7 +638,7 @@ begin
 
           _dm2.ConnecDm2.Connected;
        _dm2.cdsproducaoitens.close;
-       _dm2.sdsproducaoitens.CommandText:=scpSelectProcaoItens+
+       _dm2.sdsproducaoitens.CommandText:=scpSelectProducaoItens+
         ' WHERE numeroproducao='+quotedstr(_dm2.cdsMovProducaonumero.AsString)+' group by codigo';
        _dm2.sdsproducaoitens.execsql;
        _dm2.cdsproducaoitens.open;

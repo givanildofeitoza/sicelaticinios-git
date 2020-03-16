@@ -3,18 +3,18 @@ unit scripts;
 interface
 
 var
-selectProcaoItens:string;
-function  scpSelectProcaoItens:string;
+selectProducaoItens:string;
+function  scpSelectProducaoItens:string;
 
 implementation
 
-function  scpSelectProcaoItens():string;
+function  scpSelectProducaoItens():string;
 begin
-selectProcaoItens:='SELECT id,codigo,produto,unidade,quantidademanteiga,quantidadecreme,'+
+selectProducaoItens:='SELECT id,codigo,produto,unidade,quantidademanteiga,quantidadecreme,'+
                  ' quantidadeleite,SUM(quantidadeproduzida) as quantidadeproduzida,SUM(totalproduzido) AS totalproduzido,'+
                  ' quantidadesoro,codigofilial,numeroproducao,lote,validade, SUM(qtdadicional) AS qtdadicional,'+
                  ' materiarequisitada FROM producaoitens ';
 
-  result:= selectProcaoItens;
+  result:= selectProducaoItens;
 end;
 end.
