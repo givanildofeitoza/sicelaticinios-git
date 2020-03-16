@@ -4464,11 +4464,12 @@ object _dm: T_dm
   end
   object sdsOrdem: TSQLDataSet
     CommandText = 
-      'SELECT rp.codigo AS codPre,rp.produto AS prodPre,cp.codigo,cp.pr' +
-      'oduto,cp.quantidade,cp.parametroleite,rp.quantidadeajustada,((cp' +
-      '.quantidade /cp.parametroleite)*rp.quantidadeajustada) AS utiliz' +
-      'ado FROM resumoprodleite AS rp,composicaolaticinio AS cp '#13#10'WHERE' +
-      ' cp.codpreproducao=rp.codigo'#13#10'AND  rp.numeroproducao='#39#39';'
+      'SELECT rp.inc_prod_producao, rp.codigo AS codPre,rp.produto AS p' +
+      'rodPre,cp.codigo,cp.produto,cp.quantidade,cp.parametroleite,rp.q' +
+      'uantidadeajustada,((cp.quantidade /cp.parametroleite)*rp.quantid' +
+      'adeajustada) AS utilizado FROM resumoprodleite AS rp,composicaol' +
+      'aticinio AS cp '#13#10'WHERE cp.codpreproducao=rp.codigo'#13#10'AND  rp.nume' +
+      'roproducao='#39#39';'
     MaxBlobSize = -1
     Params = <>
     SQLConnection = ConnecDm
@@ -4525,6 +4526,9 @@ object _dm: T_dm
       DisplayFormat = '##0.00'
       Precision = 26
       Size = 12
+    end
+    object cdsOrdeminc_prod_producao: TIntegerField
+      FieldName = 'inc_prod_producao'
     end
   end
 end

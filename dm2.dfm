@@ -496,6 +496,9 @@ object _dm2: T_dm2
       FieldName = 'salvo'
       Size = 1
     end
+    object cdsResumoleiteinc_prod_producao: TIntegerField
+      FieldName = 'inc_prod_producao'
+    end
   end
   object dSourceResumoLeite: TDataSource
     DataSet = cdsResumoleite
@@ -539,6 +542,9 @@ object _dm2: T_dm2
     object cdsresumocremesalvo: TWideStringField
       FieldName = 'salvo'
       Size = 1
+    end
+    object cdsresumocremeinc_prod_producao: TIntegerField
+      FieldName = 'inc_prod_producao'
     end
   end
   object dsourceresumocreme: TDataSource
@@ -618,6 +624,9 @@ object _dm2: T_dm2
     object cdsresumomanteigasalvo: TWideStringField
       FieldName = 'salvo'
       Size = 1
+    end
+    object cdsresumomanteigainc_prod_producao: TIntegerField
+      FieldName = 'inc_prod_producao'
     end
   end
   object sdsProducaoManteiga: TSQLDataSet
@@ -1127,6 +1136,9 @@ object _dm2: T_dm2
       Precision = 12
       Size = 5
     end
+    object cdsMateriainc_prod_producao: TIntegerField
+      FieldName = 'inc_prod_producao'
+    end
   end
   object dSourceMateria: TDataSource
     DataSet = cdsMateria
@@ -1577,15 +1589,15 @@ object _dm2: T_dm2
   end
   object sdsFulxogramaProducao: TSQLDataSet
     CommandText = 
-      'SELECT id,'#13#10'codigoproduto,'#13#10'codigofilial,'#13#10'numeroproducao,'#13#10'codi' +
-      'goetapaprod,'#13#10'IFNULL( IF(STATUS=0,TIMEDIFF(TIMESTAMP(CURRENT_DAT' +
-      'E,CURRENT_TIME),horainicio),TIMEDIFF(horatermino,horainicio)),'#39'0' +
-      '0:00:00'#39') AS duracao,'#13#10'(SELECT processo FROM cadetapaproducao WH' +
-      'ERE id=codigoetapaprod) AS processo,'#13#10'(SELECT duracaoestimada FR' +
-      'OM cadetapaproducao WHERE id=codigoetapaprod) AS duracaoestimada' +
-      ','#13#10'horainicio,'#13#10'horatermino,'#13#10'operadorinicio,'#13#10'operadortermino,'#13 +
-      #10'iniciado,'#13#10'finalizado,'#13#10'status'#13#10' FROM fluxogramaproducao limit ' +
-      '1;'
+      'SELECT id,'#13#10'inc_prod_producao,'#13#10'codigoproduto,'#13#10'codigofilial,'#13#10'n' +
+      'umeroproducao,'#13#10'codigoetapaprod,'#13#10'IFNULL( IF(STATUS=0,TIMEDIFF(T' +
+      'IMESTAMP(CURRENT_DATE,CURRENT_TIME),horainicio),TIMEDIFF(horater' +
+      'mino,horainicio)),'#39'00:00:00'#39') AS duracao,'#13#10'(SELECT processo FROM' +
+      ' cadetapaproducao WHERE id=codigoetapaprod) AS processo,'#13#10'(SELEC' +
+      'T duracaoestimada FROM cadetapaproducao WHERE id=codigoetapaprod' +
+      ') AS duracaoestimada,'#13#10'horainicio,'#13#10'horatermino,'#13#10'operadorinicio' +
+      ','#13#10'operadortermino,'#13#10'iniciado,'#13#10'finalizado,'#13#10'status'#13#10' FROM fluxo' +
+      'gramaproducao limit 1;'
     MaxBlobSize = -1
     Params = <>
     SQLConnection = ConnecDm2
@@ -1655,6 +1667,9 @@ object _dm2: T_dm2
     object cdsFulxogramaProducaoduracao: TWideStringField
       FieldName = 'duracao'
       Size = 23
+    end
+    object cdsFulxogramaProducaoinc_prod_producao: TIntegerField
+      FieldName = 'inc_prod_producao'
     end
   end
   object dsFulxogramaProducao: TDataSource

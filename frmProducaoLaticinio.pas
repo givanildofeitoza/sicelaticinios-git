@@ -321,7 +321,8 @@ implementation
 
 {$R *.dfm}
 uses
-main,dm,dm2,clipbrd,frmprodutos,frmsilos,frmlogin,frmProdPreProducao,frmInsumosdeproducao;
+main,dm,dm2,clipbrd,frmprodutos,frmsilos,frmlogin,frmProdPreProducao,
+frmInsumosdeproducao;
 procedure totalizarValores(tipo:string; nrProducao:string);
 begin
 
@@ -427,8 +428,8 @@ begin
           _dm2.ConnecDm2.Connected:=false;
           _dm2.qrLeite.SQL.Clear;
           _dm2.qrLeite.SQL.Add(' UPDATE resumoprodleite as r, producaoitens as p  SET r.quantidadeajustada='+quotedstr(_frmProducaoLaticinio.gridLeite.Cells[I,1])+', r.salvo="S", ');
-          _dm2.qrLeite.SQL.Add(' p.quantidadeleite='+quotedstr(_frmProducaoLaticinio.gridLeite.Cells[I,1])+'  WHERE r.codigo=abs('+quotedstr(copy(_frmProducaoLaticinio.gridLeite.Cells[I,0],1,4))+') AND r.numeroproducao='+quotedstr(nrProducao));
-          _dm2.qrLeite.SQL.Add(' and p.numeroproducao=r.numeroproducao and p.codigo=r.codigo');
+          _dm2.qrLeite.SQL.Add(' p.quantidadeleite='+quotedstr(_frmProducaoLaticinio.gridLeite.Cells[I,1])+'  WHERE r.inc_prod_producao=abs('+quotedstr(copy(_frmProducaoLaticinio.gridLeite.Cells[I,0],1,4))+') AND r.numeroproducao='+quotedstr(nrProducao));
+          _dm2.qrLeite.SQL.Add(' and p.numeroproducao=r.numeroproducao and p.id=r.inc_prod_producao');
           _dm2.qrLeite.execsql;
 
 
@@ -482,8 +483,8 @@ begin
            _dm2.ConnecDm2.Connected:=false;
           _dm2.qrLeite.SQL.Clear;
           _dm2.qrLeite.SQL.Add(' UPDATE resumoprodcreme as r, producaoitens as p  SET r.quantidadeajustada='+quotedstr(_frmProducaoLaticinio.gridcreme.Cells[I,1])+', r.salvo="S", ');
-          _dm2.qrLeite.SQL.Add(' p.quantidadecreme='+quotedstr(_frmProducaoLaticinio.gridcreme.Cells[I,1])+'  WHERE r.codigo=abs('+quotedstr(copy(_frmProducaoLaticinio.gridcreme.Cells[I,0],1,4))+') AND r.numeroproducao='+quotedstr(nrProducao));
-          _dm2.qrLeite.SQL.Add(' and p.numeroproducao=r.numeroproducao and p.codigo=r.codigo');
+          _dm2.qrLeite.SQL.Add(' p.quantidadecreme='+quotedstr(_frmProducaoLaticinio.gridcreme.Cells[I,1])+'  WHERE r.inc_prod_producao=abs('+quotedstr(copy(_frmProducaoLaticinio.gridcreme.Cells[I,0],1,4))+') AND r.numeroproducao='+quotedstr(nrProducao));
+          _dm2.qrLeite.SQL.Add(' and p.numeroproducao=r.numeroproducao and p.id=r.inc_prod_producao');
           _dm2.qrLeite.execsql;
 
 
@@ -539,8 +540,8 @@ begin
           _dm2.ConnecDm2.Connected:=false;
           _dm2.qrLeite.SQL.Clear;
           _dm2.qrLeite.SQL.Add(' UPDATE resumoprodmanteiga as r, producaoitens as p  SET r.quantidadeajustada='+quotedstr(_frmProducaoLaticinio.gridmanteiga.Cells[I,1])+', r.salvo="S", ');
-          _dm2.qrLeite.SQL.Add(' p.quantidademanteiga='+quotedstr(_frmProducaoLaticinio.gridmanteiga.Cells[I,1])+'  WHERE r.codigo=abs('+quotedstr(copy(_frmProducaoLaticinio.gridmanteiga.Cells[I,0],1,4))+') AND r.numeroproducao='+quotedstr(nrProducao));
-          _dm2.qrLeite.SQL.Add(' and p.numeroproducao=r.numeroproducao and p.codigo=r.codigo');
+          _dm2.qrLeite.SQL.Add(' p.quantidademanteiga='+quotedstr(_frmProducaoLaticinio.gridmanteiga.Cells[I,1])+'  WHERE r.inc_prod_producao=abs('+quotedstr(copy(_frmProducaoLaticinio.gridmanteiga.Cells[I,0],1,4))+') AND r.numeroproducao='+quotedstr(nrProducao));
+          _dm2.qrLeite.SQL.Add(' and p.numeroproducao=r.numeroproducao and p.id=r.inc_prod_producao');
           _dm2.qrLeite.execsql;
 
 
@@ -705,7 +706,7 @@ begin
              while not _dm2.cdsresumoleite.eof do
              begin
 
-                  _frmProducaoLaticinio.gridleite.Cells[c,0]:= _dm2.cdsResumoleitecodigo.AsString.PadLeft(4,'0') +'-'+_dm2.cdsResumoleiteproduto.AsString;
+                  _frmProducaoLaticinio.gridleite.Cells[c,0]:= _dm2.cdsResumoleiteinc_prod_producao.AsString.PadLeft(4,'0') +'-'+_dm2.cdsResumoleiteproduto.AsString;
 
                   if(_dm2.cdsResumoleitesalvo.AsString='N')then
                   _frmProducaoLaticinio.gridleite.Cells[c,1]:= formatcurr('##0.00',_dm2.cdsResumoleitequantidade.ascurrency)
@@ -768,7 +769,7 @@ begin
              while not _dm2.cdsresumocreme.eof do
              begin
 
-                  _frmProducaoLaticinio.gridcreme.Cells[c,0]:= _dm2.cdsResumocremecodigo.AsString.PadLeft(4,'0') +'-'+_dm2.cdsResumocremeproduto.AsString;
+                  _frmProducaoLaticinio.gridcreme.Cells[c,0]:= _dm2.cdsResumocremeinc_prod_producao.AsString.PadLeft(4,'0') +'-'+_dm2.cdsResumocremeproduto.AsString;
 
                   if(_dm2.cdsResumocremesalvo.AsString='N')then
                   _frmProducaoLaticinio.gridcreme.Cells[c,1]:= formatcurr('##0.00',_dm2.cdsResumocremequantidade.ascurrency)
@@ -821,7 +822,7 @@ begin
              while not _dm2.cdsresumomanteiga.eof do
              begin
 
-                  _frmProducaoLaticinio.gridmanteiga.Cells[c,0]:= _dm2.cdsResumomanteigacodigo.AsString.PadLeft(4,'0') +'-'+_dm2.cdsResumomanteigaproduto.AsString;
+                  _frmProducaoLaticinio.gridmanteiga.Cells[c,0]:= _dm2.cdsResumomanteigainc_prod_producao.AsString.PadLeft(4,'0') +'-'+_dm2.cdsResumomanteigaproduto.AsString;
 
                   if(_dm2.cdsResumomanteigasalvo.AsString='N')then
                   _frmProducaoLaticinio.gridmanteiga.Cells[c,1]:= formatcurr('##0.00',_dm2.cdsResumomanteigaquantidade.ascurrency)
@@ -1287,15 +1288,15 @@ begin
 
   SQL:= '  SELECT p.qtdadicional,p.totalproduzido, p.id, p.codigo,  p.produto, p.unidade,p.quantidadesoro,p.materiarequisitada,'+
         ' (SELECT lote FROM producaoitens where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' LIMIT 1) AS lote,(SELECT validade FROM producaoitens where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' LIMIT 1) AS validade,'+
-        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodleite WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidadeleite ,'+
-        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodcreme WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidadeCreme ,'+
-        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodmanteiga WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidademanteiga ,'+
+        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodleite WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND inc_prod_producao=p.id) AS quantidadeleite ,'+
+        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodcreme WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND inc_prod_producao=p.id) AS quantidadeCreme ,'+
+        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodmanteiga WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND inc_prod_producao=p.id) AS quantidademanteiga ,'+
         '  p.quantidadeproduzida, p.codigofilial, p.numeroproducao,p.materiarequisitada FROM producaoitens as p'+
         '  WHERE p.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString);
 
 
    glb_sql2:='';
-   glb_sql2:=  'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,';
+   glb_sql2:=  'select codigofilial,inc_prod_producao,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,';
    if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
    glb_sql2:=glb_sql2+' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador from producaomovmateria'  //quando o parâmetro for por KG produzido
    else
@@ -1317,7 +1318,7 @@ begin
  // ' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador from producaomovmateria'+
  //else
   //' quantidademateria, totalmateriautilizada,(totalmateriautilizada * custounitario) as custounitario,DATA,operador from producaomovmateria'+
-  ' where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+  ' where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and inc_prod_producao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
   _dm2.sdsMateria.ExecSQL();
   _dm2.cdsmateria.Open;
   _dm2.cdsmateria.refresh;
@@ -1350,7 +1351,8 @@ begin
 
    if(chktipo.Checked=true)then
    begin
-   _dm.sdsOrdem.CommandText:=' SELECT rp.codigo AS codPre,rp.produto AS prodPre,cp.codigo,cp.produto,cp.quantidade,cp.parametroleite,rp.quantidadeajustada,((cp.quantidade /cp.parametroleite)*rp.quantidadeajustada) AS utilizado FROM resumoprodleite AS rp,composicaolaticinio AS cp  '+
+   _dm.sdsOrdem.CommandText:='SELECT rp.inc_prod_producao,rp.codigo AS codPre,rp.produto AS prodPre,cp.codigo,cp.produto,cp.quantidade,'+
+   'cp.parametroleite,rp.quantidadeajustada,((cp.quantidade /cp.parametroleite)*rp.quantidadeajustada) AS utilizado FROM resumoprodleite AS rp,composicaolaticinio AS cp  '+
                         ' WHERE cp.codpreproducao=rp.codigo AND cp.tipoinsumo ="OUTROS" AND cp.tipoparametro='+quotedstr(parametro)+
                         ' AND  rp.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString);
 
@@ -1358,7 +1360,8 @@ begin
    else
    begin
 
-   _dm.sdsOrdem.CommandText:='SELECT rp.codigo AS codPre,rp.produto AS prodPre,cp.codigo,cp.produto,cp.quantidade,cp.parametroleite,rp.quantidadeajustada,sum(((cp.quantidade /cp.parametroleite)*rp.quantidadeajustada)) AS utilizado FROM resumoprodleite AS rp,composicaolaticinio AS cp  '+
+   _dm.sdsOrdem.CommandText:='SELECT rp.inc_prod_producao,rp.codigo AS codPre,rp.produto AS prodPre,cp.codigo,cp.produto,cp.quantidade,cp.parametroleite,'+
+   'rp.quantidadeajustada,sum(((cp.quantidade /cp.parametroleite)*rp.quantidadeajustada)) AS utilizado FROM resumoprodleite AS rp,composicaolaticinio AS cp  '+
                         ' WHERE cp.codpreproducao=rp.codigo AND cp.tipoinsumo ="OUTROS" AND cp.tipoparametro='+quotedstr(parametro)+
                         ' AND  rp.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' GROUP BY codigo';
 
@@ -1792,9 +1795,9 @@ begin
 
 
 
-    sqlcustosleite:=' SELECT SUM(quantidadeajustada * (SELECT custo FROM produtos WHERE codigo = '+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+')) as custoLeite FROM resumoprodleite    WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
-    sqlcustoscreme:=' SELECT SUM(quantidadeajustada * (SELECT custo FROM produtos WHERE codigo = '+quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial)+')) as custoCreme FROM resumoprodcreme    WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
-    sqlcustosmanteiga:=' SELECT SUM(quantidadeajustada * (SELECT custo FROM produtos WHERE codigo = '+quotedstr(_dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+' AND codigofilial='+quotedstr(glb_filial)+')) as custoManteiga FROM resumoprodmanteiga    WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+    sqlcustosleite:=' SELECT SUM(quantidadeajustada * (SELECT custo FROM produtos WHERE codigo = '+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+')) as custoLeite FROM resumoprodleite    WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND inc_prod_producao='+quotedstr(_dm2.cdsproducaoitensid.AsString);
+    sqlcustoscreme:=' SELECT SUM(quantidadeajustada * (SELECT custo FROM produtos WHERE codigo = '+quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial)+')) as custoCreme FROM resumoprodcreme    WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND inc_prod_producao='+quotedstr(_dm2.cdsproducaoitensid.AsString);
+    sqlcustosmanteiga:=' SELECT SUM(quantidadeajustada * (SELECT custo FROM produtos WHERE codigo = '+quotedstr(_dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+' AND codigofilial='+quotedstr(glb_filial)+')) as custoManteiga FROM resumoprodmanteiga    WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND inc_prod_producao='+quotedstr(_dm2.cdsproducaoitensid.AsString);
 
     _dm2.ConnecDm2.Connected:=false;
     _dm2.qrPadrao2.SQL.Clear;
@@ -1821,7 +1824,7 @@ begin
 
      // _dm2.ConnecDm2.Connected:=false;
    _dm2.qrPadrao2.SQL.Clear;
-   _dm2.qrPadrao2.SQL.add('SELECT quantidadeajustada FROM resumoprodleite WHERE  numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' and codigofilial="'+glb_filial+'"');
+   _dm2.qrPadrao2.SQL.add('SELECT quantidadeajustada FROM resumoprodleite WHERE  numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND inc_prod_producao='+quotedstr(_dm2.cdsproducaoitensid.AsString)+' and codigofilial="'+glb_filial+'"');
    _dm2.qrPadrao2.open;
     qtdleite:= _dm2.qrPadrao2.FieldByName('quantidadeajustada').AsCurrency;
 
@@ -1829,7 +1832,7 @@ begin
 
     // _dm2.ConnecDm2.Connected:=false;
    _dm2.qrPadrao2.SQL.Clear;
-   _dm2.qrPadrao2.SQL.add('SELECT quantidadeajustada FROM resumoprodcreme WHERE  numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' and codigofilial="'+glb_filial+'"');
+   _dm2.qrPadrao2.SQL.add('SELECT quantidadeajustada FROM resumoprodcreme WHERE  numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND inc_prod_producao='+quotedstr(_dm2.cdsproducaoitensid.AsString)+' and codigofilial="'+glb_filial+'"');
    _dm2.qrPadrao2.open;
     qtdcreme:= _dm2.qrPadrao2.FieldByName('quantidadeajustada').AsCurrency;
 
@@ -1837,7 +1840,7 @@ begin
 
     // _dm2.ConnecDm2.Connected:=false;
    _dm2.qrPadrao2.SQL.Clear;
-   _dm2.qrPadrao2.SQL.add('SELECT quantidadeajustada FROM resumoprodmanteiga WHERE  numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' and codigofilial="'+glb_filial+'"');
+   _dm2.qrPadrao2.SQL.add('SELECT quantidadeajustada FROM resumoprodmanteiga WHERE  numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND inc_prod_producao='+quotedstr(_dm2.cdsproducaoitensid.AsString)+' and codigofilial="'+glb_filial+'"');
    _dm2.qrPadrao2.open;
     qtdmanteiga:= _dm2.qrPadrao2.FieldByName('quantidadeajustada').AsCurrency;
 
@@ -1845,13 +1848,15 @@ begin
 
 
  //================================================ produtos do padrão leite ==============================================================
-               sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
+               sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,inc_prod_producao,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
                           ' SELECT ';
 
               _dm2.ConnecDm2.Connected:=false;
               _dm2.qrPadrao.SQL.Clear;
               _dm2.qrPadrao.sql.add(sqlInsert);
               _dm2.qrPadrao.sql.add(quotedstr(glb_filial)+','); // codigofilial
+               _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsproducaoitensid.asstring)+','); // inc
+
               _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsMovproducaonumero.AsString)+','); //  idproducao
               _dm2.qrPadrao.sql.add('codpreproducao,'); //   codigoproduto
               _dm2.qrPadrao.sql.add('codigo,');  // codigomateria
@@ -1876,13 +1881,15 @@ begin
               _dm2.qrPadrao.execsql;
  //=========================================  produtos do padrão creme  =====================================================================
 
-               sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
+               sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,inc_prod_producao,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
                           ' SELECT ';
 
               _dm2.ConnecDm2.Connected:=false;
               _dm2.qrPadrao.SQL.Clear;
               _dm2.qrPadrao.sql.add(sqlInsert);
               _dm2.qrPadrao.sql.add(quotedstr(glb_filial)+','); // codigofilial
+               _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsproducaoitensid.asstring)+','); // inc
+
               _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsMovproducaonumero.AsString)+','); //  idproducao
               _dm2.qrPadrao.sql.add('codpreproducao,'); //   codigoproduto
               _dm2.qrPadrao.sql.add('codigo,');  // codigomateria
@@ -1906,13 +1913,14 @@ begin
                ' AND tipoparametro ="C" ');  //  operador
               _dm2.qrPadrao.execsql;
  //========================================  produtos do padrão manteiga  ======================================================================
-              sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
+              sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,inc_prod_producao,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
                           ' SELECT ';
 
               _dm2.ConnecDm2.Connected:=false;
               _dm2.qrPadrao.SQL.Clear;
               _dm2.qrPadrao.sql.add(sqlInsert);
               _dm2.qrPadrao.sql.add(quotedstr(glb_filial)+','); // codigofilial
+              _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsproducaoitensid.asstring)+','); // inc
               _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsMovproducaonumero.AsString)+','); //  idproducao
               _dm2.qrPadrao.sql.add('codpreproducao,'); //   codigoproduto
               _dm2.qrPadrao.sql.add('codigo,');  // codigomateria
@@ -1942,7 +1950,7 @@ begin
        //Obtem custo da produção
        _dm2.ConnecDm2.Connected:=false;
        _dm2.qrPadrao2.SQL.Clear;
-       _dm2.qrPadrao2.SQL.add('SELECT SUM(totalmateriautilizada * custounitario) AS totalProducao FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString));
+       _dm2.qrPadrao2.SQL.add('SELECT SUM(totalmateriautilizada * custounitario) AS totalProducao FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND inc_prod_producao='+quotedstr(_dm2.cdsproducaoitensid.AsString));
        _dm2.qrPadrao2.open;
 
 
@@ -1962,7 +1970,7 @@ begin
          //2-BAIXA DOS INSUMOS
          _dm.ConnecDm.Connected:=false;
          _dm.qrPadrao.SQL.Clear;
-         _dm.qrPadrao.SQL.Add('SELECT codigomateria,descricaomateria,SUM(totalmateriautilizada) as materiautilizada FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigofilial='+glb_filial+' AND codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+'  GROUP BY codigomateria');
+         _dm.qrPadrao.SQL.Add('SELECT codigomateria,descricaomateria,SUM(totalmateriautilizada) as materiautilizada FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigofilial='+glb_filial+' AND codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND inc_prod_producao='+quotedstr(_dm2.cdsproducaoitensid.AsString)+' GROUP BY codigomateria');
          _dm.qrPadrao.open;
 
 
@@ -1996,7 +2004,7 @@ begin
 
      //atualiza a tabela produção itens para item requisitado
             _dm.qrpadrao2.sql.clear;
-            _dm.qrpadrao2.sql.add(' UPDATE producaoitens SET materiarequisitada = "S"  WHERE codigo ='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND codigofilial='+quotedstr(glb_filial)+' AND numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+            _dm.qrpadrao2.sql.add(' UPDATE producaoitens SET materiarequisitada = "S"  WHERE codigo ='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND id='+quotedstr(_dm2.cdsproducaoitensid.asstring)+' AND codigofilial='+quotedstr(glb_filial)+' AND numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
             _dm.qrpadrao2.ExecSQL();
 
            _dm2.cdsproducaoitens.Refresh;
@@ -2137,7 +2145,7 @@ begin
 
       _dm2.ConnecDm2.Connected:=false;
       _dm2.qrLeite.SQL.clear;
-      _dm2.qrLeite.SQL.Add('SELECT ip.codigo,ip.produto, cp.tipoinsumo, ip.quantidadeleite,ip.quantidadecreme,ip.quantidademanteiga FROM composicaolaticinio AS cp, producaoitens AS ip ');
+      _dm2.qrLeite.SQL.Add('SELECT ip.id,ip.codigo,ip.produto, cp.tipoinsumo, ip.quantidadeleite,ip.quantidadecreme,ip.quantidademanteiga FROM composicaolaticinio AS cp, producaoitens AS ip ');
       _dm2.qrLeite.SQL.Add('WHERE cp.codpreproducao=ip.codigo AND tipoinsumo="leite" and ip.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
       _dm2.qrLeite.open;
 
@@ -2147,8 +2155,9 @@ begin
 
            _dm.ConnecDm.Connected:=false;
            _dm.qrPadrao.SQL.Clear;
-           _dm.qrPadrao.SQL.Add('insert into resumoprodleite(codigo,produto,quantidade,codigofilial,numeroproducao) values (');
+           _dm.qrPadrao.SQL.Add('insert into resumoprodleite(codigo,inc_prod_producao,produto,quantidade,codigofilial,numeroproducao) values (');
            _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrLeite.fieldbyname('codigo').AsString)+',');
+           _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrLeite.fieldbyname('id').AsString)+',');
            _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrLeite.fieldbyname('produto').AsString)+',');
            _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrLeite.fieldbyname('quantidadeleite').AsString)+',');
            _dm.qrPadrao.SQL.Add(quotedstr(glb_filial)+',');
@@ -2164,7 +2173,7 @@ begin
 
       _dm2.ConnecDm2.Connected:=false;
       _dm2.qrCreme.SQL.clear;
-      _dm2.qrCreme.SQL.Add('SELECT ip.codigo,ip.produto, cp.tipoinsumo, ip.quantidadeleite,ip.quantidadecreme,ip.quantidademanteiga FROM composicaolaticinio AS cp, producaoitens AS ip ');
+      _dm2.qrCreme.SQL.Add('SELECT ip.id,ip.codigo,ip.produto, cp.tipoinsumo, ip.quantidadeleite,ip.quantidadecreme,ip.quantidademanteiga FROM composicaolaticinio AS cp, producaoitens AS ip ');
       _dm2.qrCreme.SQL.Add('WHERE cp.codpreproducao=ip.codigo AND tipoinsumo="creme" and ip.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
       _dm2.qrCreme.open;
 
@@ -2174,8 +2183,9 @@ begin
 
             _dm.ConnecDm.Connected:=false;
            _dm.qrPadrao.SQL.Clear;
-           _dm.qrPadrao.SQL.Add('insert into resumoprodcreme(codigo,produto,quantidade,codigofilial,numeroproducao) values (');
+           _dm.qrPadrao.SQL.Add('insert into resumoprodcreme(codigo,inc_prod_producao,produto,quantidade,codigofilial,numeroproducao) values (');
            _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrCreme.fieldbyname('codigo').AsString)+',');
+           _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrCreme.fieldbyname('id').AsString)+',');
            _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrCreme.fieldbyname('produto').AsString)+',');
            _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrCreme.fieldbyname('quantidadecreme').AsString)+',');
            _dm.qrPadrao.SQL.Add(quotedstr(glb_filial)+',');
@@ -2193,7 +2203,7 @@ begin
 
       _dm2.ConnecDm2.Connected:=false;
       _dm2.qrManteiga.SQL.clear;
-      _dm2.qrManteiga.SQL.Add('SELECT ip.codigo,ip.produto, cp.tipoinsumo, ip.quantidadeleite,ip.quantidadecreme,ip.quantidademanteiga FROM composicaolaticinio AS cp, producaoitens AS ip ');
+      _dm2.qrManteiga.SQL.Add('SELECT ip.id,ip.codigo,ip.produto, cp.tipoinsumo, ip.quantidadeleite,ip.quantidadecreme,ip.quantidademanteiga FROM composicaolaticinio AS cp, producaoitens AS ip ');
       _dm2.qrManteiga.SQL.Add('WHERE cp.codpreproducao=ip.codigo AND tipoinsumo="manteiga" and ip.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
       _dm2.qrManteiga.open;
 
@@ -2202,8 +2212,9 @@ begin
        begin
            _dm.ConnecDm.Connected:=false;
            _dm.qrPadrao.SQL.Clear;
-           _dm.qrPadrao.SQL.Add('insert into resumoprodmanteiga(codigo,produto,quantidade,codigofilial,numeroproducao) values (');
+           _dm.qrPadrao.SQL.Add('insert into resumoprodmanteiga(codigo,inc_prod_producao,produto,quantidade,codigofilial,numeroproducao) values (');
            _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrManteiga.fieldbyname('codigo').AsString)+',');
+           _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrManteiga.fieldbyname('id').AsString)+',');
            _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrManteiga.fieldbyname('produto').AsString)+',');
            _dm.qrPadrao.SQL.Add(quotedstr( _dm2.qrManteiga.fieldbyname('quantidademanteiga').AsString)+',');
            _dm.qrPadrao.SQL.Add(quotedstr(glb_filial)+',');
@@ -2893,6 +2904,7 @@ begin
    _dm2.cdsFulxogramaProducao.Close;
    _dm2.sdsFulxogramaProducao.CommandText:='SELECT '+
       'id,'+
+      'inc_prod_producao,'+
       'codigoproduto,'+
       'codigofilial,'+
       'numeroproducao,'+
@@ -2906,7 +2918,8 @@ begin
       'operadortermino,'+
       'iniciado,'+
       'status,'+
-      'finalizado FROM fluxogramaproducao WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+      'finalizado FROM fluxogramaproducao WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+
+      ' AND inc_prod_producao='+quotedstr(_dm2.cdsproducaoitensid.AsString);
    _dm2.sdsFulxogramaProducao.execsql;
    _dm2.cdsFulxogramaProducao.Open;
    _dm2.cdsFulxogramaProducao.Refresh;
@@ -2954,7 +2967,7 @@ begin
     end;
 
 
-    _dm.ConnecDm.Connected:=false;
+    {_dm.ConnecDm.Connected:=false;
     _dm.qrPadrao.SQL.Clear;
     _dm.qrPadrao.SQL.Add(' select count(1) as total from producaoitens where codigo='+quotedstr(lblCod.Caption)+' and numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
     _dm.qrPadrao.open;
@@ -2963,7 +2976,7 @@ begin
     begin
     application.MessageBox('Produto já foi lançado','Alerta',MB_ICONEXCLAMATION+MB_OK);
     exit;
-    end;
+    end; }
 
     {
     _dm.ConnecDm.Connected:=false;
@@ -3004,8 +3017,9 @@ begin
 
 
     _dm.qrPadrao.SQL.Clear;
-    _dm.qrPadrao.SQL.Add('INSERT INTO fluxogramaproducao(codigoproduto,codigofilial,numeroproducao,codigoetapaprod)'+
+    _dm.qrPadrao.SQL.Add('INSERT INTO fluxogramaproducao(codigoproduto,inc_prod_producao,codigofilial,numeroproducao,codigoetapaprod)'+
      'SELECT '+quotedstr(_dm.cdsPrd2codigo.AsString)+','+
+     '(SELECT MAX(id) FROM producaoitens WHERE codigo ="'+_dm.cdsPrd2codigo.AsString+'" AND numeroproducao="'+_dm2.cdsMovproducaonumero.AsString+'") AS inc,'+
      quotedstr(glb_filial)+','+
      quotedstr(_dm2.cdsMovproducaonumero.AsString)+
      ',id FROM cadetapaproducao WHERE codigoproduto='+quotedstr(_dm.cdsPrd2codigo.AsString)+

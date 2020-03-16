@@ -23,7 +23,6 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 1020
     object Label40: TLabel
       Left = 23
       Top = 10
@@ -148,7 +147,6 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
     Height = 41
     Align = alTop
     TabOrder = 3
-    ExplicitWidth = 1020
     object Label2: TLabel
       Left = 23
       Top = 12
@@ -170,7 +168,6 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
     Height = 41
     Align = alTop
     TabOrder = 4
-    ExplicitWidth = 1020
     object Label1: TLabel
       Left = 23
       Top = 16

@@ -41,6 +41,7 @@ type
     txtqtdaddprod: TCurrencyEdit;
     rgAjuste: TRadioGroup;
     lblinsumo: TLabel;
+    Label6: TLabel;
     procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -122,6 +123,15 @@ soroutilizado:currency;
 sqlgrupo:string;
 begin
 
+         _dm2.qrPadrao.SQL.Clear;
+         _dm2.qrPadrao.SQL.add('SELECT COUNT(1) as total FROM producaoitens WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigofilial="'+glb_filial+'" AND materiarequisitada="N"');
+         _dm2.qrPadrao.open;
+
+         if( _dm2.qrPadrao.FieldByName('total').AsInteger <> 0)then
+         begin
+              application.MessageBox('Existem insumos pendentes de requisição!','Alerta',MB_ICONEXCLAMATION+mb_ok);
+              exit;
+         end;
 
 
 
@@ -136,7 +146,7 @@ begin
 
 
    sqlgrupo:='';
-   sqlgrupo:=' SELECT codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,';
+   sqlgrupo:=' SELECT codigofilial,inc_prod_producao,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,';
    if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
     sqlgrupo:= sqlgrupo+' quantidademateria, sum(totalmateriautilizada) as totalmateriautilizada,sum((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador '
     else
@@ -184,7 +194,7 @@ begin
 
    rvpImpConsumo.SetParam('totalVLeite','R$ '+formatcurr('##0.00',_dm2.qrPadrao.FieldByName('custo_leite').ascurrency));
    rvpImpConsumo.SetParam('totalVCreme','R$ '+formatcurr('##0.00',_dm2.qrPadrao.FieldByName('custo_creme').ascurrency));
-   rvpImpConsumo.SetParam('totalVsoro',formatcurr('##0.00',soroutilizado));
+   rvpImpConsumo.SetParam('totalVsoro','R$ '+formatcurr('##0.00',soroutilizado));
    rvpImpConsumo.SetParam('totaVmanteiga','R$ '+formatcurr('##0.00',_dm2.qrPadrao.FieldByName('custo_manteiga').ascurrency));
 
 
@@ -192,11 +202,11 @@ begin
    rvpImpConsumo.Execute;
 
 
-     _dm2.ConnecDm2.Connected;
+    _dm2.ConnecDm2.Connected;
     _dm2.cdsMateria.Close;
-    _dm2.sdsMateria.commandtext:=_frmProducaoDiaria.sql2+//'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,'+
+    _dm2.sdsMateria.commandtext:=glb_sql2+//'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,'+
   // ' quantidademateria, totalmateriautilizada,(totalmateriautilizada * custounitario) as custounitario,DATA,operador from producaomovmateria'+
-    ' where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+    ' where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and inc_prod_producao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
     _dm2.sdsMateria.execsql();
     _dm2.cdsMateria.open;
     _dm2.cdsMateria.refresh;
@@ -304,9 +314,9 @@ begin
     _dm2.cdsMateria.Close;
     //_dm2.sdsMateria.commandtext:='select * from producaomovmateria where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
 
-    _dm2.sdsMateria.commandtext:=_frmProducaoDiaria.sql2+{'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,'+
+    _dm2.sdsMateria.commandtext:=glb_sql2+{'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,'+
    ' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador from producaomovmateria'+   }
-   ' where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+   ' where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and inc_prod_producao='+quotedstr(_dm2.cdsproducaoitensid.AsString);
 
     _dm2.sdsMateria.execsql();
     _dm2.cdsMateria.open;

@@ -1056,6 +1056,7 @@ type
     cdsOrdemparametroleite: TFMTBCDField;
     cdsOrdemquantidadeajustada: TFMTBCDField;
     cdsOrdemutilizado: TFMTBCDField;
+    cdsOrdeminc_prod_producao: TIntegerField;
     procedure ConnecDmBeforeConnect(Sender: TObject);
   private
     { Private declarations }

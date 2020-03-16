@@ -335,6 +335,11 @@ type
     cdsFulxogramaProducaoduracaoestimada: TTimeField;
     cdsFulxogramaProducaoduracao: TWideStringField;
     cdsproducaoitensmateriarequisitada: TWideStringField;
+    cdsFulxogramaProducaoinc_prod_producao: TIntegerField;
+    cdsResumoleiteinc_prod_producao: TIntegerField;
+    cdsresumocremeinc_prod_producao: TIntegerField;
+    cdsresumomanteigainc_prod_producao: TIntegerField;
+    cdsMateriainc_prod_producao: TIntegerField;
     procedure ConnecDm2BeforeConnect(Sender: TObject);
   private
     { Private declarations }

@@ -554,9 +554,9 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
     object Label19: TLabel
       Left = 160
       Top = 6
-      Width = 236
+      Width = 233
       Height = 13
-      Caption = 'F2 para adicionar '#224' quantidade produzida.'
+      Caption = 'F2 para informar a quantidade produzida.'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -759,8 +759,8 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
         24)
     end
     object pnladdqtd: TPanel
-      Left = 904
-      Top = 68
+      Left = 728
+      Top = 52
       Width = 260
       Height = 121
       TabOrder = 2
@@ -790,9 +790,9 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
         object Label16: TLabel
           Left = 22
           Top = 6
-          Width = 120
+          Width = 124
           Height = 13
-          Caption = 'Adicionar quantidade'
+          Caption = 'Quantidade produzida'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -11
@@ -832,7 +832,7 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
         Top = 88
         Width = 75
         Height = 25
-        Caption = 'Adicionar'
+        Caption = 'Alterar'
         TabOrder = 1
         OnClick = BitBtn7Click
       end
@@ -863,7 +863,6 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
       Color = clMenuHighlight
       ParentBackground = False
       TabOrder = 0
-      ExplicitWidth = 491
       object Label13: TLabel
         Left = 22
         Top = 2

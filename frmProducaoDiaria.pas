@@ -164,7 +164,7 @@ implementation
 
 {$R *.dfm}
 uses
-main,dm,dm2,clipbrd,frmEmbAdicionais,frmlogin,frmInsumosdeproducao,frmMovEmbalgem;
+main,dm,dm2,clipbrd,frmEmbAdicionais,frmlogin,frmInsumosdeproducao,frmMovEmbalgem,scripts;
 
 procedure validarDadosProducao(numeroProducao:string);
 var
@@ -634,9 +634,12 @@ begin
 
 
 
-        _dm2.ConnecDm2.Connected;
+
+
+          _dm2.ConnecDm2.Connected;
        _dm2.cdsproducaoitens.close;
-       _dm2.sdsproducaoitens.CommandText:='SELECT * FROM producaoitens WHERE numeroproducao='+quotedstr(_dm2.cdsMovProducaonumero.AsString);
+       _dm2.sdsproducaoitens.CommandText:=scpSelectProcaoItens+
+        ' WHERE numeroproducao='+quotedstr(_dm2.cdsMovProducaonumero.AsString)+' group by codigo';
        _dm2.sdsproducaoitens.execsql;
        _dm2.cdsproducaoitens.open;
        _dm2.cdsproducaoitens.Refresh;
@@ -883,8 +886,8 @@ end;
 
    //obetem os custos
    SQLcustos:='  SELECT m.codigoproduto,m.quantidade,m.quantidademateria,m.totalmateriautilizada,m.custounitario,p.quantidadeleite,p.quantidadecreme,p.quantidademanteiga,'+
-      '  (m.totalmateriautilizada * m.custounitario) AS custoinsumos, '+
-      '  p.codigo,p.produto,p.quantidadeproduzida,p.codigofilial,( '+
+      '  SUM(m.totalmateriautilizada * m.custounitario) AS custoinsumos, '+
+      '  p.codigo,p.produto,(SELECT SUM(quantidadeproduzida) FROM producaoitens WHERE codigo=p.codigo AND numeroproducao=m.idproducao) AS quantidadeproduzida,p.codigofilial,( '+
       '  SUM(m.totalmateriautilizada * m.custounitario)'+
       '  + (p.quantidadeleite *(SELECT custo FROM produtos WHERE codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+'))'+
       '  + (p.quantidadecreme *(SELECT custo FROM produtos WHERE codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+'))'+
@@ -892,7 +895,7 @@ end;
       '  ) AS custo_insumos_leite_Creme_Manteiga '+
       '   FROM producaomovmateria AS m, producaoitens AS p '+
       '   WHERE m.idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+
-      '   AND p.numeroproducao=m.idproducao'+
+      '   AND p.numeroproducao=m.idproducao  AND m.inc_prod_producao = p.id'+
       '   AND p.codigo=m.codigoproduto '+
       '   GROUP BY m.codigoproduto';
 
@@ -1809,7 +1812,7 @@ begin
 
     _dm2.ConnecDm2.Connected:=false;
     _dm2.qrPadrao.SQL.Clear;
-    _dm2.qrPadrao.sql.add('update producaoitens set lote='+quotedstr(txtlote.Text)+', validade='+quotedstr(formatdatetime('yyyy-mm-dd',txtvalidade.Date))+' where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and id='+quotedstr(_dm2.cdsproducaoitensid.AsString));
+    _dm2.qrPadrao.sql.add('update producaoitens set lote='+quotedstr(txtlote.Text)+', validade='+quotedstr(formatdatetime('yyyy-mm-dd',txtvalidade.Date))+' where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString));
     _dm2.qrPadrao.execsql;
    end;
 
@@ -1842,24 +1845,96 @@ ModalResult:=-1;
 end;
 
 procedure T_frmProducaoDiaria.BitBtn7Click(Sender: TObject);
+var
+qtditens, I:integer;
+resto:double;
 begin
 
-    if(txtqtdadicional.Value=0)then
+  {  if(txtqtdadicional.Value=0)then
     begin
       Application.MessageBox('Informe uma quantidade positiva ou negativa!','Alerta',MB_ICONWARNING+MB_OK);
       exit;
-    end;
+    end;  }
+
+    _dm.qrPadrao2.SQL.Clear;
+    _dm.qrPadrao2.SQL.add('select count(1) as qtd from producaoitens where codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' and numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+    _dm.qrPadrao2.Open;
+
+    qtditens:=  _dm.qrPadrao2.FieldByName('qtd').AsInteger;
+
+
+    if(qtditens>0)then
+    begin
 
     _dm.ConnecDm.Connected:=false;
     _dm.qrPadrao.SQL.Clear;
-    _dm.qrPadrao.SQL.Add('UPDATE producaoitens SET quantidadeproduzida = quantidadeproduzida + ('+currtostr(txtqtdadicional.Value)+'),qtdadicional=qtdadicional+('+currtostr(txtqtdadicional.Value)+')   WHERE NUMEROPRODUCAO='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+    _dm.qrPadrao.SQL.Add('UPDATE producaoitens SET quantidadeproduzida =  ('+currtostr(txtqtdadicional.Value / qtditens)+'),qtdadicional=('+currtostr(txtqtdadicional.Value /qtditens)+')   WHERE NUMEROPRODUCAO='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
     _dm.qrPadrao.SQL.Add(' and codigo ='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString));
-    clipboard.AsText:= _dm.qrPadrao.SQL.text;
     _dm.qrPadrao.ExecSQL();
 
-    _dm2.cdsproducaoitens.Refresh;
+    _dm.ConnecDm.Connected:=false;
+    _dm.qrPadrao.SQL.Clear;
+    _dm.qrPadrao.SQL.Add('SELECT SUM(quantidadeproduzida) as quantidadeproduzida,SUM(qtdadicional) as qtdadicional FROM producaoitens WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+    _dm.qrPadrao.SQL.Add(' and codigo ='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString));
+    _dm.qrPadrao.open();
+
+
+    resto:= txtqtdadicional.Value - _dm.qrPadrao.FieldByName('qtdadicional').AsFloat;
+
+          if(resto<>0)then
+          begin
+
+                _dm.qrPadrao2.SQL.Clear;
+                _dm.qrPadrao2.SQL.add('select * from producaoitens where codigo='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' and numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+                _dm.qrPadrao2.Open;
+
+                I:=1;
+
+                           _dm.qrPadrao2.First;
+                           while not  _dm.qrPadrao2.Eof do
+                           begin
+                                       if(I=1)then
+                                       begin
+                                          //_dm.ConnecDm.Connected:=false;
+                                            _dm.qrPadrao.SQL.Clear;
+                                            _dm.qrPadrao.SQL.Add('UPDATE producaoitens SET quantidadeproduzida = quantidadeproduzida  + '+quotedstr(currtostr(resto))+',qtdadicional=qtdadicional+'+quotedstr(currtostr(resto))+'   WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+                                            _dm.qrPadrao.SQL.Add(' and id ='+quotedstr(_dm.qrPadrao2.FieldByName('id').AsString));
+                                            _dm.qrPadrao.ExecSQL();
+                                       end;
+
+                              I:=I+1;
+
+                            _dm.qrPadrao2.next;
+
+                           end;
+
+
+
+           end;//if resto
+
+
+
+    end
+    else
+        begin
+
+
+
+    _dm.ConnecDm.Connected:=false;
+    _dm.qrPadrao.SQL.Clear;
+    _dm.qrPadrao.SQL.Add('UPDATE producaoitens SET quantidadeproduzida =  ('+currtostr(txtqtdadicional.Value)+'),qtdadicional=('+currtostr(txtqtdadicional.Value)+')   WHERE NUMEROPRODUCAO='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+    _dm.qrPadrao.SQL.Add(' and codigo ='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString));
+  //  clipboard.AsText:= _dm.qrPadrao.SQL.text;
+    _dm.qrPadrao.ExecSQL();
+
+
 
     frm.ModalResult:=-1;
+
+        end;
+    _dm2.cdsproducaoitens.Refresh;
+
+
 
 end;
 
