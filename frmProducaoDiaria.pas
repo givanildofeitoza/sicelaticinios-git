@@ -1656,9 +1656,9 @@ begin
 
   SQL:= 'SELECT p.qtdadicional,p.totalproduzido, p.id, p.codigo,  p.produto, p.unidade,p.quantidadesoro,p.materiarequisitada,'+
         '(SELECT lote FROM producaoitens where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' LIMIT 1) AS lote,(SELECT validade FROM producaoitens where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' LIMIT 1) AS validade,'+
-        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodleite WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidadeleite ,'+
-        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodcreme WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidadeCreme ,'+
-        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodmanteiga WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigo=p.codigo) AS quantidademanteiga ,'+
+        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodleite WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND inc_prod_producao=p.id) AS quantidadeleite ,'+
+        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodcreme WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+'  AND inc_prod_producao=p.id) AS quantidadeCreme ,'+
+        ' (SELECT ifnull(SUM(quantidadeajustada),0.00)   FROM resumoprodmanteiga WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+'  AND inc_prod_producao=p.id) AS quantidademanteiga ,'+
         '  p.quantidadeproduzida, p.codigofilial, p.numeroproducao FROM producaoitens as p'+
         ' WHERE p.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString);
 
@@ -1666,9 +1666,9 @@ begin
    glb_sql2:='';
    glb_sql2:=  'select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,totalcustoproducao,';
    if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
-   glb_sql2:=glb_sql2+' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador from producaomovmateria'  //quando o parâmetro for por KG produzido
+   glb_sql2:=glb_sql2+' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador,inc_prod_producao from producaomovmateria'  //quando o parâmetro for por KG produzido
    else
-    glb_sql2:=glb_sql2+' quantidademateria, totalmateriautilizada,(totalmateriautilizada * custounitario) as custounitario,DATA,operador from producaomovmateria';
+    glb_sql2:=glb_sql2+' quantidademateria, totalmateriautilizada,(totalmateriautilizada * custounitario) as custounitario,DATA,operador,inc_prod_producao from producaomovmateria';
 
     _dm2.ConnecDm2.Connected:=false;
     _dm2.cdsproducaoitens.Close;
