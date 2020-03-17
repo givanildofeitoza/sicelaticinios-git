@@ -592,3 +592,17 @@ ALTER TABLE fluxogramaproducao     ADD COLUMN `status` INT(1) DEFAULT '0' NULL;
 --------11/03/2020-----------------------
 ALTER TABLE producaoitens     CHANGE lote lote VARCHAR(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '0' NULL ;
 -----------------------------------------
+--------13/03/2020-----------------------
+
+ALTER TABLE `fluxogramaproducao`     ADD COLUMN `inc_prod_producao` INT(6) DEFAULT 0 NULL;
+ALTER TABLE `resumoprodleite`     ADD COLUMN `inc_prod_producao` INT(6) DEFAULT 0 NULL;
+ALTER TABLE `resumoprodcreme`     ADD COLUMN `inc_prod_producao` INT(6) DEFAULT 0 NULL;
+ALTER TABLE `resumoprodmanteiga`     ADD COLUMN `inc_prod_producao` INT(6) DEFAULT 0 NULL;
+
+ALTER TABLE `producaomovmateria`     ADD COLUMN `inc_prod_producao` INT(6) DEFAULT 0 NULL;
+
+
+
+
+
+
