@@ -303,6 +303,8 @@ begin
 
       atualizarTotais(lblNrAnalise.Caption);
 
+
+
     frm.Close;
 end;
 
@@ -310,8 +312,8 @@ procedure T_frmAnaliseColeta.btnAbrirColetaClick(Sender: TObject);
 begin
    frm:=Tform.create(self);
 
-    frm.Width:=520;
-    frm.Height:=410;
+    frm.Width:=775;
+    frm.Height:=475;
     frm.Position:=poDesktopCenter;
     frm.BorderStyle:=bsDialog;
 
@@ -381,15 +383,15 @@ begin
     lblPlaca.Caption:=  '0000';
     lblConfirmacao.Caption:= '0000';
     lblTotColeta.Caption:=  '0000';
-
+    pnlDadosColeta.Enabled:=true;
 
 
     atualizarTotais(lblNrAnalise.Caption);
 
-      pnldadoscoleta.enabled:=false;
+     // pnldadoscoleta.enabled:=false;
       txtStatus.Text:='Aberta';
       pnlInfAnalise.Enabled:=true;
-      txtDescricao.SetFocus;
+  //    txtDescricao.SetFocus;
       btnConfirmar.Enabled:=true;
 
 end;
@@ -493,8 +495,8 @@ procedure T_frmAnaliseColeta.BitBtn2Click(Sender: TObject);
 begin
   frm:=Tform.create(self);
 
-    frm.Width:=450;
-    frm.Height:=435;
+    frm.Width:=780;
+    frm.Height:=445;
     frm.Position:=poDesktopCenter;
     frm.BorderStyle:=bsDialog;
 

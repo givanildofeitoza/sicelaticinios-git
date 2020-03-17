@@ -1174,20 +1174,51 @@ end;
       quotedstr(glb_usuario)+','+
       quotedstr('EMBALAGENS ADICIONAIS DE PRODUCAO')+','+
       quotedstr('PERDA NA PRODUÇÃO N°'+_dm2.cdsMovproducaonumero.AsString)+','+
-   ' (SELECT custo FROM produtos WHERE codigo=codigoembalagem),'+
-   ' (SELECT precovenda FROM produtos WHERE codigo=codigoembalagem),'+
+   ' (SELECT custo FROM '+glb_produtos+' WHERE codigo=codigoembalagem  AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT precovenda FROM '+glb_produtos+' WHERE codigo=codigoembalagem  AND codigofilial='+quotedstr(glb_filial)+'),'+
    '  "P",'+
-   ' (SELECT grupo FROM produtos WHERE codigo=codigoembalagem),'+
-   ' (SELECT subgrupo FROM produtos WHERE codigo=codigoembalagem),'+
-   ' (SELECT situacao FROM produtos WHERE codigo=codigoembalagem),'+
+   ' (SELECT grupo FROM '+glb_produtos+' WHERE codigo=codigoembalagem  AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT subgrupo FROM '+glb_produtos+' WHERE codigo=codigoembalagem AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT situacao FROM '+glb_produtos+' WHERE codigo=codigoembalagem AND codigofilial='+quotedstr(glb_filial)+'),'+
    ' "" FROM producaomovembalagem WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigofilial='+quotedstr(glb_filial)+' AND tipo="Adicional" ');
-
-
 
    _dm.qrPadrao.ExecSQL;
 
+   //informar perda do leite
+    if(application.MessageBox('Informar perda do leite na gestão de perdas?','Pergunta',MB_ICONQUESTION+MB_YESNO)=IDYES)then
+    begin
+   _dm.ConnecDm.Connected:=false;
+   _dm.qrPadrao.SQL.Clear;
+   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (encerrada,numero,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor) VALUES ('+
+   '  "S",(SELECT numero FROM contperdas WHERE operador='+quotedstr(glb_usuario)+' AND ip='+quotedstr(glb_ip)+' AND DATA=CURRENT_DATE ORDER BY numero DESC LIMIT 1),'+quotedstr(glb_filial)+','+
+   quotedstr( _dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+','+
+   quotedstr( _dm.cdsConfigLaticinioprodpadraoleite.AsString)+','+
+   quotedstr(formatcurr('##0.00',_dm2.cdsProducaoLeiteperda.AsCurrency))+','+
+   ' CURRENT_DATE,'+
+      quotedstr(glb_usuario)+','+
+      quotedstr('PERDA DE LEITE NA PRODUÇÃO')+','+
+      quotedstr('PERDA NA PRODUÇÃO N°'+_dm2.cdsMovproducaonumero.AsString)+','+
+   ' (SELECT custo FROM '+glb_produtos+' WHERE codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT precovenda FROM '+glb_produtos+' WHERE codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   '  "P",'+
+   ' (SELECT grupo FROM '+glb_produtos+' WHERE  codigofilial='+quotedstr(glb_filial)+' AND codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+'),'+
+   ' (SELECT subgrupo FROM '+glb_produtos+' WHERE  codigofilial='+quotedstr(glb_filial)+' AND codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+'),'+
+   ' (SELECT situacao FROM '+glb_produtos+' WHERE  codigofilial='+quotedstr(glb_filial)+' AND codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+'),'+
+   ' "")');
+
+    _dm.qrPadrao.ExecSQL;
+
+    // EFETUA A BAIXA NO ESTOQUE A PARTIR DA PERDA
+
+    _dm.qrpadrao2.sql.clear;
+    _dm.qrpadrao2.sql.add(' UPDATE '+glb_produtos+' SET quantidade = quantidade - '+quotedstr(formatcurr('##0.00',_dm2.cdsProducaoLeiteperda.AsCurrency))+' WHERE codigo ='+quotedstr( _dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial));
+    _dm.qrpadrao2.ExecSQL();
 
 
+
+
+    end;
+   // fim perca do leite
 
                 _dm2.ConnecDm2.Connected:=false;
                 _dm2.cdsprodmovembalagem.Close;
@@ -1686,7 +1717,7 @@ begin
  // ' quantidademateria, totalmateriautilizada,((quantidade * quantidademateria) * custounitario) as custounitario,DATA,operador from producaomovmateria'+
  //else
   //' quantidademateria, totalmateriautilizada,(totalmateriautilizada * custounitario) as custounitario,DATA,operador from producaomovmateria'+
-  ' where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
+  ' where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and inc_prod_producao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString);
   _dm2.sdsMateria.ExecSQL();
   _dm2.cdsmateria.Open;
   _dm2.cdsmateria.refresh;
@@ -1722,15 +1753,15 @@ begin
 end
   else
   begin
- sql:=sql+'pri.quantidadeproduzida  AS quantidadetotal,'+
-  ' ((SELECT SUM(rp.quantidadeajustada) FROM resumoprodleite rp WHERE rp.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND rp.codigo=pri.codigo ) / pri.quantidadeproduzida) AS rendimento,';
+ sql:=sql+'sum(pri.quantidadeproduzida)  AS quantidadetotal,'+
+  ' ((SELECT SUM(rp.quantidadeajustada) FROM resumoprodleite rp WHERE rp.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND rp.codigo=pri.codigo ) / sum(pri.quantidadeproduzida)) AS rendimento,';
   end;
 
  sql:=sql+'  (SELECT SUM(rp.quantidadeajustada) FROM resumoprodleite rp WHERE rp.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND rp.codigo=pri.codigo ) AS qtdleiteinformada '+
  '  FROM producaoderivados AS pd, producaoitens AS pri WHERE pd.quantidade>0 and pd.numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+
- '  AND pri.numeroproducao=pd.numeroproducao AND pri.codigo=pd.codigopreproducao';
+ '  AND pri.numeroproducao=pd.numeroproducao AND pri.codigo=pd.codigopreproducao GROUP BY pri.codigo,pd.codigoderivado';
 
-
+clipboard.AsText:=sql;
 
 
        _dm2.ConnecDm2.Connected;
@@ -1738,7 +1769,12 @@ end
        _dm2.sdsproducaoderivados.CommandText:= sql;
        _dm2.sdsproducaoderivados.execsql;
        _dm2.cdsproducaoderivados.open;
-       _dm2.cdsproducaoderivados.Refresh;
+try
+ _dm2.cdsproducaoderivados.Refresh;
+except
+
+end;
+
 
 
         if(_dm2.cdsProducaoDerivados.RecordCount=0)then
@@ -1929,12 +1965,12 @@ begin
 
 
 
-    frm.ModalResult:=-1;
+
 
         end;
     _dm2.cdsproducaoitens.Refresh;
 
-
+      frm.ModalResult:=-1;
 
 end;
 
@@ -2221,6 +2257,7 @@ begin
     pnladdqtd.Parent:=frm;
     pnladdqtd.visible:=true;
     pnladdqtd.Align:=alClient;
+    txtqtdadicional.Value:=0;
     frm.ShowModal;
 
 

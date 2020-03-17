@@ -565,7 +565,7 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
       ParentFont = False
     end
     object btnsalvar: TBitBtn
-      Left = 570
+      Left = 566
       Top = 1
       Width = 113
       Height = 26
@@ -575,8 +575,8 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
       OnClick = btnsalvarClick
     end
     object btnConfirmarDerivados: TBitBtn
-      Left = 699
-      Top = 1
+      Left = 863
+      Top = 2
       Width = 142
       Height = 25
       Caption = 'Requisitar Mat'#233'ria'
@@ -595,10 +595,10 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
       OnClick = BitBtn2Click
     end
     object btnDerivados2: TBitBtn
-      Left = 856
+      Left = 685
       Top = 1
       Width = 172
-      Height = 25
+      Height = 26
       Caption = 'Confirmar produ'#231#227'o derivados'
       TabOrder = 3
       Visible = False

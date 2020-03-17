@@ -1972,7 +1972,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
         OnClick = BitBtn7Click
       end
       object pnlSobraColeta: TPanel
-        Left = 882
+        Left = 803
         Top = 343
         Width = 463
         Height = 300

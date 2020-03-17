@@ -60,24 +60,32 @@ sql:=sql+'  (SELECT SUM(quantidadeembalagem*quantidade) FROM producaoderivados W
 end
 else
 begin
-sql:=sql+'  pri.quantidadeproduzida as quantidadetotal,pd.quantidade,'+
+sql:=sql+'  sum(pri.quantidadeproduzida) as quantidadetotal,pd.quantidade,'+
 ' ((SELECT SUM(rp.quantidadeajustada) FROM resumoprodleite rp WHERE rp.numeroproducao=mv.numero AND rp.codigo=pri.codigo ) / '+
-' pri.quantidadeproduzida) AS rendimento ';
+' sum(pri.quantidadeproduzida)) AS rendimento ';
 
 end;
 
 
 sql:=sql+'  FROM producaoderivados AS pd, producaoitens AS pri, movproducaodiaria AS mv WHERE pd.quantidade>0 AND mv.datafinalizacao BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.date))+' AND pri.numeroproducao=mv.numero  '+
-'  AND pd.numeroproducao=mv.numero  AND pri.codigo=pd.codigopreproducao and mv.codigofilial='+quotedstr(glb_filial)+' and mv.encerrada="S"  ORDER BY pd.numeroproducao,mv.numero,pd.codigopreproducao ';
+'  AND pd.numeroproducao=mv.numero  AND pri.codigo=pd.codigopreproducao and mv.codigofilial='+quotedstr(glb_filial)+' and mv.encerrada="S" GROUP BY pd.numeroproducao, pri.codigo,pd.codigoderivado ORDER BY pd.numeroproducao,mv.numero ';
 
 
-       _dm2.ConnecDm2.Connected;
+
+
+     try
+     begin
+    _dm2.ConnecDm2.Connected;
        _dm2.cdsproducaoderivados.close;
        _dm2.sdsproducaoderivados.CommandText:= sql;
        _dm2.sdsproducaoderivados.execsql;
        _dm2.cdsproducaoderivados.open;
        _dm2.cdsproducaoderivados.Refresh;
 
+     end
+     except
+
+     end;
 
 
     _dm2.ConnecDm2.Connected;
@@ -118,6 +126,7 @@ begin
 end;
 
 end.
+
 
 
 

@@ -525,21 +525,18 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
         Expanded = False
         FieldName = 'dornic'
         Title.Caption = 'Dornic.'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'gordura'
         Title.Caption = 'Gordura'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'proteina'
         Title.Caption = 'Prote'#237'na'
-        Width = 64
         Visible = True
       end
       item
@@ -623,14 +620,12 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
         Expanded = False
         FieldName = 'quantidade'
         Title.Caption = 'Qtd. Coleta'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'qtdconferida'
         Title.Caption = 'Qtd.Conferida'
-        Width = 64
         Visible = True
       end>
   end
@@ -642,6 +637,7 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     Align = alTop
     Enabled = False
     TabOrder = 6
+    Visible = False
     object Label10: TLabel
       Left = 16
       Top = 6
@@ -737,10 +733,10 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirColeta: TPanel
-    Left = 756
-    Top = 71
-    Width = 506
-    Height = 374
+    Left = 818
+    Top = -28
+    Width = 757
+    Height = 458
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -752,12 +748,13 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     object Panel6: TPanel
       Left = 1
       Top = 1
-      Width = 504
+      Width = 755
       Height = 41
       Align = alTop
       Color = clMenuHighlight
       ParentBackground = False
       TabOrder = 0
+      ExplicitWidth = 504
       object Label14: TLabel
         Left = 23
         Top = 14
@@ -775,8 +772,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     object dbGridAbrirColeta: TDBGrid
       Left = 1
       Top = 137
-      Width = 504
-      Height = 181
+      Width = 755
+      Height = 270
       Align = alTop
       DataSource = _dm.DsourceMovColeta
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -796,9 +793,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
         end
         item
           Expanded = False
-          FieldName = 'responsavel'
-          Title.Caption = 'Respons'#225'vel'
-          Width = 244
+          FieldName = 'veiculo'
+          Width = 296
           Visible = True
         end
         item
@@ -811,7 +807,7 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
           Expanded = False
           FieldName = 'confirmada'
           Title.Caption = 'Confirmada'
-          Width = 64
+          Width = 71
           Visible = True
         end
         item
@@ -824,20 +820,21 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
           Expanded = False
           FieldName = 'dataconfirmacao'
           Title.Caption = 'Confirma'#231#227'o'
+          Width = 73
           Visible = True
         end
         item
           Expanded = False
           FieldName = 'codigofilial'
           Title.Caption = 'Filial'
-          Width = 64
+          Width = 89
           Visible = True
         end>
     end
     object Panel7: TPanel
       Left = 1
       Top = 42
-      Width = 504
+      Width = 755
       Height = 95
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
@@ -847,6 +844,9 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       Font.Style = []
       ParentFont = False
       TabOrder = 2
+      ExplicitLeft = 9
+      ExplicitTop = 37
+      ExplicitWidth = 504
       object Label16: TLabel
         Left = 29
         Top = 44
@@ -945,8 +945,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       end
     end
     object BitBtn11: TBitBtn
-      Left = 403
-      Top = 324
+      Left = 646
+      Top = 413
       Width = 91
       Height = 33
       Caption = 'Abrir'
@@ -955,9 +955,9 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirAnalise: TPanel
-    Left = 666
-    Top = 90
-    Width = 421
+    Left = 817
+    Top = 404
+    Width = 748
     Height = 417
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -970,7 +970,7 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     object Panel9: TPanel
       Left = 1
       Top = 1
-      Width = 419
+      Width = 746
       Height = 25
       Align = alTop
       Caption = 'Abrir an'#225'lise'
@@ -983,6 +983,7 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       ParentBackground = False
       ParentFont = False
       TabOrder = 1
+      ExplicitWidth = 419
     end
     object rgTipoPesq: TRadioGroup
       Left = 22
@@ -1037,8 +1038,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       end
     end
     object pnlBuscaNumero: TPanel
-      Left = 24
-      Top = 77
+      Left = 23
+      Top = 76
       Width = 369
       Height = 68
       TabOrder = 5
@@ -1060,8 +1061,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     object gridAbrirAnalise: TDBGrid
       Left = 23
       Top = 179
-      Width = 371
-      Height = 176
+      Width = 714
+      Height = 192
       DataSource = _dm.dSourceMovAnalise
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       TabOrder = 6
@@ -1113,7 +1114,7 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
     object btnpesq: TBitBtn
       Left = 23
-      Top = 148
+      Top = 145
       Width = 75
       Height = 28
       Caption = 'Buscar'
@@ -1122,8 +1123,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       OnKeyPress = btnpesqKeyPress
     end
     object BitBtn3: TBitBtn
-      Left = 312
-      Top = 359
+      Left = 310
+      Top = 377
       Width = 83
       Height = 34
       Caption = 'Abrir'
@@ -1132,7 +1133,7 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
     object BitBtn7: TBitBtn
       Left = 24
-      Top = 361
+      Top = 377
       Width = 90
       Height = 33
       Caption = 'Excluir'
