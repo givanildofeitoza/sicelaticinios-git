@@ -971,35 +971,35 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
         Align = alTop
         TabOrder = 0
         object Label13: TLabel
-          Left = 6
+          Left = 49
           Top = 31
-          Width = 125
+          Width = 85
           Height = 13
-          Caption = 'Saldo leite na confirma'#231#227'o'
+          Caption = 'Saldo em estoque'
         end
         object Label15: TLabel
-          Left = 229
+          Left = 140
           Top = 31
           Width = 44
           Height = 13
           Caption = 'Utilizado.'
         end
         object Label16: TLabel
-          Left = 326
+          Left = 237
           Top = 31
           Width = 42
           Height = 13
           Caption = 'Vendido.'
         end
         object Label17: TLabel
-          Left = 419
+          Left = 330
           Top = 31
           Width = 41
           Height = 13
           Caption = 'Sobre T.'
         end
         object Label18: TLabel
-          Left = 513
+          Left = 424
           Top = 31
           Width = 32
           Height = 13
@@ -1019,11 +1019,12 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           ParentFont = False
         end
         object Label22: TLabel
-          Left = 142
-          Top = 31
-          Width = 69
+          Left = 905
+          Top = 36
+          Width = 51
           Height = 13
           Caption = 'Sobra anterior'
+          Visible = False
         end
         object Label28: TLabel
           Left = 780
@@ -1052,7 +1053,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           OnExit = txtLeiteEntradaExit
         end
         object txtLeiteUtilizado: TCurrencyEdit
-          Left = 230
+          Left = 141
           Top = 48
           Width = 84
           Height = 21
@@ -1069,7 +1070,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           TabOrder = 1
         end
         object txtLeiteVendido: TCurrencyEdit
-          Left = 324
+          Left = 235
           Top = 48
           Width = 84
           Height = 21
@@ -1086,7 +1087,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           OnExit = txtLeiteVendidoExit
         end
         object txtLeiteSaldo: TCurrencyEdit
-          Left = 419
+          Left = 330
           Top = 48
           Width = 84
           Height = 21
@@ -1103,7 +1104,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           OnExit = txtLeiteSaldoExit
         end
         object txtLeitePerda: TCurrencyEdit
-          Left = 513
+          Left = 424
           Top = 48
           Width = 84
           Height = 21
@@ -1143,7 +1144,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           end
         end
         object BitBtn10: TBitBtn
-          Left = 603
+          Left = 514
           Top = 46
           Width = 75
           Height = 25
@@ -1153,9 +1154,9 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           OnClick = BitBtn10Click
         end
         object txtLeiteSobra: TCurrencyEdit
-          Left = 142
+          Left = 905
           Top = 48
-          Width = 84
+          Width = 51
           Height = 21
           Margins.Left = 1
           Margins.Top = 1
@@ -1167,6 +1168,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 7
+          Visible = False
           OnExit = txtLeiteSobraExit
         end
         object txtLeiteDestinado: TCurrencyEdit
@@ -2864,7 +2866,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
     Left = 460
     Top = 353
     Bitmap = {
-      494C010103000800240010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010103000800280010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0006132500794D9300EF58A800FF58A800FF58A800FF58A800FF58A800FF4D93

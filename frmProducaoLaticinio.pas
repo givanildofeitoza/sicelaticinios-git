@@ -331,7 +331,7 @@ begin
 
       try
       begin
-       _frmProducaoLaticinio.txtLeiteperda.Value:= _frmProducaoLaticinio.txtLeiteSobra.Value + _frmProducaoLaticinio.txtLeiteEntrada.Value - _frmProducaoLaticinio.txtLeiteUtilizado.Value - _frmProducaoLaticinio.txtLeiteVendido.Value - _frmProducaoLaticinio.txtLeitesaldo.Value;
+       _frmProducaoLaticinio.txtLeiteperda.Value:= {_frmProducaoLaticinio.txtLeiteSobra.Value + }_frmProducaoLaticinio.txtLeiteEntrada.Value - _frmProducaoLaticinio.txtLeiteUtilizado.Value - _frmProducaoLaticinio.txtLeiteVendido.Value - _frmProducaoLaticinio.txtLeitesaldo.Value;
 
        if(_frmProducaoLaticinio.txtLeiteperda.Value<0)then
        _frmProducaoLaticinio.txtLeiteperda.Value:=0;
