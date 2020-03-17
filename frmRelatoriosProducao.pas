@@ -189,17 +189,17 @@ filtroProd:='';
     ' (SELECT hora FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS horaproducao,'+
     ' (SELECT datafinalizacao FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS datafimproducao, '+
     ' (SELECT horafinalizacao FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS horafimproducao, '+
-   ' p.codigo,p.produto,p.unidade,p.quantidadeproduzida, '+
-   ' IFNULL((p.quantidadeleite / p.quantidadeproduzida),0) AS rendleite, '+
-   ' IFNULL((p.quantidadecreme / p.quantidadeproduzida),0) AS rendCreme, ' +
-   ' IFNULL((p.quantidademanteiga / p.quantidadeproduzida),0) AS rendmanteiga, '+
-   ' p.quantidadeleite '+
+   ' p.codigo,p.produto,p.unidade,sum(p.quantidadeproduzida) as quantidadeproduzida, '+
+   ' IFNULL((sum(p.quantidadeleite)  / sum(p.quantidadeproduzida)),0) AS rendleite, '+
+   ' IFNULL((sum(p.quantidadecreme) / sum(p.quantidadeproduzida)),0) AS rendCreme, ' +
+   ' IFNULL((sum(p.quantidademanteiga) / sum(p.quantidadeproduzida)),0) AS rendmanteiga, '+
+   ' SUM(p.quantidadeleite ) as quantidadeleite'+
    '  FROM producaoitens AS p, movproducaodiaria AS m WHERE m.data BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+
    '  AND p.codigofilial='+quotedstr(glb_filial)+
    '  AND p.numeroproducao=m.numero ' +
    '  AND p.codigofilial=m.codigofilial '+
     filtroProd+
-   ' and m.encerrada='+quotedstr(cboEncerradas.Text)+' order by m.data, m.numero';
+   ' and m.encerrada='+quotedstr(cboEncerradas.Text)+' GROUP BY p.numeroproducao, p.codigo ORDER BY m.data, m.numero';
     sdsrelProducao.ExecSQL();
    // clipboard.astext:=sdsrelProducao.CommandText;
     cdsrelProducao.Open;
