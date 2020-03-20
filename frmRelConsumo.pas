@@ -132,7 +132,7 @@ begin
 
   _dm2.ConnecDm2.Connected:=false;
   _dm2.cdsmateria.Close;
-  _dm2.sdsMateria.CommandText:='select codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,';
+  _dm2.sdsMateria.CommandText:='select inc_prod_producao,codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,';
 
   if(_dm.cdsConfigLaticinioadicionarqtdderivados.AsString='S')then
   _dm2.sdsMateria.CommandText:=_dm2.sdsMateria.CommandText+ ' sum(quantidademateria) as quantidademateria, sum(quantidade*quantidademateria) as totalmateriautilizada ,sum((quantidade * quantidademateria) * custounitario) as totalcustoproducao,'
