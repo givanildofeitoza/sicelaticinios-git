@@ -282,7 +282,7 @@ begin
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsMovColetacodigofilial.AsString)+',');
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsColetacodigofornecedor.AsString)+',');
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsColetafornecedor.AsString)+',');
-    _dm.qrPadrao2.SQL.Add(quotedstr(formatdatetime('yyyy-mm-dd',_dm.cdsMovAnalisedata.AsDateTime))+',');
+    _dm.qrPadrao2.SQL.Add('(SELECT DATA FROM movanalise WHERE numero='+quotedstr(lblNrAnalise.Caption)+'),');
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsColetatotalcoletado.AsString)+',');
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsColetareservatorio.AsString)+',');
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsColetatotalcoletado.AsString)+',');

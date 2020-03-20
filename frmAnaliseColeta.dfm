@@ -525,18 +525,21 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
         Expanded = False
         FieldName = 'dornic'
         Title.Caption = 'Dornic.'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'gordura'
         Title.Caption = 'Gordura'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'proteina'
         Title.Caption = 'Prote'#237'na'
+        Width = 64
         Visible = True
       end
       item
@@ -620,12 +623,14 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
         Expanded = False
         FieldName = 'quantidade'
         Title.Caption = 'Qtd. Coleta'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'qtdconferida'
         Title.Caption = 'Qtd.Conferida'
+        Width = 64
         Visible = True
       end>
   end
@@ -733,8 +738,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirColeta: TPanel
-    Left = 818
-    Top = -28
+    Left = 120
+    Top = 45
     Width = 757
     Height = 458
     Font.Charset = DEFAULT_CHARSET
@@ -754,7 +759,6 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       Color = clMenuHighlight
       ParentBackground = False
       TabOrder = 0
-      ExplicitWidth = 504
       object Label14: TLabel
         Left = 23
         Top = 14
@@ -844,9 +848,6 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       Font.Style = []
       ParentFont = False
       TabOrder = 2
-      ExplicitLeft = 9
-      ExplicitTop = 37
-      ExplicitWidth = 504
       object Label16: TLabel
         Left = 29
         Top = 44
@@ -983,7 +984,6 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       ParentBackground = False
       ParentFont = False
       TabOrder = 1
-      ExplicitWidth = 419
     end
     object rgTipoPesq: TRadioGroup
       Left = 22
