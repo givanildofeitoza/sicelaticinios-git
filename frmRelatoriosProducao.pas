@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
   RxToolEdit, RpBase, RpSystem, RpCon, RpConDS, RpDefine, RpRave, Vcl.ExtCtrls,
   Data.FMTBcd, Data.DB, Data.SqlExpr, Datasnap.Provider, Datasnap.DBClient,
-  Vcl.Grids, Vcl.DBGrids;
+  Vcl.Grids, Vcl.DBGrids, RxCurrEdit;
 
 type
   T_frmRelatoriosProducao = class(TForm)
@@ -47,6 +47,10 @@ type
     BitBtn3: TBitBtn;
     Label4: TLabel;
     cboEncerradas: TComboBox;
+    qtdleitF: TCurrencyEdit;
+    qtdleitI: TCurrencyEdit;
+    Label5: TLabel;
+    Label6: TLabel;
     procedure BitBtn2Click(Sender: TObject);
     procedure btnimprimirClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
@@ -148,7 +152,7 @@ imprimir:='N';
              end; // TRY
 
              except on e:exception do begin
-             application.messagebox('Erro na exportação! Verifique se o Excel está instalado.','Erro',mb_ok+mb_iconexclamation);
+             application.messagebox(pchar(e.Message),'Erro',mb_ok+mb_iconexclamation);
              // T_frmmensagens.Mensagem(mensagem, 'E',[mbOk]);
               exit;
              end;
@@ -199,9 +203,10 @@ filtroProd:='';
    '  AND p.numeroproducao=m.numero ' +
    '  AND p.codigofilial=m.codigofilial '+
     filtroProd+
-   ' and m.encerrada='+quotedstr(cboEncerradas.Text)+' GROUP BY p.numeroproducao, p.codigo ORDER BY m.data, m.numero';
-    sdsrelProducao.ExecSQL();
+   ' and m.encerrada='+quotedstr(cboEncerradas.Text)+'   GROUP BY p.numeroproducao, p.codigo HAVING quantidadeleite BETWEEN '+QUOTEDSTR(formatcurr('##0.00',qtdleitI.Value))+' AND '+QUOTEDSTR(formatcurr('##0.00',qtdleitF.Value))+' ORDER BY m.data, m.numero';
    // clipboard.astext:=sdsrelProducao.CommandText;
+    sdsrelProducao.ExecSQL();
+
     cdsrelProducao.Open;
     cdsrelProducao.Refresh;
 
