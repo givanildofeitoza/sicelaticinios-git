@@ -51,6 +51,7 @@ type
     qtdleitI: TCurrencyEdit;
     Label5: TLabel;
     Label6: TLabel;
+    Label7: TLabel;
     procedure BitBtn2Click(Sender: TObject);
     procedure btnimprimirClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
@@ -203,14 +204,27 @@ filtroProd:='';
    '  AND p.numeroproducao=m.numero ' +
    '  AND p.codigofilial=m.codigofilial '+
     filtroProd+
-   ' and m.encerrada='+quotedstr(cboEncerradas.Text)+'   GROUP BY p.numeroproducao, p.codigo HAVING quantidadeleite BETWEEN '+QUOTEDSTR(formatcurr('##0.00',qtdleitI.Value))+' AND '+QUOTEDSTR(formatcurr('##0.00',qtdleitF.Value))+' ORDER BY m.data, m.numero';
+   ' and m.encerrada='+quotedstr(cboEncerradas.Text)+'   GROUP BY p.numeroproducao, p.codigo /*HAVING quantidadeleite BETWEEN '+QUOTEDSTR(formatcurr('##0.00',qtdleitI.Value))+' AND '+QUOTEDSTR(formatcurr('##0.00',qtdleitF.Value))+'*/  ORDER BY m.data, m.numero';
    // clipboard.astext:=sdsrelProducao.CommandText;
     sdsrelProducao.ExecSQL();
 
     cdsrelProducao.Open;
     cdsrelProducao.Refresh;
 
+    _dm.qrPadrao.SQL.Clear;
+    _dm.qrPadrao.sql.Add( ' select SUM(p.quantidadeleite ) as quantidadeleite'+
+   '  FROM producaoitens AS p, movproducaodiaria AS m WHERE m.data BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+
+   '  AND p.codigofilial='+quotedstr(glb_filial)+
+   '  AND p.numeroproducao=m.numero ' +
+   '  AND p.codigofilial=m.codigofilial '+
+    filtroProd+
+   ' and m.encerrada='+quotedstr(cboEncerradas.Text)+' /*  GROUP BY p.numeroproducao, p.codigo HAVING quantidadeleite BETWEEN '+QUOTEDSTR(formatcurr('##0.00',qtdleitI.Value))+' AND '+QUOTEDSTR(formatcurr('##0.00',qtdleitF.Value))+'  ORDER BY m.data, m.numero */'
 
+
+    );
+    _dm.qrPadrao.open();
+
+      qtdleitF.Value:=  _dm.qrPadrao.fieldbyname('quantidadeleite').ascurrency;
 
 end;
 

@@ -48,7 +48,6 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
     Align = alBottom
     Caption = 'Por Produto'
     TabOrder = 1
-    ExplicitTop = 660
     object Label1: TLabel
       Left = 24
       Top = 27
@@ -78,18 +77,27 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Caption = 'Encerrada:'
     end
     object Label5: TLabel
-      Left = 17
-      Top = 83
+      Left = 169
+      Top = 82
       Width = 81
       Height = 13
       Caption = 'Qtd. Leite entre:'
+      Visible = False
     end
     object Label6: TLabel
-      Left = 192
-      Top = 83
-      Width = 17
+      Left = 344
+      Top = 82
+      Width = 6
       Height = 13
       Caption = 'e'
+      Visible = False
+    end
+    object Label7: TLabel
+      Left = 821
+      Top = 24
+      Width = 108
+      Height = 13
+      Caption = 'Total de leite utilizado:'
     end
     object data1: TDateEdit
       Left = 64
@@ -152,8 +160,8 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       OnClick = BitBtn1Click
     end
     object BitBtn3: TBitBtn
-      Left = 302
-      Top = 73
+      Left = 62
+      Top = 75
       Width = 91
       Height = 25
       Caption = 'Filtrar'
@@ -172,9 +180,9 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
         'N')
     end
     object qtdleitF: TCurrencyEdit
-      Left = 216
-      Top = 75
-      Width = 73
+      Left = 936
+      Top = 18
+      Width = 105
       Height = 21
       Margins.Left = 4
       Margins.Top = 1
@@ -182,14 +190,15 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       TabOrder = 9
     end
     object qtdleitI: TCurrencyEdit
-      Left = 105
-      Top = 75
+      Left = 257
+      Top = 74
       Width = 72
       Height = 21
       Margins.Left = 4
       Margins.Top = 1
       DisplayFormat = '0.00;0.00'
       TabOrder = 10
+      Visible = False
     end
   end
   object DBGrid1: TDBGrid
