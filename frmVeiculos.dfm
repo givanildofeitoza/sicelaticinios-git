@@ -58,7 +58,7 @@ object _frmVeiculos: T_frmVeiculos
       Left = 40
       Top = 14
       Width = 289
-      Height = 41
+      Height = 49
       Caption = 'Tipo'
       Columns = 3
       ItemIndex = 0
@@ -80,7 +80,7 @@ object _frmVeiculos: T_frmVeiculos
     end
     object txtPesquisa: TEdit
       Left = 40
-      Top = 61
+      Top = 73
       Width = 289
       Height = 21
       CharCase = ecUpperCase
@@ -121,6 +121,15 @@ object _frmVeiculos: T_frmVeiculos
         TabOrder = 2
         OnClick = BitBtn3Click
       end
+    end
+    object BitBtn6: TBitBtn
+      Left = 335
+      Top = 70
+      Width = 75
+      Height = 25
+      Caption = 'Buscar'
+      TabOrder = 5
+      OnClick = BitBtn6Click
     end
   end
   object dbgridVeiculos: TDBGrid

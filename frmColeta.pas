@@ -769,7 +769,7 @@ end;
 
                  _dm.ConnecDm.Connected:=false;
                  _dm.cdsMovColeta.Close;
-                 _dm.sdsMovColeta.CommandText:='SELECT * FROM movcoleta WHERE codigofilial ='+quotedstr(copy(cbofilial.Text,1,5))+' AND operador='+quotedstr(glb_usuario)+filtro;
+                 _dm.sdsMovColeta.CommandText:='SELECT * FROM movcoleta WHERE codigofilial ='+quotedstr(copy(cbofilial.Text,1,5))+filtro;
                  _dm.sdsMovColeta.ExecSQL;
                  _dm.cdsMovColeta.Open;
                  _dm.cdsMovColeta.refresh;

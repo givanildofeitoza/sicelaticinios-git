@@ -538,8 +538,8 @@ object _frmColeta: T_frmColeta
     end
   end
   object pnlAbrirColeta: TPanel
-    Left = 763
-    Top = -89
+    Left = 281
+    Top = 83
     Width = 506
     Height = 374
     TabOrder = 6

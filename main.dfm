@@ -1427,7 +1427,7 @@ object _main: T_main
         142A22052854440A50A88814A050112940A12252804245A400858A48C1FF0123
         6FD485C1F7C9720000000049454E44AE426082}
       OnClick = Image5Click
-      ExplicitTop = 36
+      ExplicitTop = 48
     end
     object Image6: TImage
       Left = 1

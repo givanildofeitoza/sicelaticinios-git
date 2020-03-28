@@ -67,7 +67,6 @@ object _frmProdPreProducao: T_frmProdPreProducao
         Expanded = False
         FieldName = 'descricao'
         Title.Caption = 'Descricao'
-        Width = 64
         Visible = True
       end
       item
@@ -125,6 +124,15 @@ object _frmProdPreProducao: T_frmProdPreProducao
         'Descri'#231#227'o'
         'C'#243'digo')
       TabOrder = 1
+    end
+    object BitBtn8: TBitBtn
+      Left = 327
+      Top = 55
+      Width = 58
+      Height = 25
+      Caption = 'Buscar'
+      TabOrder = 2
+      OnClick = BitBtn8Click
     end
   end
   object Panel2: TPanel

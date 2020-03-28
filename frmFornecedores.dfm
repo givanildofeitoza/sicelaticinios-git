@@ -62,16 +62,16 @@ object _frmFornecedores: T_frmFornecedores
       object txtNomePesquisa: TEdit
         Left = 9
         Top = 72
-        Width = 321
+        Width = 312
         Height = 21
         CharCase = ecUpperCase
         TabOrder = 0
         OnChange = txtNomePesquisaChange
       end
       object rgTipo: TRadioGroup
-        Left = 9
-        Top = 22
-        Width = 321
+        Left = 3
+        Top = 27
+        Width = 414
         Height = 36
         Caption = 'Tipo'
         Columns = 4
@@ -92,6 +92,15 @@ object _frmFornecedores: T_frmFornecedores
         Caption = 'Fechar'
         TabOrder = 2
         OnClick = btnfecharClick
+      end
+      object BitBtn1: TBitBtn
+        Left = 327
+        Top = 69
+        Width = 90
+        Height = 25
+        Caption = 'Buscar'
+        TabOrder = 3
+        OnClick = BitBtn1Click
       end
     end
   end

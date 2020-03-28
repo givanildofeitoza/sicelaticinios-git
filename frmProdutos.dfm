@@ -72,7 +72,7 @@ object _frmProdutos: T_frmProdutos
       object txtPesqProd: TEdit
         Left = 27
         Top = 114
-        Width = 502
+        Width = 422
         Height = 21
         CharCase = ecUpperCase
         TabOrder = 0
@@ -132,6 +132,15 @@ object _frmProdutos: T_frmProdutos
             'Item da Balan'#231'a'
             'Descontinuado')
         end
+      end
+      object BitBtn1: TBitBtn
+        Left = 455
+        Top = 112
+        Width = 75
+        Height = 25
+        Caption = 'Buscar'
+        TabOrder = 4
+        OnClick = BitBtn1Click
       end
     end
   end

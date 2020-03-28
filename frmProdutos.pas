@@ -22,6 +22,7 @@ type
     cboFilial: TComboBox;
     Label3: TLabel;
     cboSituacao: TComboBox;
+    BitBtn1: TBitBtn;
     procedure rgTipoClick(Sender: TObject);
     procedure gridProdutosDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -29,6 +30,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnFecharClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -42,7 +44,46 @@ implementation
 
 {$R *.dfm}
 uses
-main,dm;
+main,dm,dm2;
+
+procedure T_frmProdutos.BitBtn1Click(Sender: TObject);
+var
+sql,tabProdutos:string;
+begin
+
+        if(copy(cboFilial.Text,1,5)<>'00001')then
+        tabProdutos:='produtosfilial'
+        else
+           tabProdutos:='produtos';
+
+
+
+
+
+
+           sql:='SELECT * FROM '+tabProdutos+' WHERE ';
+
+           if txtPesqProd.Text ='' then
+           exit;
+
+           case rgTipo.ItemIndex of
+           0: sql:=sql+' descricao LIKE '+quotedstr(txtPesqProd.Text+'%')+' AND codigofilial ='+quotedstr(copy(cboFilial.Text,1,5))+' AND situacao ="'+cbosituacao.Text+'" LIMIT 50';
+           1: sql:=sql+' codigo LIKE '+quotedstr(txtPesqProd.Text+'%')+' AND codigofilial ='+quotedstr(copy(cboFilial.Text,1,5))+' AND situacao ="'+cbosituacao.Text+'" LIMIT 50';
+           2: sql:=sql+' codigobarras LIKE '+quotedstr(txtPesqProd.Text+'%')+' AND codigofilial ='+quotedstr(copy(cboFilial.Text,1,5))+' AND situacao ="'+cbosituacao.Text+'" LIMIT 50';
+
+           end;
+
+
+           _dm.ConnecDm.Connected:=false;
+           _dm.cdsPrd.close;
+           _dm.sdsPrd.CommandText:=sql;
+           _dm.sdsPrd.ExecSQL();
+           _dm.cdsPrd.Open;
+           _dm.cdsPrd.Refresh;
+
+
+end;
+
 
 procedure T_frmProdutos.btnFecharClick(Sender: TObject);
 begin
@@ -132,7 +173,8 @@ procedure T_frmProdutos.txtPesqProdChange(Sender: TObject);
 var
 sql,tabProdutos:string;
 begin
-
+    if(_dm2.cdsconffinancbuscaautomatica.asstring='S')then
+    begin
         if(copy(cboFilial.Text,1,5)<>'00001')then
         tabProdutos:='produtosfilial'
         else
@@ -162,6 +204,7 @@ begin
            _dm.sdsPrd.ExecSQL();
            _dm.cdsPrd.Open;
            _dm.cdsPrd.Refresh;
+    end;
 
 end;
 

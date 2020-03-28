@@ -103,7 +103,7 @@ type
 var
     _main: T_main;
    // Handle: THandle;
-    glb_versao:string='1.6.1';
+    glb_versao:string='1.6.5';
     glb_grupo:string='1';
     glb_filial:string='00001';
     glb_usuario:string='IQ';
@@ -539,6 +539,8 @@ begin
 _frmRelAnalises:= T_frmRelAnalises.Create(self);
 _frmRelAnalises.ShowModal();
 _frmRelAnalises.Release;
+
+
 end;
 
 procedure T_main.Relatriodecoletas1Click(Sender: TObject);

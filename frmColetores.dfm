@@ -26,7 +26,7 @@ object _frmColetores: T_frmColetores
     object rgTipo: TRadioGroup
       Left = 16
       Top = 6
-      Width = 377
+      Width = 402
       Height = 59
       Caption = 'Tipo'
       Columns = 4
@@ -42,7 +42,7 @@ object _frmColetores: T_frmColetores
     object txtPesq: TEdit
       Left = 16
       Top = 80
-      Width = 377
+      Width = 321
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 0
@@ -84,6 +84,15 @@ object _frmColetores: T_frmColetores
       TabOrder = 5
       OnClick = BitBtn5Click
     end
+    object BitBtn6: TBitBtn
+      Left = 343
+      Top = 78
+      Width = 75
+      Height = 25
+      Caption = 'Buscar'
+      TabOrder = 6
+      OnClick = BitBtn6Click
+    end
   end
   object dbGridColetores: TDBGrid
     Left = 0
@@ -118,14 +127,12 @@ object _frmColetores: T_frmColetores
         Expanded = False
         FieldName = 'apelido'
         Title.Caption = 'Apelido'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'cpf'
         Title.Caption = 'CPF'
-        Width = 64
         Visible = True
       end
       item
@@ -144,14 +151,12 @@ object _frmColetores: T_frmColetores
         Expanded = False
         FieldName = 'cidade'
         Title.Caption = 'Cidade'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'codigofilial'
         Title.Caption = 'Filial'
-        Width = 64
         Visible = True
       end>
   end

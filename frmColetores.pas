@@ -43,6 +43,7 @@ type
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
     lblacao: TLabel;
+    BitBtn6: TBitBtn;
     procedure rgTipoClick(Sender: TObject);
     procedure dbGridColetoresDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -54,6 +55,7 @@ type
     procedure BitBtn4Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn5Click(Sender: TObject);
+    procedure BitBtn6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -69,7 +71,7 @@ implementation
 
 {$R *.dfm}
 uses
-dm,main,clipbrd;
+dm,dm2,main,clipbrd;
 
 procedure T_frmColetores.BitBtn1Click(Sender: TObject);
 begin
@@ -228,6 +230,33 @@ begin
 
 end;
 
+procedure T_frmColetores.BitBtn6Click(Sender: TObject);
+var
+sql:string;
+begin
+           sql:='select * from coletores where ';
+
+           if txtPesq.Text ='' then
+           exit;
+
+           case rgTipo.ItemIndex of
+           0: sql:=sql+' id like '+quotedstr(txtPesq.Text+'%')+' and codigofilial ='+quotedstr(main.glb_filial);
+           1: sql:=sql+' nome like '+quotedstr(txtPesq.Text+'%')+' and codigofilial ='+quotedstr(main.glb_filial);
+           2: sql:=sql+' apelido like '+quotedstr(txtPesq.Text+'%')+' and codigofilial ='+quotedstr(main.glb_filial);
+           3: sql:=sql+' cpf like '+quotedstr(txtPesq.Text+'%')+' and codigofilial ='+quotedstr(main.glb_filial);
+
+           end;
+
+
+           _dm.ConnecDm.Connected:=false;
+           _dm.cdsColetores.close;
+           _dm.sdsColetores.CommandText:=sql;
+           _dm.sdsColetores.ExecSQL();
+           _dm.cdsColetores.Open;
+           _dm.cdsColetores.Refresh;
+
+end;
+
 procedure T_frmColetores.btnfecharClick(Sender: TObject);
 begin
 ModalResult:=-1;
@@ -289,6 +318,9 @@ procedure T_frmColetores.txtPesqChange(Sender: TObject);
 var
 sql:string;
 begin
+
+    if(_dm2.cdsconffinancbuscaautomatica.asstring='S')then
+    begin
            sql:='select * from coletores where ';
 
            if txtPesq.Text ='' then
@@ -309,6 +341,7 @@ begin
            _dm.sdsColetores.ExecSQL();
            _dm.cdsColetores.Open;
            _dm.cdsColetores.Refresh;
+    end;
 
 end;
 

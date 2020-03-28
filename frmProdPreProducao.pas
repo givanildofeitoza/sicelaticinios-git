@@ -33,6 +33,7 @@ type
     btnExcluir: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn7: TBitBtn;
+    BitBtn8: TBitBtn;
     procedure btnfecharClick(Sender: TObject);
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -49,6 +50,7 @@ type
       Shift: TShiftState);
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn7Click(Sender: TObject);
+    procedure BitBtn8Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -292,38 +294,70 @@ _frmProcProducao.ShowModal();
 _frmProcProducao.release;
 end;
 
+procedure T_frmProdPreProducao.BitBtn8Click(Sender: TObject);
+var
+filtro:string;
+begin
+
+          case rgTipoPesq.ItemIndex of
+          0:filtro:=' WHERE descricao LIKE( ';
+          1:filtro:=' WHERE codigo LIKE( ';
+          end;
+
+             { _dm2.ConnecDm2.Connected:=false;
+              _dm2.cdsProdPreProducao.Close;
+              _dm2.sdsProdPreProducao.Close;
+              _dm2.sdsProdPreProducao.commandtext:='select * from produtospreproducao '+filtro+quotedstr(txtNomePesquisa.Text+'%')+') and codigofilial='+quotedstr(glb_filial);
+              _dm2.sdsProdPreProducao.ExecSQL();
+              _dm2.cdsProdPreProducao.open;
+              _dm2.cdsProdPreProducao.Refresh;
+              }
+
+              _dm.ConnecDm.Connected:=false;
+              _dm.cdsPrd2.Close;
+              _dm.sdsPrd2.Close;
+              _dm.sdsPrd2.commandtext:='select * from produtos '+filtro+quotedstr(txtNomePesquisa.Text+'%')+') and codigofilial='+quotedstr(glb_filial);
+              _dm.sdsPrd2.ExecSQL();
+              _dm.cdsPrd2.open;
+              _dm.cdsPrd2.Refresh;
+
+
+end;
+
 procedure T_frmProdPreProducao.txtNomePesquisaChange(Sender: TObject);
 var
 filtro:string;
 begin
 
 
-  case rgTipoPesq.ItemIndex of
-  0:filtro:=' WHERE descricao LIKE( ';
-  1:filtro:=' WHERE codigo LIKE( ';
-  end;
+        if(_dm2.cdsconffinancbuscaautomatica.asstring='S')then
+        begin
 
+          case rgTipoPesq.ItemIndex of
+          0:filtro:=' WHERE descricao LIKE( ';
+          1:filtro:=' WHERE codigo LIKE( ';
+          end;
 
-     { _dm2.ConnecDm2.Connected:=false;
-      _dm2.cdsProdPreProducao.Close;
-      _dm2.sdsProdPreProducao.Close;
-      _dm2.sdsProdPreProducao.commandtext:='select * from produtospreproducao '+filtro+quotedstr(txtNomePesquisa.Text+'%')+') and codigofilial='+quotedstr(glb_filial);
-      _dm2.sdsProdPreProducao.ExecSQL();
-      _dm2.cdsProdPreProducao.open;
-      _dm2.cdsProdPreProducao.Refresh;
-      }
+             { _dm2.ConnecDm2.Connected:=false;
+              _dm2.cdsProdPreProducao.Close;
+              _dm2.sdsProdPreProducao.Close;
+              _dm2.sdsProdPreProducao.commandtext:='select * from produtospreproducao '+filtro+quotedstr(txtNomePesquisa.Text+'%')+') and codigofilial='+quotedstr(glb_filial);
+              _dm2.sdsProdPreProducao.ExecSQL();
+              _dm2.cdsProdPreProducao.open;
+              _dm2.cdsProdPreProducao.Refresh;
+              }
 
-      _dm.ConnecDm.Connected:=false;
-      _dm.cdsPrd2.Close;
-      _dm.sdsPrd2.Close;
-      _dm.sdsPrd2.commandtext:='select * from produtos '+filtro+quotedstr(txtNomePesquisa.Text+'%')+') and codigofilial='+quotedstr(glb_filial);
-      _dm.sdsPrd2.ExecSQL();
-      _dm.cdsPrd2.open;
-      _dm.cdsPrd2.Refresh;
+              _dm.ConnecDm.Connected:=false;
+              _dm.cdsPrd2.Close;
+              _dm.sdsPrd2.Close;
+              _dm.sdsPrd2.commandtext:='select * from produtos '+filtro+quotedstr(txtNomePesquisa.Text+'%')+') and codigofilial='+quotedstr(glb_filial);
+              _dm.sdsPrd2.ExecSQL();
+              _dm.cdsPrd2.open;
+              _dm.cdsPrd2.Refresh;
 
+        end;
 
-
- end;
+end;
 
 procedure T_frmProdPreProducao.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);

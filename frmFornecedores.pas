@@ -17,12 +17,14 @@ type
     txtNomePesquisa: TEdit;
     rgTipo: TRadioGroup;
     btnfechar: TBitBtn;
+    BitBtn1: TBitBtn;
     procedure txtNomePesquisaChange(Sender: TObject);
     procedure btnfecharClick(Sender: TObject);
     procedure gridFornecedoresDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure rgTipoClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure BitBtn1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -36,7 +38,32 @@ implementation
 
 {$R *.dfm}
  uses
- dm,main;
+ dm,dm2,main;
+procedure T_frmFornecedores.BitBtn1Click(Sender: TObject);
+var
+sql:string;
+begin
+           sql:='select * from fornecedores where ';
+           if(txtNomePesquisa.Text='')then
+           exit;
+
+           case rgTipo.ItemIndex of
+           0: sql:=sql+' empresa like '+quotedstr(txtNomePesquisa.Text+'%')+' and codigofilial ='+quotedstr(main.glb_filial)+' limit 50';
+           1: sql:=sql+' razaosocial like '+quotedstr(txtNomePesquisa.Text+'%')+' and codigofilial ='+quotedstr(main.glb_filial)+' limit 50';
+           2: sql:=sql+' cpf like '+quotedstr(txtNomePesquisa.Text+'%')+' and codigofilial ='+quotedstr(main.glb_filial)+' limit 50';
+           3: sql:=sql+' cgc like '+quotedstr(txtNomePesquisa.Text+'%')+' and codigofilial ='+quotedstr(main.glb_filial)+' limit 50';
+           end;
+
+
+           _dm.ConnecDm.Connected:=false;
+           _dm.cdsFor.close;
+           _dm.sdsFor.CommandText:=sql;
+           _dm.sdsFor.ExecSQL();
+           _dm.cdsFor.Open;
+           _dm.cdsFor.Refresh;
+
+end;
+
 procedure T_frmFornecedores.btnfecharClick(Sender: TObject);
 begin
 ModalResult:=-1;
@@ -110,6 +137,9 @@ procedure T_frmFornecedores.txtNomePesquisaChange(Sender: TObject);
 var
 sql:string;
 begin
+
+    if(_dm2.cdsconffinancbuscaautomatica.asstring='S')then
+    begin
            sql:='select * from fornecedores where ';
            if(txtNomePesquisa.Text='')then
            exit;
@@ -128,6 +158,7 @@ begin
            _dm.sdsFor.ExecSQL();
            _dm.cdsFor.Open;
            _dm.cdsFor.Refresh;
+    end;
 
 end;
 
