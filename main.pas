@@ -103,7 +103,7 @@ type
 var
     _main: T_main;
    // Handle: THandle;
-    glb_versao:string='1.6.5';
+    glb_versao:string='1.6.6';
     glb_grupo:string='1';
     glb_filial:string='00001';
     glb_usuario:string='IQ';

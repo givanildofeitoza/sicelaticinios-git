@@ -70,16 +70,16 @@ begin
     if(txtcodProduto.Text<>'')then
     ProdCod:=' AND codigopreproducao='+quotedstr(txtcodProduto.Text);
 
-    sql:='SELECT   id,  numeroproducao,  codigopreproducao,  descricaopreproducao,  codigoderivado,  descricaoderivado,  codigoembalagem,'+
+    sql:='SELECT   pe.id,  numeroproducao,  codigopreproducao,  (SELECT descricao FROM produtos WHERE codigo=pe.codigopreproducao) AS descricaopreproducao,  codigoderivado,  descricaoderivado,  codigoembalagem,'+
                ' descricaoembalagem,  qtdnecessaria,  TRUNCATE((SUM(custototal) / SUM(qtdutilizado)),5) AS custounitario,  sum(custototal) as custototal, sum(qtdproduzido) as qtdproduzido,  sum(qtdutilizado) as qtdutilizado,  tipo,  solicitado,'+
-               ' operadorsolicita,  operadorsolicitaadicional,  codigofilial'+
-               ' FROM producaomovembalagem WHERE (SELECT m.datafinalizacao FROM movproducaodiaria AS m WHERE m.numero = numeroproducao) BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+
+               ' operadorsolicita,  operadorsolicitaadicional,  pe.codigofilial'+
+               ' FROM producaomovembalagem AS pe, movproducaodiaria AS mp  WHERE  mp.DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+
                ProdCod+
-               '  AND solicitado="S" group by codigoderivado ORDER BY descricaoderivado';
+               ' AND mp.numero = pe.numeroproducao AND solicitado="S" group by codigopreproducao,codigoderivado ORDER BY descricaoderivado';
                 _dm2.ConnecDm2.Connected:=false;
                 _dm2.cdsprodmovembalagem.Close;
                 _dm2.sdsprodmovembalagem.CommandText:=sql;
-               //clipboard.AsText:=  _dm2.sdsprodmovembalagem.CommandText;
+             //  clipboard.AsText:=  _dm2.sdsprodmovembalagem.CommandText;
                 _dm2.sdsprodmovembalagem.ExecSQL();
                 _dm2.cdsprodmovembalagem.Open;
                 _dm2.cdsprodmovembalagem.Refresh;
