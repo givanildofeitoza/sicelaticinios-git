@@ -75,11 +75,11 @@ begin
                ' operadorsolicita,  operadorsolicitaadicional,  pe.codigofilial'+
                ' FROM producaomovembalagem AS pe, movproducaodiaria AS mp  WHERE  mp.DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+
                ProdCod+
-               ' AND mp.numero = pe.numeroproducao AND solicitado="S" group by codigopreproducao,codigoderivado ORDER BY descricaoderivado';
+               ' AND mp.numero = pe.numeroproducao AND solicitado="S" group by codigopreproducao,codigoderivado,codigoembalagem ORDER BY descricaoderivado';
                 _dm2.ConnecDm2.Connected:=false;
                 _dm2.cdsprodmovembalagem.Close;
                 _dm2.sdsprodmovembalagem.CommandText:=sql;
-             //  clipboard.AsText:=  _dm2.sdsprodmovembalagem.CommandText;
+            //   clipboard.AsText:=  _dm2.sdsprodmovembalagem.CommandText;
                 _dm2.sdsprodmovembalagem.ExecSQL();
                 _dm2.cdsprodmovembalagem.Open;
                 _dm2.cdsprodmovembalagem.Refresh;

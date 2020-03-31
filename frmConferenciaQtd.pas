@@ -160,6 +160,7 @@ type
     procedure rgTipoClick(Sender: TObject);
     procedure _btnConfirmarClick(Sender: TObject);
     procedure _btnCancelarClick(Sender: TObject);
+    procedure txtbuscapornumeroKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -216,12 +217,17 @@ begin
       frm.Height:=360;
       frm.BorderStyle:=bsDialog;
       frm.Position:=poDesktopCenter;
-
+      frm.KeyPreview:=true;
       pnlbusca.Parent:=frm;
       pnlbusca.Align:=alClient;
       pnlbusca.Visible:=true;
+      rgTipo.ItemIndex:=0;
+      pnlnumero.Visible:=true;
+      data1.Date:=now;
+      data2.Date:=now;
 
       frm.ShowModal;
+
 
    if(continuar='N')then
    exit;
@@ -243,13 +249,13 @@ begin
        txtNrAnalise.SelectAll;
        exit;
      end;
-
+        {
          if(_dm.cdsMovAnaliseconfirmada.AsString='N')then
          begin
            application.MessageBox('Análise ainda não foi confirmada!','Alerta',MB_ICONEXCLAMATION+MB_OK);
            txtNrAnalise.SelectAll;
            exit;
-         end;
+         end;   }
 
         lblFilial.Caption:= _dm.cdsMovAnalisecodigofilial.AsString;
         lblResp.Caption:=   _dm.cdsMovAnaliseresponsavel.AsString;
@@ -745,7 +751,7 @@ begin
 
 _dm.ConnecDm.Connected:=false;
 _dm.cdsMovAnalise.Close;
-_dm.sdsMovAnalise.CommandText:='SELECT * FROM movanalise WHERE  confirmada="S" and dataconfirmacao BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND codigofilial='+quotedstr(glb_filial);
+_dm.sdsMovAnalise.CommandText:='SELECT * FROM movanalise WHERE  data BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND codigofilial='+quotedstr(glb_filial);
 _dm.sdsMovAnalise.ExecSQL();
 _dm.cdsMovAnalise.open;
 _dm.cdsMovAnalise.refresh;
@@ -1444,6 +1450,13 @@ end;
 procedure T_frmConferenciaQtd.RvCconexaoGetRow(Connection: TRvCustomConnection);
 begin
  Connection.WriteStrData('', _dm2.cdsImagenslogomarca.AsString);
+end;
+
+procedure T_frmConferenciaQtd.txtbuscapornumeroKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+if(key=#13)then
+_btnConfirmar.SetFocus;
 end;
 
 procedure T_frmConferenciaQtd.txtIntervaloDiasExit(Sender: TObject);
