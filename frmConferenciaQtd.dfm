@@ -1104,17 +1104,17 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
     end
   end
   object pnlbusca: TPanel
-    Left = 58
-    Top = 182
-    Width = 442
-    Height = 332
+    Left = -20
+    Top = 8
+    Width = 656
+    Height = 429
     TabOrder = 6
     Visible = False
     object rgTipo: TRadioGroup
       Left = 31
       Top = 15
       Width = 386
-      Height = 60
+      Height = 46
       Caption = 'Pesquisar por'
       Columns = 2
       Items.Strings = (
@@ -1141,8 +1141,8 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
       end
     end
     object _btnConfirmar: TBitBtn
-      Left = 322
-      Top = 279
+      Left = 283
+      Top = 387
       Width = 95
       Height = 29
       Caption = 'Confirmar'
@@ -1151,9 +1151,9 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
     end
     object pnldata: TPanel
       Left = 31
-      Top = 82
-      Width = 386
-      Height = 192
+      Top = 67
+      Width = 610
+      Height = 314
       TabOrder = 0
       Visible = False
       object Label28: TLabel
@@ -1173,8 +1173,8 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
       object DBGrid1: TDBGrid
         Left = 15
         Top = 58
-        Width = 359
-        Height = 120
+        Width = 586
+        Height = 252
         DataSource = _dm.dSourceMovAnalise
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
@@ -1201,6 +1201,12 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
             Expanded = False
             FieldName = 'confirmada'
             Title.Caption = 'Confirmada'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'finalizada'
+            Title.Caption = 'Lan'#231'ada'
             Visible = True
           end>
       end
@@ -1231,8 +1237,8 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
       end
     end
     object _btnCancelar: TBitBtn
-      Left = 31
-      Top = 279
+      Left = 543
+      Top = 387
       Width = 106
       Height = 29
       Caption = 'Cancelar'
@@ -7328,8 +7334,8 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
   object RvPrintBoletos: TRvProject
     Engine = RvSBoletos
     ProjectFile = 'C:\iqsistemas\SICElaticinios\relatorios\impBoletos.rav'
-    Left = 456
-    Top = 304
+    Left = 472
+    Top = 288
     RaveBlobNew = {
       0AC50200A7CEDE834F35E5405241561AB0AD01000009BFED84B00C5300590053
       00540045004D000653595354454D0055050000BFED84B00C5300590053005400

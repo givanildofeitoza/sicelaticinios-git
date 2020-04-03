@@ -213,8 +213,8 @@ begin
       continuar:='N';
 
       frm:=Tform.Create(self);
-      frm.Width:=470;
-      frm.Height:=360;
+      frm.Width:=780;
+      frm.Height:=460;
       frm.BorderStyle:=bsDialog;
       frm.Position:=poDesktopCenter;
       frm.KeyPreview:=true;
@@ -964,13 +964,24 @@ begin
         _dm.qrPadrao.SQL.Add('qtdprateleiras,tributacao,cfopentrada,modelonf,ratdesconto,custocalculado,exportarfiscal');
         _dm.qrPadrao.SQL.Add(') values (');
         _dm.qrPadrao.SQL.Add(quotedstr(numeroNf)+','); //numero
+        if(_dm.qrPadrao2.FieldByName('codigotipoleite').AsString='')then
+        begin
+         _dm.qrPadrao.SQL.Add(quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+','); //codigo
+         _dm.qrPadrao.SQL.Add(quotedstr(_dm.cdsConfigLaticinioprodpadraoleite.AsString)+','); //codigo
+
+         end
+        else
+        begin
         _dm.qrPadrao.SQL.Add(quotedstr(_dm.qrPadrao2.FieldByName('codigotipoleite').AsString)+','); //codigo
         //_dm.qrPadrao.SQL.Add(quotedstr(_dm.qrPadrao2.FieldByName('tipoleite').AsString)+','); //descricao
+
 
         if(_dm.qrPadrao3.FieldByName('codigofilial').AsString='00001')then
         _dm.qrPadrao.SQL.Add('(select descricao from produtos where codigo="'+_dm.qrPadrao2.FieldByName('codigotipoleite').AsString+'" and codigofilial="'+_dm.qrPadrao3.FieldByName('codigofilial').AsString+'" limit 1),') //descricao
         else
         _dm.qrPadrao.SQL.Add('(select descricao from produtosfilial where codigo="'+_dm.qrPadrao2.FieldByName('codigotipoleite').AsString+'" and codigofilial="'+_dm.qrPadrao3.FieldByName('codigofilial').AsString+'" limit 1),'); //descricao
+
+        end;
 
 
         _dm.qrPadrao.SQL.Add(quotedstr('N')+','); //lancada
@@ -1155,15 +1166,18 @@ begin
     exit;
   end;
 
-
+       {
       glb_campo:='atualizarEstoqueColeta';//campo: atualizarEstoqueColeta
 
       _frmLogin:=T_frmLogin.Create(self);
       _frmLogin.lblfuncao.Caption:='Fazer conferência de estoque na análise';
       _frmLogin.ShowModal;
+      }
 
-      if(glb_permissao='S')then
-      begin
+     // glb_permissao:='S';
+
+     // if(glb_permissao='S')then
+     // begin
 
         if(Application.MessageBox('Confirmar conferência de estoque na análise?','Pergunta',MB_ICONQUESTION+MB_YESNO)=idno)then
        begin
@@ -1195,9 +1209,9 @@ begin
                 _dm.qrPadrao.ExecSQL();
 
 
-      end
-      else
-      Application.MessageBox('Cancelado pelo usuário','Alerta',MB_ICONEXCLAMATION+MB_ok);
+    //  end
+     // else
+     // Application.MessageBox('Cancelado pelo usuário','Alerta',MB_ICONEXCLAMATION+MB_ok);
 
 
           _dm.ConnecDm.Connected:=false;

@@ -2,8 +2,8 @@ object _frmRelColeta: T_frmRelColeta
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  ClientHeight = 341
-  ClientWidth = 533
+  ClientHeight = 612
+  ClientWidth = 987
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,35 +16,35 @@ object _frmRelColeta: T_frmRelColeta
   PixelsPerInch = 96
   TextHeight = 13
   object Label2: TLabel
-    Left = 20
-    Top = 109
+    Left = 29
+    Top = 498
     Width = 53
     Height = 13
     Caption = 'Data Inicial'
   end
   object Label3: TLabel
-    Left = 186
-    Top = 109
+    Left = 189
+    Top = 497
     Width = 48
     Height = 13
     Caption = 'Data Final'
   end
   object Bevel1: TBevel
-    Left = 19
-    Top = 278
-    Width = 486
+    Left = 24
+    Top = 440
+    Width = 935
     Height = 3
   end
   object Label4: TLabel
-    Left = 24
-    Top = 155
+    Left = 333
+    Top = 500
     Width = 20
     Height = 13
     Caption = 'Filial'
   end
   object Label5: TLabel
     Left = 24
-    Top = 199
+    Top = 541
     Width = 59
     Height = 13
     Caption = 'Fornecedor:'
@@ -52,12 +52,13 @@ object _frmRelColeta: T_frmRelColeta
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 533
+    Width = 987
     Height = 49
     Align = alTop
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
+    ExplicitWidth = 533
     object Label1: TLabel
       Left = 40
       Top = 13
@@ -73,8 +74,8 @@ object _frmRelColeta: T_frmRelColeta
     end
   end
   object rgtipodata: TRadioGroup
-    Left = 19
-    Top = 57
+    Left = 24
+    Top = 449
     Width = 486
     Height = 42
     Caption = 'Data'
@@ -86,24 +87,24 @@ object _frmRelColeta: T_frmRelColeta
     TabOrder = 1
   end
   object data1: TDateEdit
-    Left = 19
-    Top = 125
+    Left = 24
+    Top = 517
     Width = 121
     Height = 21
     NumGlyphs = 2
     TabOrder = 2
   end
   object data2: TDateEdit
-    Left = 184
-    Top = 125
+    Left = 189
+    Top = 517
     Width = 121
     Height = 21
     NumGlyphs = 2
     TabOrder = 3
   end
   object BitBtn1: TBitBtn
-    Left = 265
-    Top = 302
+    Left = 715
+    Top = 558
     Width = 113
     Height = 25
     Caption = 'Imprimir'
@@ -111,8 +112,8 @@ object _frmRelColeta: T_frmRelColeta
     OnClick = BitBtn1Click
   end
   object BitBtn2: TBitBtn
-    Left = 398
-    Top = 302
+    Left = 854
+    Top = 558
     Width = 107
     Height = 25
     Caption = 'Fechar'
@@ -120,16 +121,16 @@ object _frmRelColeta: T_frmRelColeta
     OnClick = BitBtn2Click
   end
   object cboFilial: TComboBox
-    Left = 20
-    Top = 172
-    Width = 325
+    Left = 329
+    Top = 517
+    Width = 219
     Height = 21
     TabOrder = 6
     Text = '00001'
   end
   object txtFornecedor: TEdit
     Left = 89
-    Top = 218
+    Top = 560
     Width = 256
     Height = 21
     ReadOnly = True
@@ -137,7 +138,7 @@ object _frmRelColeta: T_frmRelColeta
   end
   object BitBtn3: TBitBtn
     Left = 351
-    Top = 216
+    Top = 558
     Width = 50
     Height = 25
     Caption = '...'
@@ -146,11 +147,77 @@ object _frmRelColeta: T_frmRelColeta
   end
   object txtCodFor: TEdit
     Left = 24
-    Top = 218
+    Top = 560
     Width = 59
     Height = 21
     ReadOnly = True
     TabOrder = 9
+  end
+  object DBGrid1: TDBGrid
+    Left = 8
+    Top = 55
+    Width = 971
+    Height = 379
+    DataSource = DataSource1
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    TabOrder = 10
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    OnDrawColumnCell = DBGrid1DrawColumnCell
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'fornecedor'
+        Title.Caption = 'Fornecedor'
+        Width = 222
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'total'
+        Title.Caption = 'Total'
+        Width = 127
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'totalcusto'
+        Title.Caption = 'Custo Total'
+        Width = 112
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'datacoleta'
+        Title.Caption = 'Data da Coleta'
+        Width = 121
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'dataconfirmacao'
+        Title.Caption = 'Data de Confirma'#231#227'o'
+        Width = 111
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'confirmada'
+        Title.Caption = 'Confirmada'
+        Visible = True
+      end>
+  end
+  object BitBtn4: TBitBtn
+    Left = 448
+    Top = 558
+    Width = 100
+    Height = 25
+    Caption = 'Filtrar'
+    TabOrder = 11
+    OnClick = BitBtn4Click
   end
   object impRelColeta: TRDprint
     ImpressoraPersonalizada.NomeImpressora = 'Modelo Personalizado - (Epson)'
@@ -249,5 +316,95 @@ object _frmRelColeta: T_frmRelColeta
     OnBeforeNewPage = impRelColetaBeforeNewPage
     Left = 408
     Top = 120
+  end
+  object DataSource1: TDataSource
+    DataSet = ClientDataSet1
+    Left = 672
+    Top = 320
+  end
+  object qrpadrao: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQL.Strings = (
+      
+        'SELECT c.fornecedor, SUM(c.totalcoletado) AS total,SUM(c.totalco' +
+        'letado * c.custo) AS totalcusto, mc.datacoleta, mc.dataconfirmac' +
+        'ao,mc.confirmada FROM coleta AS c, movcoleta AS mc'
+      'limit 1;'
+      ' ')
+    SQLConnection = _dm.ConnecDm
+    Left = 624
+    Top = 272
+    object qrpadraofornecedor: TWideStringField
+      FieldName = 'fornecedor'
+      Size = 60
+    end
+    object qrpadraototal: TFMTBCDField
+      FieldName = 'total'
+      Precision = 32
+      Size = 2
+    end
+    object qrpadraototalcusto: TFMTBCDField
+      FieldName = 'totalcusto'
+      Precision = 32
+      Size = 4
+    end
+    object qrpadraodatacoleta: TDateField
+      FieldName = 'datacoleta'
+    end
+    object qrpadraodataconfirmacao: TDateField
+      FieldName = 'dataconfirmacao'
+    end
+    object qrpadraoconfirmada: TWideStringField
+      FieldName = 'confirmada'
+      Size = 1
+    end
+  end
+  object ClientDataSet1: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'DataSetProvider1'
+    Left = 568
+    Top = 328
+    object ClientDataSet1fornecedor: TWideStringField
+      FieldName = 'fornecedor'
+      Size = 60
+    end
+    object ClientDataSet1total: TFMTBCDField
+      FieldName = 'total'
+      Precision = 32
+      Size = 2
+    end
+    object ClientDataSet1totalcusto: TFMTBCDField
+      FieldName = 'totalcusto'
+      Precision = 32
+      Size = 4
+    end
+    object ClientDataSet1datacoleta: TDateField
+      FieldName = 'datacoleta'
+    end
+    object ClientDataSet1dataconfirmacao: TDateField
+      FieldName = 'dataconfirmacao'
+    end
+    object ClientDataSet1confirmada: TWideStringField
+      FieldName = 'confirmada'
+      Size = 1
+    end
+  end
+  object SQLDataSet1: TSQLDataSet
+    CommandText = 
+      'SELECT c.fornecedor, SUM(c.totalcoletado) AS total,SUM(c.totalco' +
+      'letado * c.custo) AS totalcusto, mc.datacoleta, mc.dataconfirmac' +
+      'ao,mc.confirmada FROM coleta AS c, movcoleta AS mc'#13#10'limit 1;'
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = _dm.ConnecDm
+    Left = 240
+    Top = 328
+  end
+  object DataSetProvider1: TDataSetProvider
+    DataSet = SQLDataSet1
+    Left = 376
+    Top = 320
   end
 end
