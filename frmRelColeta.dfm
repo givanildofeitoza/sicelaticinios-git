@@ -49,6 +49,19 @@ object _frmRelColeta: T_frmRelColeta
     Height = 13
     Caption = 'Fornecedor:'
   end
+  object Label6: TLabel
+    Left = 683
+    Top = 449
+    Width = 98
+    Height = 16
+    Caption = 'Total Coletado:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -58,7 +71,6 @@ object _frmRelColeta: T_frmRelColeta
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 533
     object Label1: TLabel
       Left = 40
       Top = 13
@@ -219,6 +231,22 @@ object _frmRelColeta: T_frmRelColeta
     TabOrder = 11
     OnClick = BitBtn4Click
   end
+  object txtcoletado: TCurrencyEdit
+    Left = 800
+    Top = 447
+    Width = 161
+    Height = 24
+    Margins.Left = 1
+    Margins.Top = 1
+    DisplayFormat = '0.00;-0.00'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 12
+  end
   object impRelColeta: TRDprint
     ImpressoraPersonalizada.NomeImpressora = 'Modelo Personalizado - (Epson)'
     ImpressoraPersonalizada.AvancaOitavos = '27 48'
@@ -321,44 +349,6 @@ object _frmRelColeta: T_frmRelColeta
     DataSet = ClientDataSet1
     Left = 672
     Top = 320
-  end
-  object qrpadrao: TSQLQuery
-    MaxBlobSize = -1
-    Params = <>
-    SQL.Strings = (
-      
-        'SELECT c.fornecedor, SUM(c.totalcoletado) AS total,SUM(c.totalco' +
-        'letado * c.custo) AS totalcusto, mc.datacoleta, mc.dataconfirmac' +
-        'ao,mc.confirmada FROM coleta AS c, movcoleta AS mc'
-      'limit 1;'
-      ' ')
-    SQLConnection = _dm.ConnecDm
-    Left = 624
-    Top = 272
-    object qrpadraofornecedor: TWideStringField
-      FieldName = 'fornecedor'
-      Size = 60
-    end
-    object qrpadraototal: TFMTBCDField
-      FieldName = 'total'
-      Precision = 32
-      Size = 2
-    end
-    object qrpadraototalcusto: TFMTBCDField
-      FieldName = 'totalcusto'
-      Precision = 32
-      Size = 4
-    end
-    object qrpadraodatacoleta: TDateField
-      FieldName = 'datacoleta'
-    end
-    object qrpadraodataconfirmacao: TDateField
-      FieldName = 'dataconfirmacao'
-    end
-    object qrpadraoconfirmada: TWideStringField
-      FieldName = 'confirmada'
-      Size = 1
-    end
   end
   object ClientDataSet1: TClientDataSet
     Aggregates = <>

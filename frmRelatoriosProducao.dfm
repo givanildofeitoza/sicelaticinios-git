@@ -2,7 +2,7 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   Left = 0
   Top = 0
   ClientHeight = 768
-  ClientWidth = 1082
+  ClientWidth = 1111
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,12 +20,13 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   object Panel10: TPanel
     Left = 0
     Top = 0
-    Width = 1082
+    Width = 1111
     Height = 33
     Align = alTop
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
+    ExplicitWidth = 1082
     object Label40: TLabel
       Left = 23
       Top = 7
@@ -43,11 +44,12 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   object GroupBox1: TGroupBox
     Left = 0
     Top = 654
-    Width = 1082
+    Width = 1111
     Height = 114
     Align = alBottom
     Caption = 'Por Produto'
     TabOrder = 1
+    ExplicitWidth = 1082
     object Label1: TLabel
       Left = 24
       Top = 27
@@ -204,7 +206,7 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   object DBGrid1: TDBGrid
     Left = 0
     Top = 33
-    Width = 1082
+    Width = 1111
     Height = 621
     Align = alClient
     DataSource = dSourcerelProducao
@@ -217,6 +219,12 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
     TitleFont.Style = []
     OnDrawColumnCell = DBGrid1DrawColumnCell
     Columns = <
+      item
+        Expanded = False
+        FieldName = 'numeroproducao'
+        Title.Caption = 'N'#250'mero'
+        Visible = True
+      end
       item
         Expanded = False
         FieldName = 'dataproducao'
@@ -6027,6 +6035,10 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Precision = 10
       Size = 2
     end
+    object cdsrelProducaonumeroproducao: TWideStringField
+      FieldName = 'numeroproducao'
+      Size = 8
+    end
   end
   object dsrelProducao: TDataSetProvider
     DataSet = sdsrelProducao
@@ -6035,21 +6047,22 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   end
   object sdsrelProducao: TSQLDataSet
     CommandText = 
-      'SELECT (SELECT DATA FROM movproducaodiaria WHERE numero=p.numero' +
-      'producao AND codigofilial=p.codigofilial) AS dataproducao,'#13#10'(SEL' +
-      'ECT hora FROM movproducaodiaria WHERE numero=p.numeroproducao AN' +
-      'D codigofilial=p.codigofilial) AS horaproducao,'#13#10'(SELECT datafin' +
-      'alizacao FROM movproducaodiaria WHERE numero=p.numeroproducao AN' +
-      'D codigofilial=p.codigofilial) AS datafimproducao,'#13#10'(SELECT hora' +
-      'finalizacao FROM movproducaodiaria WHERE numero=p.numeroproducao' +
-      ' AND codigofilial=p.codigofilial) AS horafimproducao,'#13#10'p.codigo,' +
-      'p.produto,p.unidade,p.quantidadeproduzida,'#13#10'IFNULL((p.quantidade' +
-      'produzida/p.quantidadeleite),0) AS rendleite,'#13#10'IFNULL((p.quantid' +
-      'adeproduzida/p.quantidadecreme),0) AS rendCreme,'#13#10'IFNULL((p.quan' +
-      'tidadeproduzida/p.quantidademanteiga),0) AS rendmanteiga,'#13#10'p.qua' +
-      'ntidadeleite'#13#10' FROM producaoitens AS p, movproducaodiaria AS m W' +
-      'HERE p.numeroproducao='#39'0'#39#13#10' AND p.codigofilial='#39'00001'#39#13#10' AND p.n' +
-      'umeroproducao=m.numero'#13#10' AND p.codigofilial=m.codigofilial;'
+      'SELECT p.numeroproducao, (SELECT DATA FROM movproducaodiaria WHE' +
+      'RE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS d' +
+      'ataproducao,'#13#10'(SELECT hora FROM movproducaodiaria WHERE numero=p' +
+      '.numeroproducao AND codigofilial=p.codigofilial) AS horaproducao' +
+      ','#13#10'(SELECT datafinalizacao FROM movproducaodiaria WHERE numero=p' +
+      '.numeroproducao AND codigofilial=p.codigofilial) AS datafimprodu' +
+      'cao,'#13#10'(SELECT horafinalizacao FROM movproducaodiaria WHERE numer' +
+      'o=p.numeroproducao AND codigofilial=p.codigofilial) AS horafimpr' +
+      'oducao,'#13#10'p.codigo,p.produto,p.unidade,p.quantidadeproduzida,'#13#10'IF' +
+      'NULL((p.quantidadeproduzida/p.quantidadeleite),0) AS rendleite,'#13 +
+      #10'IFNULL((p.quantidadeproduzida/p.quantidadecreme),0) AS rendCrem' +
+      'e,'#13#10'IFNULL((p.quantidadeproduzida/p.quantidademanteiga),0) AS re' +
+      'ndmanteiga,'#13#10'p.quantidadeleite'#13#10' FROM producaoitens AS p, movpro' +
+      'ducaodiaria AS m WHERE p.numeroproducao='#39'0'#39#13#10' AND p.codigofilial' +
+      '='#39'00001'#39#13#10' AND p.numeroproducao=m.numero'#13#10' AND p.codigofilial=m.' +
+      'codigofilial;'
     MaxBlobSize = -1
     Params = <>
     SQLConnection = _dm2.ConnecDm2

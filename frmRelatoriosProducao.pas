@@ -52,6 +52,7 @@ type
     Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
+    cdsrelProducaonumeroproducao: TWideStringField;
     procedure BitBtn2Click(Sender: TObject);
     procedure btnimprimirClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
@@ -190,7 +191,7 @@ filtroProd:='';
 
    _dm.ConnecDm.Connected:=false;
    cdsrelProducao.Close;
-   sdsrelProducao.CommandText:= 'SELECT (SELECT DATA FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS dataproducao,  '+
+   sdsrelProducao.CommandText:= 'SELECT p.numeroproducao, (SELECT DATA FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS dataproducao,  '+
     ' (SELECT hora FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS horaproducao,'+
     ' (SELECT datafinalizacao FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS datafimproducao, '+
     ' (SELECT horafinalizacao FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS horafimproducao, '+

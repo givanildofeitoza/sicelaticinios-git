@@ -864,7 +864,7 @@ begin
       end;
 
 
-
+      {
       glb_campo:='atualizarEstoqueColeta';//campo: atualizarEstoqueColeta
 
       _frmLogin:=T_frmLogin.Create(self);
@@ -872,7 +872,7 @@ begin
       _frmLogin.ShowModal;
 
       if(glb_permissao='S')then
-      begin
+      begin  }
 
         if(Application.MessageBox('Lançar estoque de leite?','Pergunta',MB_ICONQUESTION+MB_YESNO)=idno)then
        begin
@@ -1017,13 +1017,13 @@ begin
        try
          begin
         _dm.qrPadrao.SQL.clear;
-        _dm.qrPadrao.SQL.Add('CALL ProcessarEntrada('+quotedstr(lblfilial.Caption)+','+quotedstr(numeroNf)+','+quotedstr(altCusto)+','+quotedstr(_frmLogin.txtUsuario.Text)+',"0","0","0"); ');
+        _dm.qrPadrao.SQL.Add('CALL ProcessarEntrada('+quotedstr(lblfilial.Caption)+','+quotedstr(numeroNf)+','+quotedstr(altCusto)+','+quotedstr(glb_usuario)+',"0","0","0"); ');
         _dm.qrPadrao.execsql;
 
 
 
         _dm.qrPadrao2.SQL.clear;
-        _dm.qrPadrao2.SQL.Add('update movanalise set finalizada="S", datafinalizacao=current_date,operadorfinalizacao='+quotedstr(_frmLogin.txtUsuario.Text)+' where numero='+quotedstr(_dm.cdsAnalisenumero.AsString));
+        _dm.qrPadrao2.SQL.Add('update movanalise set finalizada="S", datafinalizacao=current_date,operadorfinalizacao='+quotedstr(glb_usuario)+' where numero='+quotedstr(_dm.cdsAnalisenumero.AsString));
         _dm.qrPadrao2.execsql;
 
 
@@ -1109,7 +1109,7 @@ begin
          btnAlterar.Enabled:=false;
          btnLancar.Enabled:=false;
 
-      end;
+     // end;
 
 
 end;

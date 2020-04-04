@@ -2,8 +2,8 @@ object _frmRelAnalises: T_frmRelAnalises
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  ClientHeight = 260
-  ClientWidth = 464
+  ClientHeight = 677
+  ClientWidth = 1070
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,15 +15,15 @@ object _frmRelAnalises: T_frmRelAnalises
   PixelsPerInch = 96
   TextHeight = 13
   object Label2: TLabel
-    Left = 8
-    Top = 64
+    Left = 16
+    Top = 600
     Width = 51
     Height = 13
     Caption = 'Data inicial'
   end
   object Label3: TLabel
-    Left = 223
-    Top = 64
+    Left = 231
+    Top = 600
     Width = 46
     Height = 13
     Caption = 'Data final'
@@ -31,12 +31,13 @@ object _frmRelAnalises: T_frmRelAnalises
   object pnlstatus: TPanel
     Left = 0
     Top = 0
-    Width = 464
+    Width = 1070
     Height = 42
     Align = alTop
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
+    ExplicitWidth = 464
     object Label1: TLabel
       Left = 16
       Top = 10
@@ -52,41 +53,41 @@ object _frmRelAnalises: T_frmRelAnalises
     end
   end
   object datai: TDateEdit
-    Left = 8
-    Top = 83
+    Left = 16
+    Top = 619
     Width = 170
     Height = 21
     NumGlyphs = 2
     TabOrder = 1
   end
   object dataf: TDateEdit
-    Left = 223
-    Top = 83
+    Left = 231
+    Top = 619
     Width = 169
     Height = 21
     NumGlyphs = 2
     TabOrder = 2
   end
   object BitBtn1: TBitBtn
-    Left = 8
-    Top = 110
-    Width = 51
+    Left = 402
+    Top = 644
+    Width = 42
     Height = 25
     Caption = '...'
     TabOrder = 3
     OnClick = BitBtn1Click
   end
   object txtfornecedor: TEdit
-    Left = 95
-    Top = 141
+    Left = 103
+    Top = 646
     Width = 297
     Height = 21
     Enabled = False
     TabOrder = 4
   end
   object BitBtn2: TBitBtn
-    Left = 8
-    Top = 220
+    Left = 965
+    Top = 637
     Width = 97
     Height = 32
     Caption = 'Imprimir'
@@ -94,8 +95,8 @@ object _frmRelAnalises: T_frmRelAnalises
     OnClick = BitBtn2Click
   end
   object txtCod: TEdit
-    Left = 8
-    Top = 141
+    Left = 16
+    Top = 646
     Width = 81
     Height = 21
     Enabled = False
@@ -103,8 +104,8 @@ object _frmRelAnalises: T_frmRelAnalises
   end
   object rgtipo: TRadioGroup
     Left = 8
-    Top = 172
-    Width = 249
+    Top = 561
+    Width = 392
     Height = 33
     Caption = #211'rdenar por:'
     Columns = 2
@@ -114,11 +115,194 @@ object _frmRelAnalises: T_frmRelAnalises
       'Qualidade')
     TabOrder = 7
   end
+  object BitBtn3: TBitBtn
+    Left = 483
+    Top = 639
+    Width = 129
+    Height = 30
+    Caption = 'Filtrar'
+    TabOrder = 8
+    OnClick = BitBtn3Click
+  end
+  object DBGrid1: TDBGrid
+    Left = 8
+    Top = 48
+    Width = 1054
+    Height = 507
+    DataSource = _dm.DSourceAnalise
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    TabOrder = 9
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    OnDrawColumnCell = DBGrid1DrawColumnCell
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'numero'
+        Title.Caption = 'N'#250'mero'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'fornecedor'
+        Title.Caption = 'Fornecedor'
+        Width = 236
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'data'
+        Title.Caption = 'Data'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'temperatura'
+        Title.Caption = 'Temperatura'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'dornic'
+        Title.Caption = 'Dornic'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'gordura'
+        Title.Caption = 'Gordura'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'proteina'
+        Title.Caption = 'Proteina'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'densidade'
+        Title.Caption = 'Densidade'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'crioscopia'
+        Title.Caption = 'Crioscopia'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'antibiotico'
+        Title.Caption = 'Antibiotico'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'fosfatse'
+        Title.Caption = 'fosfatseF'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'peroxidase'
+        Title.Caption = 'Peroxidase'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'soda'
+        Title.Caption = 'Soda'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'amido'
+        Title.Caption = 'Amido'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'peroxido'
+        Title.Caption = 'Peroxido'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'naoconforme'
+        Title.Caption = 'N'#227'o conforme'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'codigofilial'
+        Title.Caption = 'Filial'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'confirmada'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'agua'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'datacoleta'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'quantidade'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'custo'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'tipoleite'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'alizarol'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'codigotipoleite'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'qtdconferida'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'doclancado'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'nrEntrada'
+        Visible = True
+      end>
+  end
   object rvpAnalises: TRvProject
     Engine = RvSystem1
     ProjectFile = 'C:\iqsistemas\SICElaticinios\relatorios\impRealAnalise2.rav'
-    Left = 184
-    Top = 213
+    Left = 848
+    Top = 581
     RaveBlobNew = {
       C9AB00006F02D269D651E5405241561AB0AD01000000BFED84B00E5200650070
       006F00720074003100075265706F72743100BFED84B026540052006100760065
@@ -1509,13 +1693,13 @@ object _frmRelAnalises: T_frmRelAnalises
     SystemPrinter.StatusFormat = 'Printing page %p'
     SystemPrinter.Title = 'Rave Report'
     SystemPrinter.UnitsFactor = 1.000000000000000000
-    Left = 274
-    Top = 211
+    Left = 938
+    Top = 579
   end
   object RvDataSetConnection1: TRvDataSetConnection
     RuntimeVisibility = rtDeveloper
     DataSet = _dm.cdsAnalise
-    Left = 360
-    Top = 219
+    Left = 1024
+    Top = 587
   end
 end

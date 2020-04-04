@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask,
   RxToolEdit, Vcl.Buttons, RDprint, Data.FMTBcd, Datasnap.Provider,
-  Data.SqlExpr, Datasnap.DBClient, Data.DB, Vcl.Grids, Vcl.DBGrids;
+  Data.SqlExpr, Datasnap.DBClient, Data.DB, Vcl.Grids, Vcl.DBGrids, RxCurrEdit;
 
 type
   T_frmRelColeta = class(TForm)
@@ -29,13 +29,6 @@ type
     impRelColeta: TRDprint;
     DBGrid1: TDBGrid;
     DataSource1: TDataSource;
-    qrpadrao: TSQLQuery;
-    qrpadraofornecedor: TWideStringField;
-    qrpadraototal: TFMTBCDField;
-    qrpadraototalcusto: TFMTBCDField;
-    qrpadraodatacoleta: TDateField;
-    qrpadraodataconfirmacao: TDateField;
-    qrpadraoconfirmada: TWideStringField;
     ClientDataSet1: TClientDataSet;
     SQLDataSet1: TSQLDataSet;
     DataSetProvider1: TDataSetProvider;
@@ -46,6 +39,8 @@ type
     ClientDataSet1dataconfirmacao: TDateField;
     ClientDataSet1confirmada: TWideStringField;
     BitBtn4: TBitBtn;
+    txtcoletado: TCurrencyEdit;
+    Label6: TLabel;
     procedure BitBtn1Click(Sender: TObject);
     procedure impRelColetaBeforeNewPage(Sender: TObject; Pagina: Integer);
     procedure BitBtn2Click(Sender: TObject);
@@ -192,6 +187,21 @@ begin
   SQLDataSet1.execsql;
   ClientDataSet1.Open;
   ClientDataSet1.Refresh;
+
+
+  ClientDataSet1.first;
+               while not ClientDataSet1.eof do
+               begin
+
+                  custo:= custo+ClientDataSet1totalcusto.AsCurrency;
+                  quantidade:=quantidade+ClientDataSet1total.AsCurrency;
+
+                   ClientDataSet1.next;
+               end;
+
+
+          txtcoletado.Value:=   quantidade;
+
 
    {
     linha:=7;
