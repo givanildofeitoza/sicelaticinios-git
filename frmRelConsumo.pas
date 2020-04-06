@@ -51,7 +51,7 @@ implementation
 
 {$R *.dfm}
 uses
-frmProdPreproducao,dm,dm2,main,frmProducaoDiaria,ComObj;
+frmProdPreproducao,dm,dm2,main,frmProducaoDiaria,ComObj,clipbrd;
 
 procedure T_frmRelConsumo.BitBtn1Click(Sender: TObject);
 begin
@@ -145,11 +145,12 @@ begin
 
   if(chkEncerradas.Checked=true)then
   _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+'  AND finalizado="S" ';
-
   _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+' GROUP BY codigomateria';
   _dm2.sdsMateria.ExecSQL();
- //clipboard.AsText:=  _dm2.sdsMateria.CommandText;
-   _dm2.cdsmateria.Open;
+
+ clipboard.AsText:=  _dm2.sdsMateria.CommandText;
+
+  _dm2.cdsmateria.Open;
   _dm2.cdsmateria.refresh;
 
   RvPConsumo.SetParam('titcusto','[Média C. Unit]');
@@ -163,9 +164,9 @@ begin
   _dm2.cdsmateria.Close;
   _dm2.sdsMateria.CommandText:='select inc_prod_producao,codigofilial,idproducao,codigoproduto,descricaoproduto,codigomateria,descricaomateria,quantidade,';
    if(_dm.cdsConfigLaticinioadicionarqtdderivados.AsString='S')then
-    _dm2.sdsMateria.CommandText:=_dm2.sdsMateria.CommandText+' quantidademateria as quantidademateria, (quantidade*quantidademateria) as totalmateriautilizada ,((quantidade * quantidademateria) * custounitario) as totalcustoproducao, custounitario,DATA,operador from producaomovmateria'
+    _dm2.sdsMateria.CommandText:=_dm2.sdsMateria.CommandText+' quantidademateria as quantidademateria, sum(quantidade*quantidademateria) as totalmateriautilizada ,((quantidade * quantidademateria) * custounitario) as totalcustoproducao, custounitario,DATA,operador from producaomovmateria'
    else
-    _dm2.sdsMateria.CommandText:=_dm2.sdsMateria.CommandText+' quantidademateria as quantidademateria, (totalmateriautilizada) as totalmateriautilizada ,((totalmateriautilizada) * custounitario) as totalcustoproducao, custounitario,DATA,operador from producaomovmateria';
+    _dm2.sdsMateria.CommandText:=_dm2.sdsMateria.CommandText+' quantidademateria as quantidademateria, sum(totalmateriautilizada) as totalmateriautilizada ,sum((totalmateriautilizada) * custounitario) as totalcustoproducao, custounitario,DATA,operador from producaomovmateria';
 
 
     _dm2.sdsMateria.CommandText:=_dm2.sdsMateria.CommandText+' WHERE codigofilial="'+glb_filial+'"  AND data BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" '+produto;
@@ -174,6 +175,9 @@ begin
    _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+'  AND finalizado="S" ';
 
   _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+' GROUP BY codigomateria';
+
+
+  clipboard.astext:=  _dm2.sdsMateria.CommandText;
 
   _dm2.sdsMateria.ExecSQL();
   _dm2.cdsmateria.Open;
