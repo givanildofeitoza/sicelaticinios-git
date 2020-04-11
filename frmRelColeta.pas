@@ -41,6 +41,7 @@ type
     BitBtn4: TBitBtn;
     txtcoletado: TCurrencyEdit;
     Label6: TLabel;
+    ClientDataSet1numero: TWideStringField;
     procedure BitBtn1Click(Sender: TObject);
     procedure impRelColetaBeforeNewPage(Sender: TObject; Pagina: Integer);
     procedure BitBtn2Click(Sender: TObject);
@@ -176,7 +177,7 @@ begin
 
     _dm.ConnecDm.Connected:=false;
     _dm.qrPadrao.SQL.Clear;
-    _dm.qrPadrao.SQL.Add(' SELECT c.fornecedor, SUM(c.totalcoletado) AS total,SUM(c.totalcoletado * c.custo) AS totalcusto, mc.datacoleta, mc.dataconfirmacao,mc.confirmada FROM coleta AS c, movcoleta AS mc'+filtro);
+    _dm.qrPadrao.SQL.Add(' SELECT c.numero,c.fornecedor, SUM(c.totalcoletado) AS total,SUM(c.totalcoletado * c.custo) AS totalcusto, mc.datacoleta, mc.dataconfirmacao,mc.confirmada FROM coleta AS c, movcoleta AS mc'+filtro);
     _dm.qrPadrao.SQL.Add(' AND c.numero=mc.numero and mc.confirmada="S" GROUP BY c.fornecedor');
     _dm.qrPadrao.open;
 

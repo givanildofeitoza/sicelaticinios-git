@@ -958,6 +958,23 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           TabOrder = 3
         end
       end
+      object pnlaguarde: TPanel
+        Left = 197
+        Top = 294
+        Width = 323
+        Height = 51
+        Caption = 'Processando, aguarde...'
+        Color = clMenuHighlight
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentBackground = False
+        ParentFont = False
+        TabOrder = 10
+        Visible = False
+      end
     end
     object tabDadosProducao: TTabSheet
       Caption = 'Leite / Creme / M. Derretida'
@@ -1021,7 +1038,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
         object Label22: TLabel
           Left = 905
           Top = 36
-          Width = 51
+          Width = 69
           Height = 13
           Caption = 'Sobra anterior'
           Visible = False
@@ -2866,7 +2883,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
     Left = 460
     Top = 353
     Bitmap = {
-      494C010103000800280010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010103000800380010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0006132500794D9300EF58A800FF58A800FF58A800FF58A800FF58A800FF4D93

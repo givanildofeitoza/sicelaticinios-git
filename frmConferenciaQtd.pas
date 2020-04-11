@@ -115,6 +115,7 @@ type
     Panel13: TPanel;
     txtqtdtotal: TCurrencyEdit;
     Label30: TLabel;
+    pnlaguarde: TPanel;
     procedure BitBtn1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure gridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
@@ -232,7 +233,8 @@ begin
    if(continuar='N')then
    exit;
 
-
+    pnlaguarde.Visible:=true;
+    Application.ProcessMessages;
 
      _dm.ConnecDm.Connected:=false;
      _dm.sdsMovAnalise.Close;
@@ -344,6 +346,7 @@ begin
     _dm.cdsfiliais.Refresh;
 
 
+       pnlaguarde.Visible:=false;
 
 
 
@@ -813,7 +816,8 @@ begin
     exit;
   end;
 
-
+    pnlaguarde.Visible:=true;
+    Application.ProcessMessages;
 
 
      total:=0;
@@ -964,7 +968,7 @@ begin
         _dm.qrPadrao.SQL.Add('qtdprateleiras,tributacao,cfopentrada,modelonf,ratdesconto,custocalculado,exportarfiscal');
         _dm.qrPadrao.SQL.Add(') values (');
         _dm.qrPadrao.SQL.Add(quotedstr(numeroNf)+','); //numero
-        if(_dm.qrPadrao2.FieldByName('codigotipoleite').AsString='')then
+        if(_dm.qrPadrao2.FieldByName('codigotipoleite').AsString='0')then
         begin
          _dm.qrPadrao.SQL.Add(quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+','); //codigo
          _dm.qrPadrao.SQL.Add(quotedstr(_dm.cdsConfigLaticinioprodpadraoleite.AsString)+','); //codigo
@@ -1108,7 +1112,7 @@ begin
          grid.Enabled:=false;
          btnAlterar.Enabled:=false;
          btnLancar.Enabled:=false;
-
+           pnlaguarde.Visible:=false;
      // end;
 
 
@@ -1185,7 +1189,8 @@ begin
         exit;
        end;
 
-
+        pnlaguarde.Visible:=true;
+        Application.ProcessMessages;
 
             for I := 1 to grid.RowCount do
             begin
@@ -1204,7 +1209,7 @@ begin
               //ajustando cabeçalho da análise
                 _dm.ConnecDm.Connected:=false;
                 _dm.qrPadrao.SQL.Clear;
-                _dm.qrPadrao.SQL.Add(' UPDATE movanalise SET  conferido="S", operadorconferencia='+quotedstr(_frmLogin.txtUsuario.Text)+', dataconferencia=current_date ');
+                _dm.qrPadrao.SQL.Add(' UPDATE movanalise SET  conferido="S", operadorconferencia='+quotedstr(glb_usuario)+', dataconferencia=current_date ');
                 _dm.qrPadrao.SQL.Add(' WHERE numero='+quotedstr(_dm.cdsMovAnalisenumero.AsString));
                 _dm.qrPadrao.ExecSQL();
 
@@ -1232,8 +1237,8 @@ begin
         _dm.cdsAnalise.Refresh;
 
 
-      _frmLogin.Release;
-
+     // _frmLogin.Release;
+       pnlaguarde.Visible:=false;
 
 
 end;

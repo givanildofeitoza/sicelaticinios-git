@@ -182,6 +182,12 @@ object _frmRelColeta: T_frmRelColeta
     Columns = <
       item
         Expanded = False
+        FieldName = 'numero'
+        Title.Caption = 'N'#250'mero'
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'fornecedor'
         Title.Caption = 'Fornecedor'
         Width = 222
@@ -380,12 +386,17 @@ object _frmRelColeta: T_frmRelColeta
       FieldName = 'confirmada'
       Size = 1
     end
+    object ClientDataSet1numero: TWideStringField
+      FieldName = 'numero'
+      Size = 10
+    end
   end
   object SQLDataSet1: TSQLDataSet
     CommandText = 
-      'SELECT c.fornecedor, SUM(c.totalcoletado) AS total,SUM(c.totalco' +
-      'letado * c.custo) AS totalcusto, mc.datacoleta, mc.dataconfirmac' +
-      'ao,mc.confirmada FROM coleta AS c, movcoleta AS mc'#13#10'limit 1;'
+      'SELECT c.numero,c.fornecedor, SUM(c.totalcoletado) AS total,SUM(' +
+      'c.totalcoletado * c.custo) AS totalcusto, mc.datacoleta, mc.data' +
+      'confirmacao,mc.confirmada FROM coleta AS c, movcoleta AS mc'#13#10'lim' +
+      'it 1;'
     MaxBlobSize = -1
     Params = <>
     SQLConnection = _dm.ConnecDm

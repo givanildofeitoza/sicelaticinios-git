@@ -226,6 +226,7 @@ type
     rvpOerdemSimples: TRvProject;
     RvSystem1: TRvSystem;
     chktipo: TCheckBox;
+    pnlaguarde: TPanel;
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure BitBtn1Click(Sender: TObject);
@@ -1484,6 +1485,10 @@ continuar:='N';
          exit;
        end;
 
+        pnlaguarde.Visible:=true;
+        Application.ProcessMessages;
+
+
        _dm2.ConnecDm2.Connected:=false;
        _dm2.cdsproducaoitens.Close;
        //_dm2.sdsproducaoitens.commandtext:='SELECT * FROM producaoitens WHERE codigofilial='+quotedstr(glb_filial)+' AND numeroproducao = '+quotedstr(_dm2.cdsMovproducaonumero.AsString);
@@ -1678,6 +1683,8 @@ continuar:='N';
 
         if(_dm2.cdsproducaoitens.RecordCount=0)then
         tabDadosProducao.Enabled:=false;
+
+         pnlaguarde.Visible:=false;
 
 
 
@@ -1998,6 +2005,124 @@ begin
             _dm.qrpadrao2.sql.clear;
             _dm.qrpadrao2.sql.add(' UPDATE '+glb_produtos+' SET quantidade = quantidade - '+quotedstr(formatcurr('##0.00',qtdmanteiga))+' WHERE codigo ='+quotedstr( _dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+' AND codigofilial='+quotedstr(glb_filial));
             _dm.qrpadrao2.ExecSQL();
+
+
+//LANÇANDO NO CONSUMO
+
+  _dm.ConnecDm.Connected:=false;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('INSERT INTO contperdas(DATA,encerrada,codigofilial,operador,ip,nf,nfserie,cfop,total,tipo) VALUES ( '+
+  'CURRENT_DATE,"S",'
+  +quotedstr(glb_filial)+','
+  +quotedstr(glb_usuario)+','
+  +quotedstr(glb_ip)+','
+  +quotedstr('0')+','
+  +quotedstr('0')+','
+  +quotedstr('5.927')+','
+  +quotedstr('0.00')+','
+  +quotedstr('P')+')');
+  _dm.qrPadrao.ExecSQL();
+
+
+  _dm.ConnecDm.Connected:=false;
+   _dm.qrPadrao.SQL.Clear;
+   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (encerrada,numero,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
+   ' SELECT "S",'+quotedstr(txtnumero.Text)+' ,codigofilial,'+
+   ' codigomateria,'+
+   ' descricaomateria,'+
+   ' totalmateriautilizada,'+
+   ' data,'+
+      quotedstr(glb_usuario)+','+
+      quotedstr('INSUMOS DE PRODUÇÃO')+','+
+      quotedstr('PRODUÇÃO N°'+_dm2.cdsMovproducaonumero.AsString)+','+
+   ' custounitario,'+
+   ' precounitario,'+
+   '  "C",'+
+   ' grupo,'+
+   ' subgrupo,'+
+   ' (SELECT p.situacao FROM '+glb_produtos+' as p WHERE p.codigo=codigomateria AND p.codigofilial='+quotedstr(glb_filial)+'),'+
+   ' "" FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigofilial='+quotedstr(glb_filial)+';');
+
+
+
+   //leite
+   if(qtdleite>0)then
+   begin
+
+  _dm.ConnecDm.Connected:=false;
+ //  _dm.qrPadrao.SQL.Clear;
+   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (encerrada,numero,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
+   ' VALUES ("S",'+quotedstr(txtnumero.Text)+' ,codigofilial,'+
+   quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+','+
+   quotedstr(_dm.cdsConfigLaticinioprodpadraoleite.AsString)+','+
+   quotedstr(formatcurr('##0.00',qtdleite))+','+
+   ' current_date,'+
+      quotedstr(glb_usuario)+','+
+      quotedstr('INSUMOS DE PRODUÇÃO')+','+
+      quotedstr('PRODUÇÃO N°'+_dm2.cdsMovproducaonumero.AsString)+','+
+   ' (SELECT custo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT precovenda FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   '  "C",'+
+   ' (SELECT grupo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT subgrupo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT situacao FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' "");');
+
+   end;
+
+   //creme
+   if(qtdcreme>0)then
+   begin
+
+   _dm.ConnecDm.Connected:=false;
+  // _dm.qrPadrao.SQL.Clear;
+   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (encerrada,numero,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
+   ' VALUES ("S",'+quotedstr(txtnumero.Text)+' ,codigofilial,'+
+   quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+','+
+   quotedstr(_dm.cdsConfigLaticinioprodpadraocreme.AsString)+','+
+   quotedstr(formatcurr('##0.00',qtdcreme))+','+
+   ' current_date,'+
+      quotedstr(glb_usuario)+','+
+      quotedstr('INSUMOS DE PRODUÇÃO')+','+
+      quotedstr('PRODUÇÃO N°'+_dm2.cdsMovproducaonumero.AsString)+','+
+   ' (SELECT custo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT precovenda FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   '  "C",'+
+   ' (SELECT grupo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT subgrupo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT situacao FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' "");');
+   end;
+
+
+   // manteiga
+   if(qtdmanteiga>0)then
+   begin
+
+   _dm.ConnecDm.Connected:=false;
+ //  _dm.qrPadrao.SQL.Clear;
+   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (encerrada,numero,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
+   ' VALUES ("S",'+quotedstr(txtnumero.Text)+' ,codigofilial,'+
+   quotedstr(_dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+','+
+   quotedstr(_dm.cdsConfigLaticinioprodpadraomanteiga.AsString)+','+
+   quotedstr(formatcurr('##0.00',qtdmanteiga))+','+
+   ' current_date,'+
+      quotedstr(glb_usuario)+','+
+      quotedstr('INSUMOS DE PRODUÇÃO')+','+
+      quotedstr('PRODUÇÃO N°'+_dm2.cdsMovproducaonumero.AsString)+','+
+   ' (SELECT custo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT precovenda FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   '  "C",'+
+   ' (SELECT grupo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT subgrupo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT situacao FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' "");');
+   _dm.qrPadrao.ExecSQL();
+   end;
+
+   //FIM LANÇANDO NO CONSUMO
+
+
 
 
 

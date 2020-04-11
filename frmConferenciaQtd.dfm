@@ -1104,8 +1104,8 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
     end
   end
   object pnlbusca: TPanel
-    Left = -20
-    Top = 8
+    Left = -612
+    Top = 301
     Width = 656
     Height = 429
     TabOrder = 6
@@ -1207,6 +1207,7 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
             Expanded = False
             FieldName = 'finalizada'
             Title.Caption = 'Lan'#231'ada'
+            Width = 64
             Visible = True
           end>
       end
@@ -1245,6 +1246,23 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
       TabOrder = 4
       OnClick = _btnCancelarClick
     end
+  end
+  object pnlaguarde: TPanel
+    Left = 197
+    Top = 294
+    Width = 323
+    Height = 51
+    Caption = 'Processando, aguarde...'
+    Color = clMenuHighlight
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 7
+    Visible = False
   end
   object RvPconferencia: TRvProject
     Engine = RvS1
