@@ -179,6 +179,7 @@ object _frmRelColeta: T_frmRelColeta
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
     OnDrawColumnCell = DBGrid1DrawColumnCell
+    OnTitleClick = DBGrid1TitleClick
     Columns = <
       item
         Expanded = False

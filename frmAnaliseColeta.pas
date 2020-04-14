@@ -234,6 +234,12 @@ begin
        if(Application.MessageBox('Deseja substituir os dados da coleta informada?','Pergunta',MB_ICONQUESTION+MB_YESNO)=IDNO)then
        exit;
 
+       if(_dm.cdsMovAnalisefinalizada.AsString='S')then
+          begin
+           Application.MessageBox('Análise já foi lançada no estoque, não é possível alterar! ','Alerta',MB_ICONEXCLAMATION+MB_ok);
+           exit;
+          end;
+
 
     _dm.ConnecDm.Connected:=false;
     _dm.qrPadrao2.SQL.clear;
@@ -277,7 +283,7 @@ begin
  
     _dm.ConnecDm.Connected:=false;
     _dm.qrPadrao2.SQL.clear;
-    _dm.qrPadrao2.SQL.Add('insert into analise(numero,codigofilial,codigofornecedor,fornecedor,data,quantidade,reservatorio,qtdconferida,datacoleta) values (');
+    _dm.qrPadrao2.SQL.Add('insert into analise(numero,codigofilial,codigofornecedor,fornecedor,data,quantidade,reservatorio,qtdconferida,codigotipoleite,datacoleta) values (');
     _dm.qrPadrao2.SQL.Add('abs('+quotedstr(lblNrAnalise.Caption)+'),');
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsMovColetacodigofilial.AsString)+',');
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsColetacodigofornecedor.AsString)+',');
@@ -286,6 +292,7 @@ begin
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsColetatotalcoletado.AsString)+',');
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsColetareservatorio.AsString)+',');
     _dm.qrPadrao2.SQL.Add(quotedstr(_dm.cdsColetatotalcoletado.AsString)+',');
+    _dm.qrPadrao2.SQL.Add(quotedstr('0')+',');
     _dm.qrPadrao2.SQL.Add(quotedstr(formatdatetime('yyyy-mm-dd',_dm.cdsMovColetadatacoleta.AsDateTime))+')');
     _dm.qrPadrao2.ExecSQL();
 
@@ -779,6 +786,12 @@ begin
            exit;
        end;
 
+         if(_dm.cdsMovAnalisefinalizada.AsString='S')then
+          begin
+           Application.MessageBox('Análise já foi lançada no estoque, não é possível excluir! ','Alerta',MB_ICONEXCLAMATION+MB_ok);
+           exit;
+          end;
+
 
 
       _frmLogin:=T_frmLogin.Create(self);
@@ -792,6 +805,7 @@ begin
 
        if(Application.MessageBox('Deseja excluir análise?','Pergunta',MB_ICONQUESTION+MB_YESNO)=idno)then
        exit;
+
 
          _dm.ConnecDm.Connected:=false;
          _dm.qrPadrao.Sql.Clear;
@@ -984,7 +998,7 @@ end;
 
                  _dm.ConnecDm.Connected:=false;
                  _dm.cdsMovColeta.Close;
-                 _dm.sdsMovColeta.CommandText:='SELECT * FROM movcoleta WHERE codigofilial ='+quotedstr(copy(cbofilial.Text,1,5))+' AND operador='+quotedstr(glb_usuario)+filtro;
+                 _dm.sdsMovColeta.CommandText:='SELECT * FROM movcoleta WHERE codigofilial ='+quotedstr(copy(cbofilial.Text,1,5))+filtro;
                  _dm.sdsMovColeta.ExecSQL;
                  _dm.cdsMovColeta.Open;
                  _dm.cdsMovColeta.refresh;

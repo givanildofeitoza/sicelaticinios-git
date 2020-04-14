@@ -525,21 +525,18 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
         Expanded = False
         FieldName = 'dornic'
         Title.Caption = 'Dornic.'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'gordura'
         Title.Caption = 'Gordura'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'proteina'
         Title.Caption = 'Prote'#237'na'
-        Width = 64
         Visible = True
       end
       item
@@ -623,14 +620,12 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
         Expanded = False
         FieldName = 'quantidade'
         Title.Caption = 'Qtd. Coleta'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'qtdconferida'
         Title.Caption = 'Qtd.Conferida'
-        Width = 64
         Visible = True
       end>
   end
@@ -738,8 +733,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirColeta: TPanel
-    Left = 120
-    Top = 45
+    Left = 8
+    Top = 29
     Width = 757
     Height = 458
     Font.Charset = DEFAULT_CHARSET
@@ -848,6 +843,7 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       Font.Style = []
       ParentFont = False
       TabOrder = 2
+      ExplicitTop = 40
       object Label16: TLabel
         Left = 29
         Top = 44
@@ -956,8 +952,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirAnalise: TPanel
-    Left = 817
-    Top = 404
+    Left = 736
+    Top = 116
     Width = 748
     Height = 417
     Font.Charset = DEFAULT_CHARSET

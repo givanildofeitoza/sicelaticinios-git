@@ -22,11 +22,32 @@ object _frmRelAnalises: T_frmRelAnalises
     Caption = 'Data inicial'
   end
   object Label3: TLabel
-    Left = 231
+    Left = 192
     Top = 600
     Width = 46
     Height = 13
     Caption = 'Data final'
+  end
+  object Label4: TLabel
+    Left = 581
+    Top = 564
+    Width = 122
+    Height = 13
+    Caption = 'Total informado na coleta'
+  end
+  object Label5: TLabel
+    Left = 770
+    Top = 564
+    Width = 72
+    Height = 13
+    Caption = 'Total analisado'
+  end
+  object Label6: TLabel
+    Left = 367
+    Top = 600
+    Width = 49
+    Height = 13
+    Caption = 'Nr. Coleta'
   end
   object pnlstatus: TPanel
     Left = 0
@@ -37,7 +58,6 @@ object _frmRelAnalises: T_frmRelAnalises
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 464
     object Label1: TLabel
       Left = 16
       Top = 10
@@ -61,7 +81,7 @@ object _frmRelAnalises: T_frmRelAnalises
     TabOrder = 1
   end
   object dataf: TDateEdit
-    Left = 231
+    Left = 192
     Top = 619
     Width = 169
     Height = 21
@@ -71,7 +91,7 @@ object _frmRelAnalises: T_frmRelAnalises
   object BitBtn1: TBitBtn
     Left = 402
     Top = 644
-    Width = 42
+    Width = 55
     Height = 25
     Caption = '...'
     TabOrder = 3
@@ -129,7 +149,7 @@ object _frmRelAnalises: T_frmRelAnalises
     Top = 48
     Width = 1054
     Height = 507
-    DataSource = _dm.DSourceAnalise
+    DataSource = DSourceAnalise
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 9
     TitleFont.Charset = DEFAULT_CHARSET
@@ -138,11 +158,18 @@ object _frmRelAnalises: T_frmRelAnalises
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
     OnDrawColumnCell = DBGrid1DrawColumnCell
+    OnTitleClick = DBGrid1TitleClick
     Columns = <
       item
         Expanded = False
         FieldName = 'numero'
-        Title.Caption = 'N'#250'mero'
+        Title.Caption = 'N'#250'mero An'#225'lise'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'numerocoleta'
+        Title.Caption = 'N'#250'mero Coleta'
         Visible = True
       end
       item
@@ -154,7 +181,7 @@ object _frmRelAnalises: T_frmRelAnalises
       end
       item
         Expanded = False
-        FieldName = 'data'
+        FieldName = 'DATA'
         Title.Caption = 'Data'
         Visible = True
       end
@@ -162,12 +189,14 @@ object _frmRelAnalises: T_frmRelAnalises
         Expanded = False
         FieldName = 'temperatura'
         Title.Caption = 'Temperatura'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'dornic'
         Title.Caption = 'Dornic'
+        Width = 64
         Visible = True
       end
       item
@@ -180,76 +209,89 @@ object _frmRelAnalises: T_frmRelAnalises
         Expanded = False
         FieldName = 'proteina'
         Title.Caption = 'Proteina'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'densidade'
         Title.Caption = 'Densidade'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'crioscopia'
         Title.Caption = 'Crioscopia'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'antibiotico'
         Title.Caption = 'Antibiotico'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'fosfatse'
         Title.Caption = 'fosfatseF'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'peroxidase'
         Title.Caption = 'Peroxidase'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'soda'
         Title.Caption = 'Soda'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'amido'
         Title.Caption = 'Amido'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'peroxido'
         Title.Caption = 'Peroxido'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'naoconforme'
         Title.Caption = 'N'#227'o conforme'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'codigofilial'
         Title.Caption = 'Filial'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'confirmada'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'agua'
+        Width = 64
         Visible = True
       end
       item
@@ -260,49 +302,85 @@ object _frmRelAnalises: T_frmRelAnalises
       item
         Expanded = False
         FieldName = 'quantidade'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'custo'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'tipoleite'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'alizarol'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'codigotipoleite'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'qtdconferida'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'doclancado'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'nrEntrada'
+        Width = 64
         Visible = True
       end>
+  end
+  object txtcoleta: TCurrencyEdit
+    Left = 581
+    Top = 581
+    Width = 121
+    Height = 21
+    Margins.Left = 4
+    Margins.Top = 1
+    DisplayFormat = '0.00;0.00'
+    TabOrder = 10
+  end
+  object txtanalisado: TCurrencyEdit
+    Left = 770
+    Top = 581
+    Width = 121
+    Height = 21
+    Margins.Left = 4
+    Margins.Top = 1
+    DisplayFormat = '0.00;0.00'
+    TabOrder = 11
+  end
+  object txtnrcoleta: TEdit
+    Left = 367
+    Top = 617
+    Width = 90
+    Height = 21
+    TabOrder = 12
+    OnKeyPress = txtnrcoletaKeyPress
   end
   object rvpAnalises: TRvProject
     Engine = RvSystem1
     ProjectFile = 'C:\iqsistemas\SICElaticinios\relatorios\impRealAnalise2.rav'
-    Left = 848
-    Top = 581
+    Left = 856
+    Top = 605
     RaveBlobNew = {
       C9AB00006F02D269D651E5405241561AB0AD01000000BFED84B00E5200650070
       006F00720074003100075265706F72743100BFED84B026540052006100760065
@@ -1694,12 +1772,183 @@ object _frmRelAnalises: T_frmRelAnalises
     SystemPrinter.Title = 'Rave Report'
     SystemPrinter.UnitsFactor = 1.000000000000000000
     Left = 938
-    Top = 579
+    Top = 595
   end
   object RvDataSetConnection1: TRvDataSetConnection
     RuntimeVisibility = rtDeveloper
-    DataSet = _dm.cdsAnalise
+    DataSet = cdsAnalise
     Left = 1024
     Top = 587
+  end
+  object DSourceAnalise: TDataSource
+    DataSet = cdsAnalise
+    Left = 560
+    Top = 323
+  end
+  object cdsAnalise: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dsAnalise'
+    Left = 466
+    Top = 323
+    object cdsAnaliseinc: TIntegerField
+      FieldName = 'inc'
+    end
+    object cdsAnalisenumero: TIntegerField
+      FieldName = 'numero'
+    end
+    object cdsAnalisenumerocoleta: TWideStringField
+      FieldName = 'numerocoleta'
+      Size = 8
+    end
+    object cdsAnalisecodigofornecedor: TWideStringField
+      FieldName = 'codigofornecedor'
+      Size = 8
+    end
+    object cdsAnalisefornecedor: TWideStringField
+      FieldName = 'fornecedor'
+      Size = 50
+    end
+    object cdsAnalisedatacoleta: TDateField
+      FieldName = 'datacoleta'
+    end
+    object cdsAnaliseDATA: TDateField
+      FieldName = 'DATA'
+    end
+    object cdsAnalisequantidade: TFMTBCDField
+      FieldName = 'quantidade'
+      Precision = 10
+      Size = 2
+    end
+    object cdsAnaliseorigem: TWideStringField
+      FieldName = 'origem'
+      Size = 50
+    end
+    object cdsAnalisetemperatura: TFMTBCDField
+      FieldName = 'temperatura'
+      Precision = 10
+      Size = 2
+    end
+    object cdsAnalisedornic: TFMTBCDField
+      FieldName = 'dornic'
+      Precision = 10
+      Size = 2
+    end
+    object cdsAnalisegordura: TFMTBCDField
+      FieldName = 'gordura'
+      Precision = 10
+      Size = 2
+    end
+    object cdsAnaliseproteina: TFMTBCDField
+      FieldName = 'proteina'
+      Precision = 10
+      Size = 2
+    end
+    object cdsAnalisedensidade: TFMTBCDField
+      FieldName = 'densidade'
+      Precision = 10
+      Size = 2
+    end
+    object cdsAnalisecrioscopia: TFMTBCDField
+      FieldName = 'crioscopia'
+      Precision = 10
+      Size = 3
+    end
+    object cdsAnaliseantibiotico: TWideStringField
+      FieldName = 'antibiotico'
+      Size = 1
+    end
+    object cdsAnalisefosfatse: TWideStringField
+      FieldName = 'fosfatse'
+      Size = 1
+    end
+    object cdsAnaliseperoxidase: TWideStringField
+      FieldName = 'peroxidase'
+      Size = 1
+    end
+    object cdsAnalisesoda: TWideStringField
+      FieldName = 'soda'
+      Size = 1
+    end
+    object cdsAnaliseamido: TWideStringField
+      FieldName = 'amido'
+      Size = 1
+    end
+    object cdsAnaliseperoxido: TWideStringField
+      FieldName = 'peroxido'
+      Size = 1
+    end
+    object cdsAnalisenaoconforme: TWideStringField
+      FieldName = 'naoconforme'
+      Size = 1
+    end
+    object cdsAnaliseagua: TFMTBCDField
+      FieldName = 'agua'
+      Precision = 10
+      Size = 2
+    end
+    object cdsAnalisealizarol: TWideStringField
+      FieldName = 'alizarol'
+      Size = 1
+    end
+    object cdsAnalisecodigofilial: TWideStringField
+      FieldName = 'codigofilial'
+      Size = 5
+    end
+    object cdsAnaliseconfirmada: TWideStringField
+      FieldName = 'confirmada'
+      Size = 1
+    end
+    object cdsAnalisecusto: TFMTBCDField
+      FieldName = 'custo'
+      Precision = 10
+      Size = 2
+    end
+    object cdsAnalisetipoleite: TWideStringField
+      FieldName = 'tipoleite'
+      Size = 50
+    end
+    object cdsAnalisecodigotipoleite: TWideStringField
+      FieldName = 'codigotipoleite'
+      Size = 8
+    end
+    object cdsAnaliseqtdconferida: TFMTBCDField
+      FieldName = 'qtdconferida'
+      Precision = 10
+      Size = 2
+    end
+    object cdsAnalisedoclancado: TWideStringField
+      FieldName = 'doclancado'
+      Size = 1
+    end
+    object cdsAnalisereservatorio: TIntegerField
+      FieldName = 'reservatorio'
+    end
+    object cdsAnalisenrEntrada: TWideStringField
+      FieldName = 'nrEntrada'
+      Size = 6
+    end
+  end
+  object dsAnalise: TDataSetProvider
+    DataSet = sdsAnalise
+    Left = 384
+    Top = 323
+  end
+  object sdsAnalise: TSQLDataSet
+    CommandText = 
+      'SELECT'#13#10'  inc, a.numero,'#13#10' (SELECT numerocoleta FROM movanalise ' +
+      'WHERE numero=a.numero  GROUP BY numero)AS numerocoleta,'#13#10'  codig' +
+      'ofornecedor, fornecedor, datacoleta, a.DATA,'#13#10'  quantidade,  ori' +
+      'gem,  temperatura,  dornic,  gordura,  proteina,'#13#10'  densidade,  ' +
+      'crioscopia,  antibiotico,  fosfatse,  peroxidase,'#13#10'  soda,  amid' +
+      'o,  peroxido,  naoconforme,  agua,  alizarol,  a.codigofilial,'#13#10 +
+      '  a.confirmada,  custo,  tipoleite,  codigotipoleite,  qtdconfer' +
+      'ida,  doclancado,'#13#10'  reservatorio,  a.nrEntrada'#13#10'FROM analise AS' +
+      ' a WHERE   a.codigofilial='#39'00001'#39' LIMIT 0;'
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = _dm.ConnecDm
+    Left = 296
+    Top = 323
   end
 end

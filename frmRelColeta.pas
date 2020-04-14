@@ -50,6 +50,7 @@ type
     procedure BitBtn4Click(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid1TitleClick(Column: TColumn);
   private
     { Private declarations }
   public
@@ -63,7 +64,7 @@ implementation
 
 {$R *.dfm}
 uses
-dm,main,frmFornecedores;
+dm,main,frmFornecedores,clipbrd;
 
 procedure T_frmRelColeta.BitBtn1Click(Sender: TObject);
 var
@@ -178,9 +179,9 @@ begin
     _dm.ConnecDm.Connected:=false;
     _dm.qrPadrao.SQL.Clear;
     _dm.qrPadrao.SQL.Add(' SELECT c.numero,c.fornecedor, SUM(c.totalcoletado) AS total,SUM(c.totalcoletado * c.custo) AS totalcusto, mc.datacoleta, mc.dataconfirmacao,mc.confirmada FROM coleta AS c, movcoleta AS mc'+filtro);
-    _dm.qrPadrao.SQL.Add(' AND c.numero=mc.numero and mc.confirmada="S" GROUP BY c.fornecedor');
+    _dm.qrPadrao.SQL.Add(' AND c.numero=mc.numero and mc.confirmada="S" GROUP BY c.fornecedor,c.numero');
     _dm.qrPadrao.open;
-
+    // clipboard.astext:= _dm.qrPadrao.SQL.text;
 
 
   ClientDataSet1.Open;
@@ -279,6 +280,11 @@ With DBGrid1.Canvas do
  DBGrid1.DefaultDrawDataCell(Rect, DBGrid1.Columns[DataCol].Field, State);
 end;
 
+end;
+
+procedure T_frmRelColeta.DBGrid1TitleClick(Column: TColumn);
+begin
+ ClientDataSet1.IndexFieldNames := Column.FieldName
 end;
 
 procedure T_frmRelColeta.FormShow(Sender: TObject);
