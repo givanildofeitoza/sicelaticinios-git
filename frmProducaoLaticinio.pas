@@ -305,6 +305,8 @@ type
     procedure RDproducaoBeforeNewPage(Sender: TObject; Pagina: Integer);
     procedure BitBtn4Click(Sender: TObject);
     procedure BitBtn25Click(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -332,6 +334,8 @@ begin
 
       try
       begin
+       _frmProducaoLaticinio.txtLeiteSaldo.Value:= {_frmProducaoLaticinio.txtLeiteSobra.Value + }_frmProducaoLaticinio.txtLeiteEntrada.Value - _frmProducaoLaticinio.txtLeiteUtilizado.Value - _frmProducaoLaticinio.txtLeiteVendido.Value;
+
        _frmProducaoLaticinio.txtLeiteperda.Value:= {_frmProducaoLaticinio.txtLeiteSobra.Value + }_frmProducaoLaticinio.txtLeiteEntrada.Value - _frmProducaoLaticinio.txtLeiteUtilizado.Value - _frmProducaoLaticinio.txtLeiteVendido.Value - _frmProducaoLaticinio.txtLeitesaldo.Value;
 
        if(_frmProducaoLaticinio.txtLeiteperda.Value<0)then
@@ -391,11 +395,7 @@ I:integer;
 total:currency;
 begin
 
-   if(_dm2.cdsMovproducaoencerrada.Asstring='S')then
-   begin
-     application.MessageBox('Produção já encerrada!','Alerta',MB_ICONEXCLAMATION+MB_OK);
-     exit;
-   end;
+
 
 
     if(tipo = 'L') or (tipo='T')then
@@ -560,7 +560,7 @@ begin
 
      end;
 
-          application.MessageBox('Dados salvos com sucesso!','Confirmação',MB_ICONINFORMATION+MB_OK);
+
 
 
 
@@ -933,6 +933,39 @@ begin
 
 end;
 
+procedure T_frmProducaoLaticinio.PageControl1Change(Sender: TObject);
+begin
+    //  if(PageControl1.ActivePageIndex=1)then
+    //  begin
+
+               if(_dm2.cdsMovproducaoencerrada.Asstring='S')then
+               exit;
+
+               if(_dm2.cdsMovproducaonumero.Asstring='0')then
+               exit;
+
+                if(_dm2.cdsMovproducaomateriarequisitada.AsString='N')then
+                begin
+                   //carrega saldo atual do leite
+                            _dm.ConnecDm.Connected:=false;
+                            _dm.qrPadrao.SQL.Clear;
+                            _dm.qrPadrao.SQL.add('SELECT quantidade FROM '+glb_produtos+' where codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' and codigofilial='+quotedstr(glb_filial));
+                            _dm.qrPadrao.open;
+
+                            txtLeiteEntrada.Value:=  _dm.qrPadrao.FieldByName('quantidade').AsCurrency;
+                   //----------------
+
+                      //SALVA DADOS DA PRÉ-PRODUÇÃO
+                      totalizarValores('L',_dm2.cdsMovproducaonumero.AsString);
+                      salvardados('T',_dm2.cdsMovproducaonumero.AsString);
+
+                end;
+
+  //    end;
+
+
+end;
+
 procedure T_frmProducaoLaticinio.BitBtn14Click(Sender: TObject);
 begin
 txtLeiteEntrada.Value:=txtSaldoColeta.Value;
@@ -1058,9 +1091,7 @@ begin
           exit;
        end;
 
-
-
-        //pega sobra do leite produção anterior
+     { /PEGA SALDO DE LEITE DA PRODUÇÃO ANTERIOR
       _dm2.ConnecDm2.Connected:=false;
       _dm.qrPadrao2.SQL.Clear;
       _dm.qrPadrao2.SQL.add('SELECT p.numero,ifnull(d.saldo,0.00) as saldo FROM dadosproducaoleite AS d, movproducaodiaria AS p WHERE p.encerrada="S"  AND p.numero=d.numeroproducao AND p.codigofilial='+quotedstr(glb_filial)+'  ORDER BY p.numero DESC LIMIT 1');
@@ -1073,7 +1104,7 @@ begin
 
     end;
       //fim
-
+        }
 
 
       //pega sobra do creme produção anterior
@@ -1520,6 +1551,8 @@ continuar:='N';
       if(_dm2.cdsProducaoLeitesalvo.AsString='S')then
       begin
 
+
+
       txtLeiteEntrada.Value:=  _dm2.cdsProducaoLeiteentrada.AsCurrency;
       txtLeiteDestinado.Value:=  _dm2.cdsProducaoLeitedestinado.AsCurrency;
       txtLeiteUtilizado.Value:=  _dm2.cdsProducaoLeiteutilizado.AsCurrency;
@@ -1540,6 +1573,22 @@ continuar:='N';
 
 
       end;
+
+       {
+        //carrega saldo do leite
+      if(_dm2.cdsMovproducaopreproducaoconfirmada.AsString='N')then
+      begin
+            _dm.ConnecDm.Connected:=false;
+            _dm.qrPadrao.SQL.Clear;
+            _dm.qrPadrao.SQL.add('SELECT quantidade FROM '+glb_produtos+' where codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' and codigofilial='+quotedstr(glb_filial));
+            _dm.qrPadrao.open;
+
+
+            txtLeiteEntrada.Value:=  _dm.qrPadrao.FieldByName('quantidade').AsCurrency;
+      end;
+
+     }
+
 
 
      // [ CREME ]
@@ -2141,6 +2190,22 @@ begin
 
          if( _dm2.qrPadrao.FieldByName('total').AsInteger = 0)then
          begin
+
+
+            //carrega saldo atual do leite
+                  _dm.ConnecDm.Connected:=false;
+                  _dm.qrPadrao.SQL.Clear;
+                  _dm.qrPadrao.SQL.add('SELECT quantidade FROM '+glb_produtos+' where codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' and codigofilial='+quotedstr(glb_filial));
+                  _dm.qrPadrao.open;
+
+                  txtLeiteEntrada.Value:=  _dm.qrPadrao.FieldByName('quantidade').AsCurrency;
+             //----------------
+
+            //SALVA DADOS DA PRÉ-PRODUÇÃO
+            totalizarValores('L',_dm2.cdsMovproducaonumero.AsString);
+            salvardados('T',_dm2.cdsMovproducaonumero.AsString);
+
+
             _dm.qrpadrao2.sql.clear;
             _dm.qrpadrao2.sql.add(' UPDATE movproducaodiaria SET materiarequisitada = "S"  WHERE  codigofilial='+quotedstr(glb_filial)+' AND numero='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
             _dm.qrpadrao2.ExecSQL();
@@ -2163,8 +2228,14 @@ begin
      //  if(application.MessageBox('Salvar dados de produção?','Pergunta',MB_ICONQUESTION+MB_YESNO)=idno)then
      //  exit;
 
-       salvardados('T',_dm2.cdsMovproducaonumero.AsString);
+      if(_dm2.cdsMovproducaoencerrada.Asstring='S')then
+      begin
+      application.MessageBox('Produção já encerrada!','Alerta',MB_ICONEXCLAMATION+MB_OK);
+      exit;
+      end;
 
+       salvardados('T',_dm2.cdsMovproducaonumero.AsString);
+       application.MessageBox('Dados salvos com sucesso!','Confirmação',MB_ICONINFORMATION+MB_OK);
 end;
 
 procedure T_frmProducaoLaticinio.bitbtnConfirmarClick(Sender: TObject);
@@ -2368,6 +2439,20 @@ begin
        tabDadosProducao.Enabled:=true;
        gerarGrids(_dm2.cdsMovproducaonumero.AsString);
        bitLiberarDigitacao.Enabled:=true;
+
+
+
+       //carrega saldo do leite
+
+            _dm.ConnecDm.Connected:=false;
+            _dm.qrPadrao.SQL.Clear;
+            _dm.qrPadrao.SQL.add('SELECT quantidade FROM '+glb_produtos+' where codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' and codigofilial='+quotedstr(glb_filial));
+            _dm.qrPadrao.open;
+
+
+            txtLeiteEntrada.Value:=  _dm.qrPadrao.FieldByName('quantidade').AsCurrency;
+
+       //----------------
 
 end;
 
@@ -2806,6 +2891,7 @@ begin
        exit;
 
     //SALVA DADOS DA PRÉ-PRODUÇÃO
+    totalizarValores('L',_dm2.cdsMovproducaonumero.AsString);
     salvardados('T',_dm2.cdsMovproducaonumero.AsString);
 
 
@@ -3194,6 +3280,33 @@ begin
     frm.ShowModal;
 
 
+end;
+
+procedure T_frmProducaoLaticinio.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+     if(_dm2.cdsMovproducaoencerrada.Asstring='S')then
+               exit;
+
+               if(_dm2.cdsMovproducaonumero.Asstring='0')then
+               exit;
+
+                if(_dm2.cdsMovproducaomateriarequisitada.AsString='N')then
+                begin
+                   //carrega saldo atual do leite
+                            _dm.ConnecDm.Connected:=false;
+                            _dm.qrPadrao.SQL.Clear;
+                            _dm.qrPadrao.SQL.add('SELECT quantidade FROM '+glb_produtos+' where codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' and codigofilial='+quotedstr(glb_filial));
+                            _dm.qrPadrao.open;
+
+                            txtLeiteEntrada.Value:=  _dm.qrPadrao.FieldByName('quantidade').AsCurrency;
+                   //----------------
+
+                      //SALVA DADOS DA PRÉ-PRODUÇÃO
+                      totalizarValores('L',_dm2.cdsMovproducaonumero.AsString);
+                      salvardados('T',_dm2.cdsMovproducaonumero.AsString);
+
+                end;
 end;
 
 procedure T_frmProducaoLaticinio.FormShow(Sender: TObject);

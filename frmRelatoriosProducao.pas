@@ -53,6 +53,8 @@ type
     Label6: TLabel;
     Label7: TLabel;
     cdsrelProducaonumeroproducao: TWideStringField;
+    txtLeiteEntrada: TCurrencyEdit;
+    Label8: TLabel;
     procedure BitBtn2Click(Sender: TObject);
     procedure btnimprimirClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
@@ -330,6 +332,14 @@ end;
 procedure T_frmRelatoriosProducao.FormShow(Sender: TObject);
 begin
 imprimir:='S';
+
+
+                            _dm.ConnecDm.Connected:=false;
+                            _dm.qrPadrao.SQL.Clear;
+                            _dm.qrPadrao.SQL.add('SELECT quantidade FROM '+glb_produtos+' where codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' and codigofilial='+quotedstr(glb_filial));
+                            _dm.qrPadrao.open;
+
+                            txtLeiteEntrada.Value:=  _dm.qrPadrao.FieldByName('quantidade').AsCurrency;
 end;
 
 end.

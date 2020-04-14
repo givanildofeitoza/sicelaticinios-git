@@ -13,6 +13,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnClose = FormClose
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -24,6 +25,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
+    OnChange = PageControl1Change
     object TabSheet1: TTabSheet
       Caption = 'Dados da Produ'#231#227'o'
       object Label9: TLabel
@@ -995,32 +997,33 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           Caption = 'Saldo em estoque'
         end
         object Label15: TLabel
-          Left = 140
+          Left = 150
           Top = 31
           Width = 44
           Height = 13
           Caption = 'Utilizado.'
         end
         object Label16: TLabel
-          Left = 237
+          Left = 247
           Top = 31
           Width = 42
           Height = 13
           Caption = 'Vendido.'
         end
         object Label17: TLabel
-          Left = 330
+          Left = 348
           Top = 31
-          Width = 41
+          Width = 125
           Height = 13
-          Caption = 'Sobre T.'
+          Caption = 'Sobra de produ'#231#227'o (Leite)'
         end
         object Label18: TLabel
-          Left = 424
+          Left = 651
           Top = 31
           Width = 32
           Height = 13
           Caption = 'Perda.'
+          Visible = False
         end
         object Label21: TLabel
           Left = 2
@@ -1070,7 +1073,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           OnExit = txtLeiteEntradaExit
         end
         object txtLeiteUtilizado: TCurrencyEdit
-          Left = 141
+          Left = 151
           Top = 48
           Width = 84
           Height = 21
@@ -1087,7 +1090,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           TabOrder = 1
         end
         object txtLeiteVendido: TCurrencyEdit
-          Left = 235
+          Left = 245
           Top = 48
           Width = 84
           Height = 21
@@ -1104,9 +1107,9 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           OnExit = txtLeiteVendidoExit
         end
         object txtLeiteSaldo: TCurrencyEdit
-          Left = 330
+          Left = 348
           Top = 48
-          Width = 84
+          Width = 125
           Height = 21
           Margins.Left = 1
           Margins.Top = 1
@@ -1121,7 +1124,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           OnExit = txtLeiteSaldoExit
         end
         object txtLeitePerda: TCurrencyEdit
-          Left = 424
+          Left = 599
           Top = 48
           Width = 84
           Height = 21
@@ -1136,6 +1139,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 4
+          Visible = False
         end
         object Panel9: TPanel
           Left = 1
@@ -1161,7 +1165,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           end
         end
         object BitBtn10: TBitBtn
-          Left = 514
+          Left = 689
           Top = 46
           Width = 75
           Height = 25
@@ -2230,7 +2234,6 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
               Expanded = False
               FieldName = 'operadortermino'
               Title.Caption = 'Op. T'#233'rmino'
-              Width = 64
               Visible = True
             end>
         end
@@ -2883,7 +2886,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
     Left = 460
     Top = 353
     Bitmap = {
-      494C010103000800380010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101030008003C0010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0006132500794D9300EF58A800FF58A800FF58A800FF58A800FF58A800FF4D93

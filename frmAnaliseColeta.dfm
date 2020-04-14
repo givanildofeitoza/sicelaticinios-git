@@ -733,8 +733,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirColeta: TPanel
-    Left = 8
-    Top = 29
+    Left = -707
+    Top = 109
     Width = 757
     Height = 458
     Font.Charset = DEFAULT_CHARSET
@@ -843,7 +843,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       Font.Style = []
       ParentFont = False
       TabOrder = 2
-      ExplicitTop = 40
+      ExplicitLeft = -38
+      ExplicitTop = 48
       object Label16: TLabel
         Left = 29
         Top = 44
@@ -952,8 +953,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirAnalise: TPanel
-    Left = 736
-    Top = 116
+    Left = 800
+    Top = 152
     Width = 748
     Height = 417
     Font.Charset = DEFAULT_CHARSET

@@ -26,7 +26,6 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 1082
     object Label40: TLabel
       Left = 23
       Top = 7
@@ -49,7 +48,6 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
     Align = alBottom
     Caption = 'Por Produto'
     TabOrder = 1
-    ExplicitWidth = 1082
     object Label1: TLabel
       Left = 24
       Top = 27
@@ -100,6 +98,13 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Width = 108
       Height = 13
       Caption = 'Total de leite utilizado:'
+    end
+    object Label8: TLabel
+      Left = 592
+      Top = 24
+      Width = 95
+      Height = 13
+      Caption = 'Saldo atual de leite:'
     end
     object data1: TDateEdit
       Left = 64
@@ -201,6 +206,16 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       DisplayFormat = '0.00;0.00'
       TabOrder = 10
       Visible = False
+    end
+    object txtLeiteEntrada: TCurrencyEdit
+      Left = 696
+      Top = 18
+      Width = 105
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 1
+      DisplayFormat = '0.00;-0.00'
+      TabOrder = 11
     end
   end
   object DBGrid1: TDBGrid
