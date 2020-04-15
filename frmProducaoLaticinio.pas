@@ -941,6 +941,9 @@ begin
                if(_dm2.cdsMovproducaoencerrada.Asstring='S')then
                exit;
 
+               if(_dm2.cdsMovproducaopreproducaoconfirmada.Asstring='S')then
+               exit;
+
                if(_dm2.cdsMovproducaonumero.Asstring='0')then
                exit;
 
@@ -1834,7 +1837,7 @@ end;
 
 procedure T_frmProducaoLaticinio.bitRequisitarClick(Sender: TObject);
 var
-sqlInsert,sqlcustosleite,sqlcustoscreme,sqlcustosmanteiga:string;
+sqlInsert,sqlcustosleite,sqlcustoscreme,sqlcustosmanteiga,numeroperda:string;
 quantidadeProduzida,custoCreme,CustoManteiga,totalcustoproducao,custoLeite,qtdleite,qtdcreme,qtdmanteiga:currency;//,totalcustoproducao:currency;
 begin
    totalcustoproducao:=0;
@@ -2058,9 +2061,17 @@ begin
 
 //LANÇANDO NO CONSUMO
 
+  _dm2.qrPadrao2.SQL.Clear;
+  _dm2.qrPadrao2.SQL.Add('SELECT numero,numeroproducao FROM contperdas WHERE numeroproducao='+quotedstr(txtnumero.Text)+' LIMIT 1;');
+  _dm2.qrPadrao2.open;
+
+  if(_dm2.qrPadrao2.FieldByName('numeroproducao').AsString = '')then
+  begin
+
   _dm.ConnecDm.Connected:=false;
   _dm.qrPadrao.SQL.Clear;
-  _dm.qrPadrao.SQL.Add('INSERT INTO contperdas(DATA,encerrada,codigofilial,operador,ip,nf,nfserie,cfop,total,tipo) VALUES ( '+
+  _dm.qrPadrao.SQL.Add('INSERT INTO contperdas(numeroproducao,DATA,encerrada,codigofilial,operador,ip,nf,nfserie,cfop,total,tipo) VALUES ( '+
+  quotedstr(txtnumero.Text)+','+
   'CURRENT_DATE,"S",'
   +quotedstr(glb_filial)+','
   +quotedstr(glb_usuario)+','
@@ -2069,14 +2080,31 @@ begin
   +quotedstr('0')+','
   +quotedstr('5.927')+','
   +quotedstr('0.00')+','
-  +quotedstr('P')+')');
+  +quotedstr('C')+')');
   _dm.qrPadrao.ExecSQL();
+
+
+    //OBTEM NÚMERO DA ÚLTIMA PERDA LANÇADA
+  _dm2.qrPadrao2.SQL.Clear;
+  _dm2.qrPadrao2.SQL.Add('SELECT MAX(numero) AS numeroperda FROM contperdas WHERE operador='+quotedstr(glb_usuario)+' AND codigofilial='+quotedstr(glb_filial)+';');
+  _dm2.qrPadrao2.open;
+   numeroperda := _dm2.qrPadrao2.FieldByName('numeroperda').AsString;
+
+  end
+   else
+    numeroperda := _dm2.qrPadrao2.FieldByName('numero').AsString;
+
+
+
+
+
 
 
   _dm.ConnecDm.Connected:=false;
    _dm.qrPadrao.SQL.Clear;
-   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (encerrada,numero,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
-   ' SELECT "S",'+quotedstr(txtnumero.Text)+' ,codigofilial,'+
+   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (incprodutoacabado,numero,encerrada,numeroproducao,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
+   ' SELECT  inc_prod_producao,'+quotedstr(numeroperda)+','+
+   ' "S",'+quotedstr(txtnumero.Text)+' ,codigofilial,'+
    ' codigomateria,'+
    ' descricaomateria,'+
    ' totalmateriautilizada,'+
@@ -2090,7 +2118,11 @@ begin
    ' grupo,'+
    ' subgrupo,'+
    ' (SELECT p.situacao FROM '+glb_produtos+' as p WHERE p.codigo=codigomateria AND p.codigofilial='+quotedstr(glb_filial)+'),'+
-   ' "" FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigofilial='+quotedstr(glb_filial)+';');
+   ' "" FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND codigofilial='+quotedstr(glb_filial)+';');
+    _dm.qrPadrao.execsql;
+     clipboard.AsText:=    _dm.qrPadrao.sql.text;
+
+
 
 
 
@@ -2099,9 +2131,10 @@ begin
    begin
 
   _dm.ConnecDm.Connected:=false;
- //  _dm.qrPadrao.SQL.Clear;
-   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (encerrada,numero,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
-   ' VALUES ("S",'+quotedstr(txtnumero.Text)+' ,codigofilial,'+
+   _dm.qrPadrao.SQL.Clear;
+   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (numero,encerrada,numeroproducao,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
+   ' VALUES ('+quotedstr(numeroperda)+','+
+   ' "S",'+quotedstr(txtnumero.Text)+' ,'+quotedstr(_dm2.cdsMovproducaocodigofilial.AsString)+','+
    quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+','+
    quotedstr(_dm.cdsConfigLaticinioprodpadraoleite.AsString)+','+
    quotedstr(formatcurr('##0.00',qtdleite))+','+
@@ -2116,7 +2149,7 @@ begin
    ' (SELECT subgrupo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
    ' (SELECT situacao FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
    ' "");');
-
+    _dm.qrPadrao.execsql;
    end;
 
    //creme
@@ -2124,9 +2157,10 @@ begin
    begin
 
    _dm.ConnecDm.Connected:=false;
-  // _dm.qrPadrao.SQL.Clear;
-   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (encerrada,numero,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
-   ' VALUES ("S",'+quotedstr(txtnumero.Text)+' ,codigofilial,'+
+   _dm.qrPadrao.SQL.Clear;
+   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (numero,encerrada,numeroproducao,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
+   ' VALUES ('+quotedstr(numeroperda)+','+
+   ' "S",'+quotedstr(txtnumero.Text)+' ,'+quotedstr(_dm2.cdsMovproducaocodigofilial.AsString)+','+
    quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+','+
    quotedstr(_dm.cdsConfigLaticinioprodpadraocreme.AsString)+','+
    quotedstr(formatcurr('##0.00',qtdcreme))+','+
@@ -2141,6 +2175,7 @@ begin
    ' (SELECT subgrupo FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
    ' (SELECT situacao FROM '+glb_produtos+'  WHERE codigo=' +quotedstr(_dm.cdsConfigLaticiniocodprodpadraocreme.AsString)+' AND codigofilial='+quotedstr(glb_filial)+'),'+
    ' "");');
+     _dm.qrPadrao.execsql;
    end;
 
 
@@ -2149,9 +2184,10 @@ begin
    begin
 
    _dm.ConnecDm.Connected:=false;
- //  _dm.qrPadrao.SQL.Clear;
-   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (encerrada,numero,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
-   ' VALUES ("S",'+quotedstr(txtnumero.Text)+' ,codigofilial,'+
+   _dm.qrPadrao.SQL.Clear;
+   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (numero,encerrada,numeroproducao,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
+   ' VALUES ('+quotedstr(numeroperda)+','+
+   ' "S",'+quotedstr(txtnumero.Text)+' ,'+quotedstr(_dm2.cdsMovproducaocodigofilial.AsString)+','+
    quotedstr(_dm.cdsConfigLaticiniocodprodpadraomanteiga.AsString)+','+
    quotedstr(_dm.cdsConfigLaticinioprodpadraomanteiga.AsString)+','+
    quotedstr(formatcurr('##0.00',qtdmanteiga))+','+
@@ -2191,6 +2227,11 @@ begin
          if( _dm2.qrPadrao.FieldByName('total').AsInteger = 0)then
          begin
 
+            {
+            //SALVA DADOS DA PRÉ-PRODUÇÃO
+            totalizarValores('L',_dm2.cdsMovproducaonumero.AsString);
+            salvardados('T',_dm2.cdsMovproducaonumero.AsString);
+
 
             //carrega saldo atual do leite
                   _dm.ConnecDm.Connected:=false;
@@ -2200,10 +2241,7 @@ begin
 
                   txtLeiteEntrada.Value:=  _dm.qrPadrao.FieldByName('quantidade').AsCurrency;
              //----------------
-
-            //SALVA DADOS DA PRÉ-PRODUÇÃO
-            totalizarValores('L',_dm2.cdsMovproducaonumero.AsString);
-            salvardados('T',_dm2.cdsMovproducaonumero.AsString);
+             }
 
 
             _dm.qrpadrao2.sql.clear;
@@ -3313,7 +3351,7 @@ procedure T_frmProducaoLaticinio.FormShow(Sender: TObject);
 begin
 
   FormatSettings.DecimalSeparator:='.';
-
+  PageControl1.ActivePageIndex:=0;
 
     _dm.cdsSenhas.Close;
     _dm.cdsSenhas.Open;

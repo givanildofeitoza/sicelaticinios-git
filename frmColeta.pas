@@ -108,6 +108,7 @@ type
     rvpReservatorio: TRvProject;
     rvSReserv: TRvSystem;
     rvDsColetaReserv: TRvDataSetConnection;
+    BitBtn1: TBitBtn;
     procedure gridColetaDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure BitBtn5Click(Sender: TObject);
@@ -137,6 +138,8 @@ type
     procedure RvClogoGetCols(Connection: TRvCustomConnection);
     procedure Impdadoscoleta1Click(Sender: TObject);
     procedure ImpColetaporreservatrios1Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure dbGridAbrirColetaTitleClick(Column: TColumn);
   private
     { Private declarations }
   public
@@ -379,6 +382,40 @@ begin
 frm.Close;
 end;
 
+procedure T_frmColeta.BitBtn1Click(Sender: TObject);
+begin
+
+   _dm.ConnecDm.Connected:=false;
+   _dm.qrpadrao.SQL.Clear;
+   _dm.qrPadrao.sql.Add('SELECT COUNT(1) AS total FROM movanalise WHERE numerocoleta='+quotedstr(_dm.cdsMovColetanumero.AsString));
+   _dm.qrPadrao.open;
+
+
+   if(_dm.qrPadrao.FieldByName('total').AsInteger>0)then
+   begin
+    Application.MessageBox('Esta coleta já foi atribuída a uma análise, não é possível excluir!','Mensagem',MB_ICONINFORMATION+MB_ok);
+    exit;
+   end;
+
+
+   if(Application.MessageBox('Excluir coleta?','Pergunta',MB_ICONQUESTION+MB_YESNO)=idno)then
+   exit;
+
+   _dm.ConnecDm.Connected:=false;
+   _dm.qrpadrao.SQL.Clear;
+   _dm.qrPadrao.sql.Add('DELETE FROM movcoleta WHERE numero='+quotedstr(_dm.cdsMovColetanumero.AsString)+';');
+   _dm.qrPadrao.sql.Add('DELETE FROM coleta WHERE numero='+quotedstr(_dm.cdsMovColetanumero.AsString)+';');
+   _dm.qrPadrao.execsql;
+
+
+   _dm.cdsMovColeta.Refresh;
+
+
+
+
+
+end;
+
 procedure T_frmColeta.btnConfColetaClick(Sender: TObject);
 begin
 
@@ -618,8 +655,8 @@ procedure T_frmColeta.btnAbrirClick(Sender: TObject);
 begin
     frm:=Tform.create(self);
 
-    frm.Width:=520;
-    frm.Height:=410;
+    frm.Width:=800;
+    frm.Height:=600;
     frm.Position:=poDesktopCenter;
     frm.BorderStyle:=bsDialog;
 
@@ -754,6 +791,11 @@ With dbGridAbrirColeta.Canvas do
  dbGridAbrirColeta.DefaultDrawDataCell(Rect, dbGridAbrirColeta.Columns[DataCol].Field, State);
 end;
 
+end;
+
+procedure T_frmColeta.dbGridAbrirColetaTitleClick(Column: TColumn);
+begin
+_dm.cdsMovColeta.IndexFieldNames:= Column.FieldName;
 end;
 
 procedure T_frmColeta.FiltrarClick(Sender: TObject);

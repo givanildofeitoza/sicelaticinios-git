@@ -83,6 +83,7 @@ begin
     exit;
     end;
 
+    txtqtdaddprod.Value:=0;
 
      _dm2.ConnecDm2.Connected:=false;
     _dm2.qrPadrao.SQL.Clear;
@@ -222,10 +223,10 @@ begin
 
 
 
-    if(rgAjuste.ItemIndex=1)then
+    if(rgAjuste.ItemIndex=0)then
     begin
 
-    if(txtQtdAdicional.Value=0)then
+    if(txtqtdaddprod.Value=0)then
     begin
       application.MessageBox('Informe a quantidade!','Alerta',MB_ICONEXCLAMATION+mb_ok);
       exit;
@@ -234,13 +235,31 @@ begin
 
     _dm2.ConnecDm2.Connected:=false;
     _dm2.qrPadrao.SQL.Clear;
-    _dm2.qrPadrao.SQL.add('update producaomovmateria set quantidademateria=quantidademateria+('+currtostr(txtQtdAdicional.value)+'),totalmateriautilizada=(quantidade*quantidademateria)'+
+    _dm2.qrPadrao.SQL.add('update producaomovmateria set totalmateriautilizada=totalmateriautilizada+('+currtostr(txtqtdaddprod.value)+')'+
     '  where idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+
-    ' and  codigofilial='+quotedstr(glb_filial)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' and codigomateria='+quotedstr(_dm2.cdsMateriacodigomateria.AsString));
+    '  and  codigofilial='+quotedstr(glb_filial)+' and codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' and codigomateria='+quotedstr(_dm2.cdsMateriacodigomateria.AsString));
     _dm2.qrPadrao.execsql;
 
-    end
-    else if(rgAjuste.ItemIndex=0)then
+
+    _dm2.ConnecDm2.Connected:=false;
+    _dm2.qrPadrao.SQL.Clear;
+    _dm2.qrPadrao.SQL.add('UPDATE produtosperdas SET quantidade=quantidade+('+currtostr(txtqtdaddprod.value)+')'+
+    '  WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+
+    '  AND  codigofilial='+quotedstr(glb_filial)+' AND codigo='+quotedstr(_dm2.cdsMateriacodigomateria.AsString)+' and incprodutoacabado='+quotedstr(_dm2.cdsMateriainc_prod_producao.AsString));
+    _dm2.qrPadrao.execsql;
+
+
+    _dm2.ConnecDm2.Connected:=false;
+    _dm2.qrPadrao.SQL.Clear;
+    _dm2.qrPadrao.SQL.add('UPDATE '+glb_produtos+' SET quantidade=quantidade+('+currtostr(txtqtdaddprod.value)+')'+
+    '  WHERE  codigofilial='+quotedstr(glb_filial)+' AND codigo='+quotedstr(_dm2.cdsMateriacodigomateria.AsString));
+    _dm2.qrPadrao.execsql;
+
+
+
+    end;
+
+ {   else if(rgAjuste.ItemIndex=0)then
     begin
 
 
@@ -258,7 +277,7 @@ begin
 
 
 
-    end;
+    end; }
 
 
 

@@ -201,8 +201,8 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
     OnClick = BitBtn2Click
   end
   object pnlInsumo: TPanel
-    Left = 892
-    Top = 251
+    Left = 324
+    Top = 258
     Width = 549
     Height = 329
     TabOrder = 7
@@ -261,13 +261,27 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
       TabOrder = 2
       OnClick = BitBtn4Click
     end
-    object pnlQtdNecessario: TPanel
+    object rgAjuste: TRadioGroup
       Left = 24
-      Top = 125
+      Top = 73
       Width = 505
-      Height = 154
+      Height = 49
+      Caption = 'Ajustar quantidades de insumos'
+      Columns = 2
+      Enabled = False
+      ItemIndex = 0
+      Items.Strings = (
+        '0 - Qtd Produzida'
+        '1 - Qtd. Necess'#225'ria')
+      TabOrder = 5
+      OnClick = rgAjusteClick
+    end
+    object pnlQtdNecessario: TPanel
+      Left = 32
+      Top = 144
+      Width = 441
+      Height = 106
       TabOrder = 3
-      Visible = False
       object lblQtdNecessaria: TLabel
         Left = 25
         Top = 20
@@ -332,9 +346,9 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
     end
     object pnlqtdproduzido: TPanel
       Left = 24
-      Top = 126
+      Top = 73
       Width = 505
-      Height = 153
+      Height = 207
       TabOrder = 4
       object Label4: TLabel
         Left = 25
@@ -410,20 +424,6 @@ object _frmInsumosdeproducao: T_frmInsumosdeproducao
         ParentFont = False
         TabOrder = 1
       end
-    end
-    object rgAjuste: TRadioGroup
-      Left = 24
-      Top = 73
-      Width = 505
-      Height = 49
-      Caption = 'Ajustar quantidades de insumos'
-      Columns = 2
-      ItemIndex = 0
-      Items.Strings = (
-        '0 - Qtd Produzida'
-        '1 - Qtd. Necess'#225'ria')
-      TabOrder = 5
-      OnClick = rgAjusteClick
     end
   end
   object rvpImpConsumo: TRvProject

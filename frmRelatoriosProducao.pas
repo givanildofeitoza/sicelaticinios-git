@@ -63,6 +63,7 @@ type
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBGrid1TitleClick(Column: TColumn);
   private
     { Private declarations }
   public
@@ -311,6 +312,11 @@ With DBGrid1.Canvas do
 
 end;
 
+end;
+
+procedure T_frmRelatoriosProducao.DBGrid1TitleClick(Column: TColumn);
+begin
+cdsrelProducao.IndexFieldNames:=Column.FieldName;
 end;
 
 procedure T_frmRelatoriosProducao.FormKeyDown(Sender: TObject; var Key: Word;

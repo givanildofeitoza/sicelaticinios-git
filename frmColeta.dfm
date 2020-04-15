@@ -538,21 +538,22 @@ object _frmColeta: T_frmColeta
     end
   end
   object pnlAbrirColeta: TPanel
-    Left = 281
-    Top = 83
-    Width = 506
-    Height = 374
+    Left = 596
+    Top = -8
+    Width = 750
+    Height = 550
     TabOrder = 6
     Visible = False
     object Panel5: TPanel
       Left = 1
       Top = 1
-      Width = 504
+      Width = 748
       Height = 41
       Align = alTop
       Color = clMenuHighlight
       ParentBackground = False
       TabOrder = 0
+      ExplicitWidth = 504
       object Label14: TLabel
         Left = 23
         Top = 14
@@ -570,8 +571,8 @@ object _frmColeta: T_frmColeta
     object dbGridAbrirColeta: TDBGrid
       Left = 1
       Top = 137
-      Width = 504
-      Height = 181
+      Width = 748
+      Height = 350
       Align = alTop
       DataSource = _dm.DsourceMovColeta
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -582,6 +583,7 @@ object _frmColeta: T_frmColeta
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
       OnDrawColumnCell = dbGridAbrirColetaDrawColumnCell
+      OnTitleClick = dbGridAbrirColetaTitleClick
       Columns = <
         item
           Expanded = False
@@ -632,10 +634,11 @@ object _frmColeta: T_frmColeta
     object Panel6: TPanel
       Left = 1
       Top = 42
-      Width = 504
+      Width = 748
       Height = 95
       Align = alTop
       TabOrder = 2
+      ExplicitWidth = 504
       object Label16: TLabel
         Left = 29
         Top = 44
@@ -733,18 +736,27 @@ object _frmColeta: T_frmColeta
       end
     end
     object BitBtn11: TBitBtn
-      Left = 403
-      Top = 324
+      Left = 643
+      Top = 493
       Width = 91
       Height = 33
       Caption = 'Abrir'
       TabOrder = 3
       OnClick = BitBtn11Click
     end
+    object BitBtn1: TBitBtn
+      Left = 326
+      Top = 493
+      Width = 92
+      Height = 33
+      Caption = 'Excluir'
+      TabOrder = 4
+      OnClick = BitBtn1Click
+    end
   end
   object pnlIncColetaFor: TPanel
-    Left = 8
-    Top = 240
+    Left = -384
+    Top = 411
     Width = 447
     Height = 215
     TabOrder = 7
@@ -6244,8 +6256,8 @@ object _frmColeta: T_frmColeta
     Top = 489
   end
   object popImpColeta: TPopupMenu
-    Left = 416
-    Top = 312
+    Left = 464
+    Top = 272
     object Impdadoscoleta1: TMenuItem
       Caption = 'Imp. Dados coleta'
       OnClick = Impdadoscoleta1Click
