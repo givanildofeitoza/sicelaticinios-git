@@ -180,9 +180,11 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Top = 20
       Width = 57
       Height = 21
+      ItemIndex = 0
       TabOrder = 8
-      Text = 'S'
+      Text = 'Todas'
       Items.Strings = (
+        'Todas'
         'S'
         'N')
     end
@@ -216,6 +218,15 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Margins.Top = 1
       DisplayFormat = '0.00;-0.00'
       TabOrder = 11
+    end
+    object btnresumo: TBitBtn
+      Left = 648
+      Top = 56
+      Width = 123
+      Height = 33
+      Caption = 'Resumo de produ'#231#227'o'
+      TabOrder = 12
+      OnClick = btnresumoClick
     end
   end
   object DBGrid1: TDBGrid
@@ -318,6 +329,199 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
         Title.Caption = ' Qtd. de leite'
         Visible = True
       end>
+  end
+  object pnlresumo: TPanel
+    Left = 288
+    Top = 208
+    Width = 561
+    Height = 329
+    TabOrder = 3
+    Visible = False
+    object Label10: TLabel
+      Left = 7
+      Top = 40
+      Width = 42
+      Height = 13
+      Caption = 'Produto:'
+    end
+    object lblnomeproduto: TLabel
+      Left = 64
+      Top = 40
+      Width = 101
+      Height = 16
+      Caption = 'lblnomeproduto'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label11: TLabel
+      Left = 41
+      Top = 92
+      Width = 78
+      Height = 13
+      Caption = 'Total produzido:'
+    end
+    object Label12: TLabel
+      Left = 50
+      Top = 122
+      Width = 69
+      Height = 13
+      Caption = 'Leite utilizado:'
+    end
+    object Label13: TLabel
+      Left = 32
+      Top = 215
+      Width = 87
+      Height = 13
+      Caption = 'Rendimento Leite:'
+    end
+    object Label14: TLabel
+      Left = 24
+      Top = 250
+      Width = 95
+      Height = 13
+      Caption = 'Rendimento Creme:'
+    end
+    object Label15: TLabel
+      Left = 15
+      Top = 290
+      Width = 108
+      Height = 13
+      Caption = 'Rendimento Manteiga:'
+    end
+    object Label16: TLabel
+      Left = 11
+      Top = 60
+      Width = 38
+      Height = 13
+      Caption = 'Per'#243'do:'
+    end
+    object lblperiodo: TLabel
+      Left = 64
+      Top = 58
+      Width = 101
+      Height = 16
+      Caption = 'lblnomeproduto'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label17: TLabel
+      Left = 50
+      Top = 152
+      Width = 77
+      Height = 13
+      Caption = 'Creme utilizado:'
+    end
+    object Label18: TLabel
+      Left = 50
+      Top = 178
+      Width = 90
+      Height = 13
+      Caption = 'Manteiga utilizado:'
+    end
+    object Panel2: TPanel
+      Left = 1
+      Top = 1
+      Width = 559
+      Height = 33
+      Align = alTop
+      Color = clMenuHighlight
+      ParentBackground = False
+      TabOrder = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 1111
+      object Label9: TLabel
+        Left = 23
+        Top = 7
+        Width = 170
+        Height = 19
+        Caption = 'Resumo de produ'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+    object txtproducaototal: TCurrencyEdit
+      Left = 151
+      Top = 84
+      Width = 146
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 1
+      DisplayFormat = '0.00;-0.00'
+      TabOrder = 1
+    end
+    object txtrendimentoleite: TCurrencyEdit
+      Left = 151
+      Top = 207
+      Width = 146
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 1
+      DisplayFormat = '0.00;-0.00'
+      TabOrder = 2
+    end
+    object txtrendimentocreme: TCurrencyEdit
+      Left = 151
+      Top = 242
+      Width = 146
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 1
+      DisplayFormat = '0.00;-0.00'
+      TabOrder = 3
+    end
+    object txtrendimentomanteiga: TCurrencyEdit
+      Left = 151
+      Top = 282
+      Width = 146
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 1
+      DisplayFormat = '0.00;-0.00'
+      TabOrder = 4
+    end
+    object txttotleite: TCurrencyEdit
+      Left = 151
+      Top = 119
+      Width = 146
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 1
+      DisplayFormat = '0.00;-0.00'
+      TabOrder = 5
+    end
+    object txttotcreme: TCurrencyEdit
+      Left = 151
+      Top = 144
+      Width = 146
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 1
+      DisplayFormat = '0.00;-0.00'
+      TabOrder = 6
+    end
+    object txttotmanteiga: TCurrencyEdit
+      Left = 151
+      Top = 171
+      Width = 146
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 1
+      DisplayFormat = '0.00;-0.00'
+      TabOrder = 7
+    end
   end
   object RvPRelProd: TRvProject
     Engine = RvSRelProd
@@ -6055,6 +6259,16 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       FieldName = 'numeroproducao'
       Size = 8
     end
+    object cdsrelProducaoquantidadecreme: TFMTBCDField
+      FieldName = 'quantidadecreme'
+      Precision = 10
+      Size = 2
+    end
+    object cdsrelProducaoquantidademanteiga: TFMTBCDField
+      FieldName = 'quantidademanteiga'
+      Precision = 10
+      Size = 2
+    end
   end
   object dsrelProducao: TDataSetProvider
     DataSet = sdsrelProducao
@@ -6075,10 +6289,10 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       'NULL((p.quantidadeproduzida/p.quantidadeleite),0) AS rendleite,'#13 +
       #10'IFNULL((p.quantidadeproduzida/p.quantidadecreme),0) AS rendCrem' +
       'e,'#13#10'IFNULL((p.quantidadeproduzida/p.quantidademanteiga),0) AS re' +
-      'ndmanteiga,'#13#10'p.quantidadeleite'#13#10' FROM producaoitens AS p, movpro' +
-      'ducaodiaria AS m WHERE p.numeroproducao='#39'0'#39#13#10' AND p.codigofilial' +
-      '='#39'00001'#39#13#10' AND p.numeroproducao=m.numero'#13#10' AND p.codigofilial=m.' +
-      'codigofilial;'
+      'ndmanteiga,'#13#10'p.quantidadeleite,'#13#10'p.quantidadecreme,'#13#10'p.quantidad' +
+      'emanteiga'#13#10' FROM producaoitens AS p, movproducaodiaria AS m WHER' +
+      'E p.numeroproducao='#39'0'#39#13#10' AND p.codigofilial='#39'00001'#39#13#10' AND p.nume' +
+      'roproducao=m.numero'#13#10' AND p.codigofilial=m.codigofilial;'
     MaxBlobSize = -1
     Params = <>
     SQLConnection = _dm2.ConnecDm2

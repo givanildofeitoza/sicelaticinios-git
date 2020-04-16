@@ -55,6 +55,30 @@ type
     cdsrelProducaonumeroproducao: TWideStringField;
     txtLeiteEntrada: TCurrencyEdit;
     Label8: TLabel;
+    btnresumo: TBitBtn;
+    pnlresumo: TPanel;
+    Panel2: TPanel;
+    Label9: TLabel;
+    Label10: TLabel;
+    lblnomeproduto: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    lblperiodo: TLabel;
+    txtproducaototal: TCurrencyEdit;
+    txtrendimentoleite: TCurrencyEdit;
+    txtrendimentocreme: TCurrencyEdit;
+    txtrendimentomanteiga: TCurrencyEdit;
+    txttotleite: TCurrencyEdit;
+    cdsrelProducaoquantidadecreme: TFMTBCDField;
+    cdsrelProducaoquantidademanteiga: TFMTBCDField;
+    txttotcreme: TCurrencyEdit;
+    txttotmanteiga: TCurrencyEdit;
+    Label17: TLabel;
+    Label18: TLabel;
     procedure BitBtn2Click(Sender: TObject);
     procedure btnimprimirClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
@@ -64,6 +88,7 @@ type
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure DBGrid1TitleClick(Column: TColumn);
+    procedure btnresumoClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -190,6 +215,8 @@ filtroProd:='';
     if(txtcod.Text<>'0')then
     filtroProd:=' and p.codigo='+quotedstr(txtcod.Text);
 
+    if(cboEncerradas.Text <> 'Todas')then
+    filtroProd:=filtroProd + ' and m.encerrada='+quotedstr(cboEncerradas.Text);
 
 
    _dm.ConnecDm.Connected:=false;
@@ -202,13 +229,15 @@ filtroProd:='';
    ' IFNULL((sum(p.quantidadeleite)  / sum(p.quantidadeproduzida)),0) AS rendleite, '+
    ' IFNULL((sum(p.quantidadecreme) / sum(p.quantidadeproduzida)),0) AS rendCreme, ' +
    ' IFNULL((sum(p.quantidademanteiga) / sum(p.quantidadeproduzida)),0) AS rendmanteiga, '+
-   ' SUM(p.quantidadeleite ) as quantidadeleite'+
+   ' SUM(p.quantidadeleite ) as quantidadeleite,'+
+   ' SUM(p.quantidadecreme ) as quantidadecreme,'+
+   ' SUM(p.quantidademanteiga ) as quantidademanteiga'+
    '  FROM producaoitens AS p, movproducaodiaria AS m WHERE m.data BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+
    '  AND p.codigofilial='+quotedstr(glb_filial)+
    '  AND p.numeroproducao=m.numero ' +
    '  AND p.codigofilial=m.codigofilial '+
     filtroProd+
-   ' and m.encerrada='+quotedstr(cboEncerradas.Text)+'   GROUP BY p.numeroproducao, p.codigo /*HAVING quantidadeleite BETWEEN '+QUOTEDSTR(formatcurr('##0.00',qtdleitI.Value))+' AND '+QUOTEDSTR(formatcurr('##0.00',qtdleitF.Value))+'*/  ORDER BY m.data, m.numero';
+   '   GROUP BY p.numeroproducao, p.codigo /*HAVING quantidadeleite BETWEEN '+QUOTEDSTR(formatcurr('##0.00',qtdleitI.Value))+' AND '+QUOTEDSTR(formatcurr('##0.00',qtdleitF.Value))+'*/  ORDER BY m.data, m.numero';
    // clipboard.astext:=sdsrelProducao.CommandText;
     sdsrelProducao.ExecSQL();
 
@@ -222,7 +251,7 @@ filtroProd:='';
    '  AND p.numeroproducao=m.numero ' +
    '  AND p.codigofilial=m.codigofilial '+
     filtroProd+
-   ' and m.encerrada='+quotedstr(cboEncerradas.Text)+' /*  GROUP BY p.numeroproducao, p.codigo HAVING quantidadeleite BETWEEN '+QUOTEDSTR(formatcurr('##0.00',qtdleitI.Value))+' AND '+QUOTEDSTR(formatcurr('##0.00',qtdleitF.Value))+'  ORDER BY m.data, m.numero */'
+   ' /*  GROUP BY p.numeroproducao, p.codigo HAVING quantidadeleite BETWEEN '+QUOTEDSTR(formatcurr('##0.00',qtdleitI.Value))+' AND '+QUOTEDSTR(formatcurr('##0.00',qtdleitF.Value))+'  ORDER BY m.data, m.numero */'
 
 
     );
@@ -276,6 +305,77 @@ begin
           RvPRelProd.Execute;
           imprimir:='S';
       end;
+
+end;
+
+procedure T_frmRelatoriosProducao.btnresumoClick(Sender: TObject);
+var
+frm:tform;
+begin
+
+try
+ begin
+  if(txtcod.Text='') or (txtcod.Text='0')then
+  begin
+    application.MessageBox('Inforção liberada somente por filtragem individual!','Alerta',MB_ICONEXCLAMATION+mb_ok);
+    exit;
+  end;
+
+        lblnomeproduto.Caption:= txtcod.Text+' - '+txtprod.Text;
+        lblperiodo.Caption:= 'De  '+data1.Text+' à '+data2.Text;
+        txtproducaototal.Value:=      0;
+        txttotleite.Value:=           0;
+        txtrendimentoleite.Value:=    0;
+        txtrendimentocreme.Value:=    0;
+        txtrendimentomanteiga.Value:= 0;
+
+
+   cdsrelProducao.First;
+   while not cdsrelProducao.eof do
+   begin
+
+
+        txtproducaototal.Value:=      txtproducaototal.Value + cdsrelProducaoquantidadeproduzida.AsCurrency;
+        txttotleite.Value:=           txttotleite.Value   + cdsrelProducaoquantidadeleite.AsCurrency;
+        txttotcreme.Value:=           txttotcreme.Value   + cdsrelProducaoquantidadecreme.AsCurrency;
+        txttotmanteiga.Value:=        txttotmanteiga.Value   + cdsrelProducaoquantidademanteiga.AsCurrency;
+
+
+
+        txtrendimentoleite.Value:=    txtrendimentoleite.Value + cdsrelProducaorendleite.AsCurrency;
+        txtrendimentocreme.Value:=    txtrendimentocreme.Value   + cdsrelProducaorendcreme.AsCurrency;
+        txtrendimentomanteiga.Value:= txtrendimentomanteiga.Value  + cdsrelProducaorendmanteiga.AsCurrency;
+
+
+   cdsrelProducao.Next;
+   end;
+
+
+
+        txtrendimentoleite.Value:= txttotleite.Value /  txtproducaototal.Value;
+        txtrendimentocreme.Value:=   txttotcreme.Value /  txtproducaototal.Value ;
+        txtrendimentomanteiga.Value:= txttotmanteiga.Value /  txtproducaototal.Value;
+
+
+
+
+     frm:=Tform.create(self);
+
+          frm.Width:=570;
+          frm.Height:=360;
+          frm.Position:=poDesktopCenter;
+          frm.BorderStyle:=bsDialog;
+
+          pnlresumo.Parent:=frm;
+          pnlresumo.visible:=true;
+          pnlresumo.Align:=alClient;
+          frm.ShowModal;
+
+ end
+except
+
+end;
+
 
 end;
 

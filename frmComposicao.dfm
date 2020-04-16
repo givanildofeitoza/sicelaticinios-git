@@ -63,7 +63,6 @@ object _frmComposicao: T_frmComposicao
       item
         Expanded = False
         FieldName = 'produto'
-        Width = 64
         Visible = True
       end
       item
@@ -191,6 +190,7 @@ object _frmComposicao: T_frmComposicao
       Width = 44
       Height = 13
       Caption = 'Custo R$'
+      Visible = False
     end
     object Label4: TLabel
       Left = 24
@@ -290,6 +290,7 @@ object _frmComposicao: T_frmComposicao
       DecimalPlaces = 6
       DisplayFormat = '0.000000;0.000000'
       TabOrder = 5
+      Visible = False
     end
     object BitBtn4: TBitBtn
       Left = 135

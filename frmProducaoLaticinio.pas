@@ -1917,16 +1917,17 @@ begin
                _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsproducaoitensid.asstring)+','); // inc
 
               _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsMovproducaonumero.AsString)+','); //  idproducao
-              _dm2.qrPadrao.sql.add('codpreproducao,'); //   codigoproduto
-              _dm2.qrPadrao.sql.add('codigo,');  // codigomateria
-              _dm2.qrPadrao.sql.add('produto,');  //  descricaomateria
+              _dm2.qrPadrao.sql.add('c.codpreproducao,'); //   codigoproduto
+              _dm2.qrPadrao.sql.add('c.codigo,');  // codigomateria
+              _dm2.qrPadrao.sql.add('c.produto,');  //  descricaomateria
               _dm2.qrPadrao.sql.add(quotedstr(formatcurr('###0.000',_dm2.cdsproducaoitensquantidadeproduzida.AsCurrency))+','); //  quantidade
              if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
-              _dm2.qrPadrao.sql.add('quantidade,') //quantidademateria  quando o parâmetro for por KG
+              _dm2.qrPadrao.sql.add('c.quantidade,') //quantidademateria  quando o parâmetro for por KG
               else
               _dm2.qrPadrao.sql.add(quotedstr('0.00')+','); //quantidademateria     quando o parâmetro for leite utilizado
 
-              _dm2.qrPadrao.sql.add('custo,'); // custounitario
+             // _dm2.qrPadrao.sql.add('custo,'); // custounitario
+              _dm2.qrPadrao.sql.add('(SELECT custo FROM '+glb_produtos+'  WHERE codigo=c.codigo AND CodigoFilial='+quotedstr(glb_filial)+' LIMIT 1),'); // custounitario
               _dm2.qrPadrao.sql.add('current_date,');//  data
 
               //_dm2.qrPadrao.sql.add('(quantidade * '+currtostr(quantidadeProduzida)+'),');
@@ -1935,9 +1936,10 @@ begin
               else
               _dm2.qrPadrao.sql.add('((quantidade / parametroleite) * '+formatcurr('##0.00',qtdleite)+' ),'); //  quantidade   utilizado de materia
 
-              _dm2.qrPadrao.sql.add(quotedstr(glb_usuario)+' FROM composicaolaticinio WHERE codpreproducao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND tipoinsumo ="outros" '+
+              _dm2.qrPadrao.sql.add(quotedstr(glb_usuario)+' FROM composicaolaticinio as c WHERE codpreproducao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND tipoinsumo ="outros" '+
                ' AND tipoparametro ="L" ');  //  operador
               _dm2.qrPadrao.execsql;
+
  //=========================================  produtos do padrão creme  =====================================================================
 
                sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,inc_prod_producao,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
@@ -1950,16 +1952,17 @@ begin
                _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsproducaoitensid.asstring)+','); // inc
 
               _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsMovproducaonumero.AsString)+','); //  idproducao
-              _dm2.qrPadrao.sql.add('codpreproducao,'); //   codigoproduto
-              _dm2.qrPadrao.sql.add('codigo,');  // codigomateria
-              _dm2.qrPadrao.sql.add('produto,');  //  descricaomateria
+              _dm2.qrPadrao.sql.add('c.codpreproducao,'); //   codigoproduto
+              _dm2.qrPadrao.sql.add('c.codigo,');  // codigomateria
+              _dm2.qrPadrao.sql.add('c.produto,');  //  descricaomateria
               _dm2.qrPadrao.sql.add(quotedstr(formatcurr('###0.000',_dm2.cdsproducaoitensquantidadeproduzida.AsCurrency))+','); //  quantidade
              if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
-              _dm2.qrPadrao.sql.add('quantidade,') //quantidademateria  quando o parâmetro for por KG
+              _dm2.qrPadrao.sql.add('c.quantidade,') //quantidademateria  quando o parâmetro for por KG
               else
               _dm2.qrPadrao.sql.add(quotedstr('0.00')+','); //quantidademateria     quando o parâmetro for leite utilizado
 
-              _dm2.qrPadrao.sql.add('custo,'); // custounitario
+             // _dm2.qrPadrao.sql.add('custo,'); // custounitario
+              _dm2.qrPadrao.sql.add('(SELECT custo FROM '+glb_produtos+'  WHERE codigo=c.codigo AND CodigoFilial='+quotedstr(glb_filial)+' LIMIT 1),'); // custounitario
               _dm2.qrPadrao.sql.add('current_date,');//  data
 
               //_dm2.qrPadrao.sql.add('(quantidade * '+currtostr(quantidadeProduzida)+'),');
@@ -1968,9 +1971,11 @@ begin
               else
               _dm2.qrPadrao.sql.add('((quantidade / parametroleite) * '+formatcurr('##0.00',qtdcreme)+' ),'); //  quantidade   utilizado de materia
 
-              _dm2.qrPadrao.sql.add(quotedstr(glb_usuario)+' FROM composicaolaticinio WHERE codpreproducao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND tipoinsumo ="outros" '+
+              _dm2.qrPadrao.sql.add(quotedstr(glb_usuario)+' FROM composicaolaticinio as c WHERE codpreproducao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND tipoinsumo ="outros" '+
                ' AND tipoparametro ="C" ');  //  operador
               _dm2.qrPadrao.execsql;
+
+
  //========================================  produtos do padrão manteiga  ======================================================================
               sqlInsert:=' INSERT INTO producaomovmateria(codigofilial,inc_prod_producao,idproducao,codigoproduto,codigomateria,descricaomateria,quantidade,quantidademateria,custounitario,data,totalmateriautilizada,operador)'+
                           ' SELECT ';
@@ -1981,16 +1986,17 @@ begin
               _dm2.qrPadrao.sql.add(quotedstr(glb_filial)+','); // codigofilial
               _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsproducaoitensid.asstring)+','); // inc
               _dm2.qrPadrao.sql.add(quotedstr(_dm2.cdsMovproducaonumero.AsString)+','); //  idproducao
-              _dm2.qrPadrao.sql.add('codpreproducao,'); //   codigoproduto
-              _dm2.qrPadrao.sql.add('codigo,');  // codigomateria
-              _dm2.qrPadrao.sql.add('produto,');  //  descricaomateria
+              _dm2.qrPadrao.sql.add('c.codpreproducao,'); //   codigoproduto
+              _dm2.qrPadrao.sql.add('c.codigo,');  // codigomateria
+              _dm2.qrPadrao.sql.add('c.produto,');  //  descricaomateria
               _dm2.qrPadrao.sql.add(quotedstr(formatcurr('###0.000',_dm2.cdsproducaoitensquantidadeproduzida.AsCurrency))+','); //  quantidade
              if(_dm.cdsConfigLaticinioparametroleite.AsString='N')then
-              _dm2.qrPadrao.sql.add('quantidade,') //quantidademateria  quando o parâmetro for por KG
+              _dm2.qrPadrao.sql.add('c.quantidade,') //quantidademateria  quando o parâmetro for por KG
               else
               _dm2.qrPadrao.sql.add(quotedstr('0.00')+','); //quantidademateria     quando o parâmetro for leite utilizado
 
-              _dm2.qrPadrao.sql.add('custo,'); // custounitario
+             // _dm2.qrPadrao.sql.add('custo,'); // custounitario
+              _dm2.qrPadrao.sql.add('(SELECT custo FROM '+glb_produtos+'  WHERE codigo=c.codigo AND CodigoFilial='+quotedstr(glb_filial)+' LIMIT 1),'); // custounitario
               _dm2.qrPadrao.sql.add('current_date,');//  data
 
               //_dm2.qrPadrao.sql.add('(quantidade * '+currtostr(quantidadeProduzida)+'),');
@@ -1999,9 +2005,11 @@ begin
               else
               _dm2.qrPadrao.sql.add('((quantidade / parametroleite) * '+formatcurr('##0.00',qtdmanteiga)+' ),'); //  quantidade   utilizado de materia
 
-              _dm2.qrPadrao.sql.add(quotedstr(glb_usuario)+' FROM composicaolaticinio WHERE codpreproducao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND tipoinsumo ="outros" '+
+              _dm2.qrPadrao.sql.add(quotedstr(glb_usuario)+' FROM composicaolaticinio as c WHERE codpreproducao='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND tipoinsumo ="outros" '+
                ' AND tipoparametro ="M" ');  //  operador
               _dm2.qrPadrao.execsql;
+
+
  //==============================================================================================================
 
 

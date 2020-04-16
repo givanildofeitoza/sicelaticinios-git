@@ -22,7 +22,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
     Top = 0
     Width = 1277
     Height = 688
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
@@ -2234,6 +2234,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
               Expanded = False
               FieldName = 'operadortermino'
               Title.Caption = 'Op. T'#233'rmino'
+              Width = 64
               Visible = True
             end>
         end
@@ -2886,7 +2887,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
     Left = 460
     Top = 353
     Bitmap = {
-      494C010103000800400010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010103000800440010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0006132500794D9300EF58A800FF58A800FF58A800FF58A800FF58A800FF4D93
