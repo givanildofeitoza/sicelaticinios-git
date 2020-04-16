@@ -1207,7 +1207,6 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
             Expanded = False
             FieldName = 'finalizada'
             Title.Caption = 'Lan'#231'ada'
-            Width = 64
             Visible = True
           end>
       end

@@ -302,7 +302,20 @@ begin
       grid.Cells[0,l]:= _dm.cdsAnaliseinc.AsString;
       grid.Cells[1,l]:= _dm.cdsAnalisefornecedor.AsString;
       grid.Cells[2,l]:= _dm.cdsAnalisetipoleite.AsString;
-      grid.Cells[3,l]:= _dm.cdsAnalisecusto.AsString;
+
+     if( _dm.cdsAnalisecusto.ascurrency>0)then
+      grid.Cells[3,l]:= _dm.cdsAnalisecusto.AsString
+      else
+      begin
+      _dm.qrPadrao.SQL.Clear;
+      _dm.qrPadrao.Sql.Add('SELECT custo FROM '+glb_produtos+' WHERE codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND codigofilial='+quotedstr(glb_filial));
+      _dm.qrPadrao.open;
+
+      grid.Cells[3,l]:=_dm.qrPadrao.FieldByName('custo').AsString;
+
+      end;
+
+
       grid.Cells[4,l]:= _dm.cdsAnaliseqtdconferida.AsString;
 
 
