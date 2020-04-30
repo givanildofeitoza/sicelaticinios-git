@@ -60,6 +60,7 @@ type
     Relatriodevendas1: TMenuItem;
     Relatriodeconsumodeembalagens1: TMenuItem;
     Desnatedeleite1: TMenuItem;
+    AnaliseFinanceira1: TMenuItem;
     procedure ColetadeLeite1Click(Sender: TObject);
     procedure Anlisedoleite1Click(Sender: TObject);
     procedure Veculos1Click(Sender: TObject);
@@ -92,6 +93,7 @@ type
     procedure Relatriodeanlises1Click(Sender: TObject);
     procedure Relatriodeconsumodeembalagens1Click(Sender: TObject);
     procedure Desnatedeleite1Click(Sender: TObject);
+    procedure AnaliseFinanceira1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -103,7 +105,7 @@ type
 var
     _main: T_main;
    // Handle: THandle;
-    glb_versao:string='1.7.6';
+    glb_versao:string='1.7.8';
     glb_grupo:string='1';
     glb_filial:string='00001';
     glb_usuario:string='IQ';
@@ -128,7 +130,7 @@ implementation
 {$R *.dfm}
 uses
 frmRelVendas,dm,frmDesnate,frmTipoLeite,dm2,frmFornecedores, frmProdutos, frmveiculos, frmColetores,frmColeta,midaslib, frmRelColeta,frmAnaliseColeta, frmConferenciaQtd, frmSilos,frmBuscProdLote,frmRelProdDerivados,
-IdBaseComponent, IdComponent, IdIPWatch,frmConfigLaticinio, frmProducaoLaticinio,frmProdPreProducao, frmProducaoDiaria, frmSobre,frmSplash, IdHashMessageDigest,frmLogon,frmRelConsumoEmb,frmRelatoriosProducao,frmRelConsumo,frmRelAnalises ;
+IdBaseComponent, IdComponent, IdIPWatch,frmConfigLaticinio, frmProducaoLaticinio,frmProdPreProducao, frmProducaoDiaria, frmSobre,frmSplash, IdHashMessageDigest,frmLogon,frmRelConsumoEmb,frmRelatoriosProducao,frmRelConsumo,frmRelAnalises,frmAnaliseDRE ;
  //função para criptografar e decriptografar strings
 function Criptografar( Senha, Chave : String): String;
 Var
@@ -216,6 +218,13 @@ begin
 
 
 
+end;
+
+procedure T_main.AnaliseFinanceira1Click(Sender: TObject);
+begin
+_frmAnaliseDRE:=T_frmAnaliseDRE.Create(self);
+_frmAnaliseDRE.ShowModal();
+_frmAnaliseDRE.Release;
 end;
 
 procedure T_main.Anlisedoleite1Click(Sender: TObject);
