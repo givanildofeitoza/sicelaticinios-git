@@ -76,7 +76,6 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
     Height = 89
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 580
     object Label7: TLabel
       Left = 351
       Top = 22
@@ -309,19 +308,21 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
     end
   end
   object PageControl1: TPageControl
-    Left = 8
-    Top = 55
-    Width = 1191
-    Height = 523
-    ActivePage = TabSheet3
+    Left = 0
+    Top = 49
+    Width = 1207
+    Height = 535
+    ActivePage = TabSheet1
+    Align = alClient
     TabOrder = 2
     object TabSheet1: TTabSheet
       Caption = 'Despesas'
       object gridDespesas: TStringGrid
         Left = 0
-        Top = 3
-        Width = 1041
-        Height = 489
+        Top = 0
+        Width = 1199
+        Height = 507
+        Align = alClient
         ColCount = 3
         RowCount = 1
         FixedRows = 0
@@ -379,6 +380,7 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
           Height = 17
           Caption = 'Todas'
           TabOrder = 2
+          OnClick = chktodasClick
         end
       end
     end
@@ -387,9 +389,10 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
       ImageIndex = 1
       object gridVendas: TStringGrid
         Left = 0
-        Top = 3
-        Width = 1163
-        Height = 479
+        Top = 0
+        Width = 1199
+        Height = 507
+        Align = alClient
         ColCount = 6
         RowCount = 1
         FixedRows = 0
@@ -401,9 +404,10 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
       ImageIndex = 2
       object gridSaida: TStringGrid
         Left = 0
-        Top = 3
-        Width = 1166
-        Height = 489
+        Top = 0
+        Width = 1199
+        Height = 507
+        Align = alClient
         ColCount = 4
         RowCount = 1
         FixedRows = 0
@@ -416,10 +420,11 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
       Caption = 'Produ'#231#227'o'
       ImageIndex = 3
       object gridProducao: TStringGrid
-        Left = 3
-        Top = 3
-        Width = 1166
-        Height = 489
+        Left = 0
+        Top = 0
+        Width = 1199
+        Height = 507
+        Align = alClient
         ColCount = 3
         TabOrder = 0
       end

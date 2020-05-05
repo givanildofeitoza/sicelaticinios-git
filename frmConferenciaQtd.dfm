@@ -273,7 +273,7 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
         OnClick = BitBtn2Click
       end
       object btnAlterar: TBitBtn
-        Left = 133
+        Left = 111
         Top = 5
         Width = 132
         Height = 33
@@ -282,31 +282,42 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
         OnClick = btnAlterarClick
       end
       object btnLancar: TBitBtn
-        Left = 316
+        Left = 246
         Top = 5
-        Width = 172
+        Width = 156
         Height = 33
         Caption = 'Finalizar entrada no estoque'
         TabOrder = 2
         OnClick = btnLancarClick
       end
       object BitBtn4: TBitBtn
-        Left = 536
-        Top = 3
-        Width = 127
-        Height = 35
+        Left = 550
+        Top = 5
+        Width = 114
+        Height = 33
         Caption = 'Lan'#231'ar docs. a pagar'
         TabOrder = 3
+        Visible = False
         OnClick = BitBtn4Click
       end
       object BitBtn5: TBitBtn
-        Left = 701
+        Left = 722
         Top = 5
         Width = 105
         Height = 33
         Caption = 'Fechar'
         TabOrder = 4
         OnClick = BitBtn5Click
+      end
+      object BitBtn10: TBitBtn
+        Left = 408
+        Top = 5
+        Width = 139
+        Height = 33
+        Caption = 'Alterar pre'#231'os por coleta'
+        TabOrder = 5
+        Visible = False
+        OnClick = BitBtn10Click
       end
     end
     object Panel13: TPanel
@@ -366,8 +377,8 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
       24)
   end
   object pnlCp: TPanel
-    Left = 526
-    Top = 46
+    Left = 197
+    Top = -10
     Width = 852
     Height = 497
     Align = alCustom
@@ -1104,8 +1115,8 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
     end
   end
   object pnlbusca: TPanel
-    Left = -612
-    Top = 301
+    Left = -630
+    Top = 84
     Width = 656
     Height = 429
     TabOrder = 6
@@ -1207,6 +1218,7 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
             Expanded = False
             FieldName = 'finalizada'
             Title.Caption = 'Lan'#231'ada'
+            Width = 64
             Visible = True
           end>
       end
@@ -1247,8 +1259,8 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
     end
   end
   object pnlaguarde: TPanel
-    Left = 197
-    Top = 294
+    Left = 198
+    Top = 273
     Width = 323
     Height = 51
     Caption = 'Processando, aguarde...'
@@ -1266,8 +1278,8 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
   object RvPconferencia: TRvProject
     Engine = RvS1
     ProjectFile = 'C:\iqsistemas\SICElaticinios\relatorios\impConfEntrada.rav'
-    Left = 336
-    Top = 64
+    Left = 320
+    Top = 504
     RaveBlobNew = {
       95EE0200346DD87C3572E5405241561AB0AD01000009BFED84B00C5300590053
       00540045004D000653595354454D0055050000BFED84B00C5300590053005400
@@ -7288,42 +7300,42 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
     SystemPrinter.StatusFormat = 'Printing page %p'
     SystemPrinter.Title = 'Rave Report'
     SystemPrinter.UnitsFactor = 1.000000000000000000
-    Left = 408
-    Top = 64
+    Left = 392
+    Top = 504
   end
   object RvDSConnection1: TRvDataSetConnection
     RuntimeVisibility = rtDeveloper
     DataSet = _dm.cdsAnalise
-    Left = 480
-    Top = 104
+    Left = 520
+    Top = 504
   end
   object Rvteste: TRvDataSetConnection
     RuntimeVisibility = rtDeveloper
     DataSet = _dm.cdsTotal
-    Left = 480
-    Top = 56
+    Left = 464
+    Top = 496
   end
   object RvRenderPDF1: TRvRenderPDF
     DisplayName = 'Adobe Acrobat (PDF)'
     FileExtension = '*.pdf'
     DocInfo.Creator = 'Rave Reports (http://www.nevrona.com/rave)'
     DocInfo.Producer = 'Nevrona Designs'
-    Left = 536
-    Top = 80
+    Left = 584
+    Top = 504
   end
   object RvCconexao: TRvCustomConnection
     RuntimeVisibility = rtDeveloper
     OnEOF = RvCconexaoEOF
     OnGetCols = RvCconexaoGetCols
     OnGetRow = RvCconexaoGetRow
-    Left = 592
-    Top = 72
+    Left = 632
+    Top = 504
   end
   object RvConBoletos: TRvDataSetConnection
     RuntimeVisibility = rtDeveloper
     DataSet = _dm.cdsContasPagar
-    Left = 534
-    Top = 232
+    Left = 238
+    Top = 504
   end
   object RvSBoletos: TRvSystem
     TitleSetup = 'Output Options'
@@ -7337,22 +7349,22 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
     SystemPrinter.StatusFormat = 'Printing page %p'
     SystemPrinter.Title = 'Rave Report'
     SystemPrinter.UnitsFactor = 1.000000000000000000
-    Left = 453
-    Top = 232
+    Left = 21
+    Top = 504
   end
   object RvCCboletos: TRvCustomConnection
     RuntimeVisibility = rtDeveloper
     OnEOF = RvCCboletosEOF
     OnGetCols = RvCCboletosGetCols
     OnGetRow = RvCCboletosGetRow
-    Left = 541
-    Top = 296
+    Left = 165
+    Top = 504
   end
   object RvPrintBoletos: TRvProject
     Engine = RvSBoletos
     ProjectFile = 'C:\iqsistemas\SICElaticinios\relatorios\impBoletos.rav'
-    Left = 472
-    Top = 288
+    Left = 96
+    Top = 504
     RaveBlobNew = {
       0AC50200A7CEDE834F35E5405241561AB0AD01000009BFED84B00C5300590053
       00540045004D000653595354454D0055050000BFED84B00C5300590053005400
@@ -13027,5 +13039,12 @@ object _frmConferenciaQtd: T_frmConferenciaQtd
       003A0011546F74616C20612070616761722052243ABFED84B00654006F007000
       03546F7005005028140A8542A1FA3FBFED84B00A570069006400740068000557
       6964746805008063F4EFA0ACA5FF3FBFED84B0000000}
+  end
+  object qrNumeroEntrada: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = _dm.ConnecDm
+    Left = 528
+    Top = 376
   end
 end

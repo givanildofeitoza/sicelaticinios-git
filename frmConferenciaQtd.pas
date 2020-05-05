@@ -116,6 +116,8 @@ type
     txtqtdtotal: TCurrencyEdit;
     Label30: TLabel;
     pnlaguarde: TPanel;
+    BitBtn10: TBitBtn;
+    qrNumeroEntrada: TSQLQuery;
     procedure BitBtn1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure gridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
@@ -162,6 +164,7 @@ type
     procedure _btnConfirmarClick(Sender: TObject);
     procedure _btnCancelarClick(Sender: TObject);
     procedure txtbuscapornumeroKeyPress(Sender: TObject; var Key: Char);
+    procedure BitBtn10Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -182,7 +185,7 @@ implementation
 
 {$R *.dfm}
 uses
-main,dm,dm2,frmAnaliseColeta,frmLogin,clipbrd,DateUtils,frmDestinarReservatorio;
+main,dm,dm2,frmAnaliseColeta,frmLogin,clipbrd,DateUtils,frmDestinarReservatorio,frmAltCustFornecedor;
 function validaNumeros(var Key: Char):string;
 begin
      if not( key in['0'..'9']) and (key<>'.') and (key<>#8)then
@@ -195,6 +198,14 @@ begin
 
  glb_continuar:='N';
 frm.ModalResult:=-1;
+end;
+
+procedure T_frmConferenciaQtd.BitBtn10Click(Sender: TObject);
+begin
+_frmAltCustFornecedor:= T_frmAltCustFornecedor.Create(self);
+_frmAltCustFornecedor.ShowModal();
+_frmAltCustFornecedor.Release;
+
 end;
 
 procedure T_frmConferenciaQtd.BitBtn11Click(Sender: TObject);
@@ -430,6 +441,15 @@ i:integer;
 begin
 
 
+
+
+
+  if(_dm.cdsAnalisedoclancado.AsString='N')then
+     begin
+       Application.MessageBox('Essa compra de leite ainda não foi lançada no estoque!','',MB_ICONEXCLAMATION+mb_ok);
+       exit;
+   end;
+
   frm:=Tform.Create(self);
 
   frm.Width:=860;
@@ -448,7 +468,7 @@ begin
     _dm.ConnecDm.Connected:=false;
     _dm.qrPadrao.SQL.Clear;
     _dm.qrPadrao.SQL.Add('SELECT   numero, fornecedor, SUM(custo * qtdconferida) AS valor FROM  analise ');
-    _dm.qrPadrao.SQL.Add('WHERE numero = '+quotedstr(_dm.cdsMovAnalisenumero.AsString)+' and doclancado="N" GROUP BY fornecedor');
+    _dm.qrPadrao.SQL.Add('WHERE numero = '+quotedstr(_dm.cdsMovAnalisenumero.AsString)+' and doclancado="S" GROUP BY fornecedor');
     _dm.qrPadrao.open;
 
 
@@ -1017,8 +1037,15 @@ begin
         _dm.qrPadrao.SQL.Add(quotedstr('0.00')+','); //ratdesconto
         _dm.qrPadrao.SQL.Add(quotedstr(_dm.qrPadrao2.FieldByName('custo').AsString)+','); //custocalculado
         _dm.qrPadrao.SQL.Add(quotedstr('N')+')');//exportarfiscal
-
         _dm.qrPadrao.execsql;
+
+
+      //informa numero da entrada na análise
+       qrNumeroEntrada.SQL.clear;
+       qrNumeroEntrada.SQL.Add('update analise set nrEntrada='+quotedstr(numeroNf)+' where numero='+quotedstr(_dm.cdsAnalisenumero.AsString)+
+       ' and codigofornecedor='+quotedstr(_dm.qrPadrao3.FieldByName('codigofornecedor').AsString));
+       qrNumeroEntrada.execsql;
+
 
 
 
@@ -1038,6 +1065,13 @@ begin
         _dm.qrPadrao.execsql;
 
 
+        //doclancado
+       qrNumeroEntrada.SQL.clear;
+       qrNumeroEntrada.SQL.Add('update analise set doclancado="S"  where  nrEntrada='+quotedstr(numeroNf)+' and numero='+quotedstr(_dm.cdsAnalisenumero.AsString)+
+       ' and codigofornecedor='+quotedstr(_dm.qrPadrao3.FieldByName('codigofornecedor').AsString));
+       qrNumeroEntrada.execsql;
+
+
 
         _dm.qrPadrao2.SQL.clear;
         _dm.qrPadrao2.SQL.Add('update movanalise set finalizada="S", datafinalizacao=current_date,operadorfinalizacao='+quotedstr(glb_usuario)+' where numero='+quotedstr(_dm.cdsAnalisenumero.AsString));
@@ -1046,9 +1080,8 @@ begin
 
 
          end;
-       except
-       Application.MessageBox('Erro no processamento da entrada','Erro',MB_ICONEXCLAMATION+MB_OK);
-
+       except on ex:Exception do
+          showmessage('Reporte o erro ao suporte: '+pchar(ex.Message));
        end;
 
 

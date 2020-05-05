@@ -1556,6 +1556,10 @@ object _main: T_main
           Caption = 'Relat'#243'rio de an'#225'lises'
           OnClick = Relatriodeanlises1Click
         end
+        object Ajustarcustosdelanamentosconfirmados1: TMenuItem
+          Caption = 'Ajustar custos de lan'#231'amentos confirmados'
+          OnClick = Ajustarcustosdelanamentosconfirmados1Click
+        end
       end
       object Confernciaelanamentosdeestoque1: TMenuItem
         Caption = 'Confer'#234'ncia e lan'#231'amentos no estoque'
@@ -1606,6 +1610,10 @@ object _main: T_main
       object Relatriodeconsumodeembalagens1: TMenuItem
         Caption = 'Relat'#243'rio de consumo de embalagens'
         OnClick = Relatriodeconsumodeembalagens1Click
+      end
+      object AnaliseFinanceira1: TMenuItem
+        Caption = 'Analise Financeira'
+        OnClick = AnaliseFinanceira1Click
       end
     end
     object Ajuda1: TMenuItem

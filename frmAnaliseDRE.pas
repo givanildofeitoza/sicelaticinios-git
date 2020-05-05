@@ -64,6 +64,7 @@ type
     procedure gridDespesasDrawCell(Sender: TObject; ACol, ARow: Integer;
       Rect: TRect; State: TGridDrawState);
     procedure BitBtn2Click(Sender: TObject);
+    procedure chktodasClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -88,6 +89,7 @@ begin
 
 //============= DESPESAS =============================================================
 
+chktodas.Checked:=false;
  _dm2.ConnecDm2.Connected:=false;
  qrContas.SQL.Clear;
  qrContas.SQL.Add('SELECT conta,descricao FROM despesas WHERE codigofilial='+quotedstr(glb_filial));
@@ -192,7 +194,7 @@ begin
    qrProducao.SQL.Clear;
    qrProducao.SQL.Add('SELECT i.codigo,i.produto,SUM(i.quantidadeproduzida) AS totalproduzido,i.numeroproducao  '+
    ' FROM producaoitens AS i, movproducaodiaria AS m WHERE m.DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.date))+
-   ' AND m.encerrada="S" AND i.numeroproducao=m.numero GROUP BY codigo; ');
+   ' AND m.encerrada="S" AND i.numeroproducao=m.numero GROUP BY codigo ORDER BY i.produto ; ');
    qrProducao.open;
 
    li:=1;
@@ -332,7 +334,7 @@ qrVendas.Open;
 
        _dm2.qrPadrao.SQL.Clear;
        _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,preco,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM venda WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND codigofilial='+quotedstr(glb_filial)+' AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By codigo');
-       _dm2.qrPadrao.SQL.add('UNION ALL SELECT codigo,produto,unidade,sum(quantidade) as quantidade,preco,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM vendaarquivo  WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND codigofilial='+quotedstr(glb_filial)+'  AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By  codigo');
+       _dm2.qrPadrao.SQL.add('UNION ALL SELECT codigo,produto,unidade,sum(quantidade) as quantidade,preco,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM vendaarquivo  WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND codigofilial='+quotedstr(glb_filial)+'  AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By  codigo ORDER BY PRODUTO');
        _dm2.qrPadrao.Open();
 
                _dm2.qrPadrao.First;
@@ -379,7 +381,7 @@ qrVendas.Open;
 
 sql:= 'SELECT codigo,produto, SUM(quantidade) AS quantidade, SUM(quantidade * preco) AS total FROM produtosperdas '+
  ' WHERE codigofilial='+quotedstr(glb_filial)+' AND DATA  BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+
- ' GROUP BY codigo';
+ ' GROUP BY codigo ORDER BY PRODUTO';
 
 
 
@@ -431,6 +433,38 @@ frm.modalresult:=-1;
 
 end;
 
+procedure T_frmAnaliseDRE.chktodasClick(Sender: TObject);
+var
+i:integer;
+begin
+
+          if(chktodas.Checked=true)then
+          begin
+
+                  for I := 0 to chkbox.Items.Count -1  do
+                  begin
+
+                    chkbox.Checked[I]:=true;
+
+                  end;
+
+          end
+          else
+            begin
+
+                  for I := 0 to chkbox.Items.Count -1  do
+                  begin
+
+                    chkbox.Checked[I]:=false;
+
+                  end;
+
+
+            end;
+
+
+end;
+
 procedure T_frmAnaliseDRE.FormShow(Sender: TObject);
 begin
 
@@ -472,7 +506,7 @@ begin
    gridProducao.Cells[0,0]:=  'Código';
    gridProducao.ColWidths[1] :=350;
    gridProducao.Cells[1,0]:=  'Produto';
-    gridProducao.ColWidths[2] :=150;
+   gridProducao.ColWidths[2] :=150;
    gridProducao.Cells[2,0]:=  'Produzido (KG/L)';
 end;
 

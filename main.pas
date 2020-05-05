@@ -61,6 +61,7 @@ type
     Relatriodeconsumodeembalagens1: TMenuItem;
     Desnatedeleite1: TMenuItem;
     AnaliseFinanceira1: TMenuItem;
+    Ajustarcustosdelanamentosconfirmados1: TMenuItem;
     procedure ColetadeLeite1Click(Sender: TObject);
     procedure Anlisedoleite1Click(Sender: TObject);
     procedure Veculos1Click(Sender: TObject);
@@ -94,6 +95,7 @@ type
     procedure Relatriodeconsumodeembalagens1Click(Sender: TObject);
     procedure Desnatedeleite1Click(Sender: TObject);
     procedure AnaliseFinanceira1Click(Sender: TObject);
+    procedure Ajustarcustosdelanamentosconfirmados1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -105,7 +107,7 @@ type
 var
     _main: T_main;
    // Handle: THandle;
-    glb_versao:string='1.7.8';
+    glb_versao:string='1.7.9';
     glb_grupo:string='1';
     glb_filial:string='00001';
     glb_usuario:string='IQ';
@@ -129,7 +131,7 @@ implementation
 
 {$R *.dfm}
 uses
-frmRelVendas,dm,frmDesnate,frmTipoLeite,dm2,frmFornecedores, frmProdutos, frmveiculos, frmColetores,frmColeta,midaslib, frmRelColeta,frmAnaliseColeta, frmConferenciaQtd, frmSilos,frmBuscProdLote,frmRelProdDerivados,
+frmRelVendas,dm,frmDesnate,frmTipoLeite,dm2,frmFornecedores, frmProdutos, frmveiculos, frmColetores,frmColeta,midaslib, frmRelColeta,frmAnaliseColeta, frmConferenciaQtd, frmSilos,frmBuscProdLote,frmRelProdDerivados,frmAltCustFornecedor,
 IdBaseComponent, IdComponent, IdIPWatch,frmConfigLaticinio, frmProducaoLaticinio,frmProdPreProducao, frmProducaoDiaria, frmSobre,frmSplash, IdHashMessageDigest,frmLogon,frmRelConsumoEmb,frmRelatoriosProducao,frmRelConsumo,frmRelAnalises,frmAnaliseDRE ;
  //função para criptografar e decriptografar strings
 function Criptografar( Senha, Chave : String): String;
@@ -218,6 +220,13 @@ begin
 
 
 
+end;
+
+procedure T_main.Ajustarcustosdelanamentosconfirmados1Click(Sender: TObject);
+begin
+_frmAltCustFornecedor:= T_frmAltCustFornecedor.Create(self);
+_frmAltCustFornecedor.ShowModal();
+_frmAltCustFornecedor.Release;
 end;
 
 procedure T_main.AnaliseFinanceira1Click(Sender: TObject);
