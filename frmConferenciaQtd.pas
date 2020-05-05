@@ -1061,7 +1061,7 @@ begin
        try
          begin
         _dm.qrPadrao.SQL.clear;
-        _dm.qrPadrao.SQL.Add('CALL ProcessarEntrada('+quotedstr(lblfilial.Caption)+','+quotedstr(numeroNf)+','+quotedstr(altCusto)+','+quotedstr(glb_usuario)+',"0","0","0"); ');
+        _dm.qrPadrao.SQL.Add('CALL ProcessarEntrada('+quotedstr(lblfilial.Caption)+','+quotedstr(numeroNf)+','+quotedstr(altCusto)+','+quotedstr(glb_usuario)+',"0","0","0",'+quotedstr(glb_ip)+'); ');
         _dm.qrPadrao.execsql;
 
 
