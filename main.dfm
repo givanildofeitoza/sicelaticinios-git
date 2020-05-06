@@ -1557,7 +1557,7 @@ object _main: T_main
           OnClick = Relatriodeanlises1Click
         end
         object Ajustarcustosdelanamentosconfirmados1: TMenuItem
-          Caption = 'Ajustar custos de lan'#231'amentos confirmados'
+          Caption = 'Ajustar custos / lan'#231'ar documentos a pagar'
           OnClick = Ajustarcustosdelanamentosconfirmados1Click
         end
       end

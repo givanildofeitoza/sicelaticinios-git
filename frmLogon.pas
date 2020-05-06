@@ -57,7 +57,7 @@ implementation
 
 {$R *.dfm}
 uses
-main, dm, dm2,IdHashMessageDigest;
+main, dm, dm2,IdHashMessageDigest,clipbrd;
 
 procedure fazerlogin(grupo:string; filial:string; usuario:string; senha:string);
 begin
@@ -65,9 +65,9 @@ begin
 
     _dm.ConnecDm.Connected:=false;
     _dm.qrpadrao.SQL.clear;
-    _dm.qrpadrao.SQL.Add('SELECT count(1) as total FROM senhas where operador='+quotedstr(usuario)+' and senha=md5('+quotedstr(senha)+') and grupo=abs('+quotedstr(grupo)+') and codigofilial='+quotedstr(filial));
+    _dm.qrpadrao.SQL.Add('SELECT count(1) as total FROM senhas where operador='+quotedstr(usuario)+' and senha=md5('+quotedstr(senha)+') and grupo IN (abs('+quotedstr(grupo)+') , "Todos") and codigofilial='+quotedstr(filial)+' AND filialacesso IN ("Todas",'+quotedstr(filial)+')');
     _dm.qrpadrao.Open;
-
+    clipboard.astext:=  _dm.qrpadrao.SQL.text;
 
     if(_dm.qrpadrao.FieldByName('total').AsInteger>0)then
     begin
