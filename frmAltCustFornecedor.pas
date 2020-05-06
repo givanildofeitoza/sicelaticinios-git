@@ -94,7 +94,6 @@ type
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid1DblClick(Sender: TObject);
-    procedure BitBtn6Click(Sender: TObject);
     procedure BitBtn5Click(Sender: TObject);
     procedure txtanaliseKeyPress(Sender: TObject; var Key: Char);
     procedure BitBtn4Click(Sender: TObject);
@@ -111,6 +110,8 @@ type
     procedure cboSetorSelect(Sender: TObject);
     procedure BitBtn9Click(Sender: TObject);
     procedure btnConfClick(Sender: TObject);
+    procedure BitBtn8Click(Sender: TObject);
+    procedure DBGrid1TitleClick(Column: TColumn);
   private
     { Private declarations }
   public
@@ -291,21 +292,6 @@ if(application.MessageBox('Alterar custo do lançamento de leite desse fornecedor
 
 end;
 
-procedure T_frmAltCustFornecedor.BitBtn6Click(Sender: TObject);
-begin
-  _dm.ConnecDm.Connected:=false;
-  _dm.cdsContasPagar.Close;
-  _dm.sdscontaspagar.CommandText:='select * from contaspagar where nrAnaliseLeite='+quotedstr(_dm.cdsAnalisenumero.AsString)+' order by empresa';
-  _dm.sdscontaspagar.ExecSQL();
-  _dm.cdsContasPagar.Open;
-  _dm.cdsContasPagar.Refresh;
-
-    RvPrintBoletos.SetParam('empresa',_dm.cdsFiliaisfantasia.AsString);
-    RvPrintBoletos.SetParam('numero',_dm.cdsAnalisenumero.AsString);
-    RvPrintBoletos.Execute;
-
-end;
-
 procedure T_frmAltCustFornecedor.BitBtn7Click(Sender: TObject);
 var
  codsetor,codsubsetor,setor,subsetor,descricao:string;
@@ -441,6 +427,20 @@ if(gridCp.RowCount=1)then
 
 
 
+end;
+
+procedure T_frmAltCustFornecedor.BitBtn8Click(Sender: TObject);
+begin
+  _dm.ConnecDm.Connected:=false;
+  _dm.cdsContasPagar.Close;
+  _dm.sdscontaspagar.CommandText:='select * from contaspagar where nrAnaliseLeite='+quotedstr(_dm.cdsAnalisenumero.AsString)+' order by empresa';
+  _dm.sdscontaspagar.ExecSQL();
+  _dm.cdsContasPagar.Open;
+  _dm.cdsContasPagar.Refresh;
+
+    RvPrintBoletos.SetParam('empresa',_dm.cdsFiliaisfantasia.AsString);
+    RvPrintBoletos.SetParam('numero',_dm.cdsAnalisenumero.AsString);
+    RvPrintBoletos.Execute;
 end;
 
 procedure T_frmAltCustFornecedor.BitBtn9Click(Sender: TObject);
@@ -691,6 +691,11 @@ With DBGrid1.Canvas do
   End;
  DBGrid1.DefaultDrawDataCell(Rect, DBGrid1.Columns[DataCol].Field, State);
 end;
+end;
+
+procedure T_frmAltCustFornecedor.DBGrid1TitleClick(Column: TColumn);
+begin
+    _dm.cdsAnalise.IndexFieldNames := Column.FieldName;
 end;
 
 procedure T_frmAltCustFornecedor.gridCpDblClick(Sender: TObject);

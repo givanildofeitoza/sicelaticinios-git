@@ -163,6 +163,7 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
     TitleFont.Style = []
     OnDrawColumnCell = DBGrid1DrawColumnCell
     OnDblClick = DBGrid1DblClick
+    OnTitleClick = DBGrid1TitleClick
     Columns = <
       item
         Expanded = False
@@ -221,12 +222,14 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
         Expanded = False
         FieldName = 'nrEntrada'
         Title.Caption = 'Nr. Entrada'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'doclancado'
         Title.Caption = 'Documento Lanc.'
+        Width = 64
         Visible = True
       end>
   end
@@ -322,7 +325,6 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
       Height = 25
       Caption = 'Fechar'
       TabOrder = 3
-      OnClick = BitBtn6Click
     end
   end
   object BitBtn2: TBitBtn
@@ -335,7 +337,7 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
     OnClick = BitBtn2Click
   end
   object pnlCp: TPanel
-    Left = 147
+    Left = 843
     Top = 29
     Width = 852
     Height = 497
@@ -1040,7 +1042,7 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
         Height = 35
         Caption = 'Imprimir docs. lan'#231'ados'
         TabOrder = 3
-        OnClick = BitBtn6Click
+        OnClick = BitBtn8Click
       end
     end
     object Panel9: TPanel
