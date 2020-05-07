@@ -89,6 +89,15 @@ type
     RvPrintBoletos: TRvProject;
     RvCCboletos: TRvCustomConnection;
     RvConBoletos: TRvDataSetConnection;
+    Label10: TLabel;
+    Label15: TLabel;
+    txtcustomedio: TCurrencyEdit;
+    txtqtd: TCurrencyEdit;
+    RvProject1: TRvProject;
+    RvDataSetConnection1: TRvDataSetConnection;
+    BitBtn10: TBitBtn;
+    txttotalpagar: TCurrencyEdit;
+    Label18: TLabel;
     procedure BitBtn1Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -112,6 +121,11 @@ type
     procedure btnConfClick(Sender: TObject);
     procedure BitBtn8Click(Sender: TObject);
     procedure DBGrid1TitleClick(Column: TColumn);
+    procedure BitBtn6Click(Sender: TObject);
+    procedure RvCCboletosEOF(Connection: TRvCustomConnection; var Eof: Boolean);
+    procedure RvCCboletosGetCols(Connection: TRvCustomConnection);
+    procedure RvCCboletosGetRow(Connection: TRvCustomConnection);
+    procedure BitBtn10Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -130,6 +144,12 @@ implementation
 uses
 dm,dm2,main,frmfornecedores,clipbrd,frmConferenciaQtd;
 
+procedure T_frmAltCustFornecedor.BitBtn10Click(Sender: TObject);
+begin
+RvProject1.setparam( 'valorpagar','R$  '+formatcurr('##0.00',txttotalpagar.value));
+RvProject1.Execute;
+end;
+
 procedure T_frmAltCustFornecedor.BitBtn1Click(Sender: TObject);
 begin
      _frmfornecedores :=T_frmfornecedores.Create(self);
@@ -137,6 +157,7 @@ begin
      _frmfornecedores.Release;
 
      txtfornecedor.Text:=  _dm.cdsForCodigo.AsString.PadLeft(6,'0')+'-'+_dm.cdsForempresa.AsString;
+
 
 
 end;
@@ -174,7 +195,7 @@ begin
     _dm.ConnecDm.Connected:=false;
     _dm.qrPadrao.SQL.Clear;
     _dm.qrPadrao.SQL.Add('SELECT   numero, fornecedor, SUM(custo * qtdconferida) AS valor FROM  analise ');
-    _dm.qrPadrao.SQL.Add('WHERE numero = '+quotedstr(_dm.cdsAnalisenumero.AsString)+' and doclancado="S" GROUP BY fornecedor');
+    _dm.qrPadrao.SQL.Add('WHERE numero = '+quotedstr(_dm.cdsAnalisenumero.AsString)+' and doclancado="N" GROUP BY fornecedor');
     _dm.qrPadrao.open;
 
 
@@ -290,6 +311,11 @@ if(application.MessageBox('Alterar custo do lançamento de leite desse fornecedor
   _dm.cdsAnalise.Refresh;
   frm.ModalResult:=-1;
 
+end;
+
+procedure T_frmAltCustFornecedor.BitBtn6Click(Sender: TObject);
+begin
+frm.ModalResult:=-1;
 end;
 
 procedure T_frmAltCustFornecedor.BitBtn7Click(Sender: TObject);
@@ -568,6 +594,8 @@ end;
 end;
 
 procedure T_frmAltCustFornecedor.Button1Click(Sender: TObject);
+var
+sqlTotal,nrentrada:string;
 begin
 
 
@@ -575,28 +603,59 @@ begin
    _dm.ConnecDm.Connected:=false;
    _dm.sdsAnalise.Close;
    _dm.cdsAnalise.close;
-   _dm.sdsAnalise.CommandText:='SELECT * FROM analise WHERE doclancado='+quotedstr(cboEstoque.Text);
+   if(cboEstoque.Text='S')then
+   begin
+   _dm.sdsAnalise.CommandText:=' WHERE nrentrada > 0';
+   sqltotal:=' WHERE nrentrada > 0';
+
+   end
+   else
+   begin
+   _dm.sdsAnalise.CommandText:=' WHERE nrentrada = ("0" OR nrentrada is null)';
+   sqltotal:= ' WHERE nrentrada = ("0" OR nrentrada is null)';
+   end;
+
+
+
+
 
 
     if(txtanalise.Text<>'')then
+    begin
     _dm.sdsAnalise.CommandText:= _dm.sdsAnalise.CommandText+' AND numero='+quotedstr(txtanalise.Text);
-
+    sqltotal:=sqltotal+' AND numero='+quotedstr(txtanalise.Text);
+    end;
     if(txtanalise.Text='')then
     begin
 
         if(txtfornecedor.Text<>'')then
+        begin
         _dm.sdsAnalise.CommandText:= _dm.sdsAnalise.CommandText+' AND codigofornecedor='+quotedstr(_dm.cdsForCodigo.AsString);
+         sqltotal:=sqltotal+' AND codigofornecedor='+quotedstr(_dm.cdsForCodigo.AsString);
+        end;
 
         _dm.sdsAnalise.CommandText:= _dm.sdsAnalise.CommandText+ ' AND data BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.date));
-
+        sqltotal:=sqltotal+' AND data BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.date));
     end;
 
+
+
+
+
+   _dm.sdsAnalise.CommandText:= 'SELECT * FROM analise '+_dm.sdsAnalise.CommandText;
 
    _dm.sdsAnalise.ExecSQL();
    _dm.cdsAnalise.open;
    _dm.cdsAnalise.refresh;
 
 
+   _dm2.qrPadrao.SQL.Clear;
+   _dm2.qrPadrao.SQL.add('SELECT SUM(quantidade * custo) as totalpagamento,  SUM(quantidade * custo) / SUM(quantidade) AS customedio, SUM(quantidade) qtdTotal FROM analise '+sqltotal);
+   _dm2.qrPadrao.Open;
+
+  txtcustomedio.Value:= _dm2.qrPadrao.FieldByName('customedio').AsCurrency;
+  txtqtd.Value:=  _dm2.qrPadrao.FieldByName('qtdTotal').AsCurrency;
+  txttotalpagar.Value :=  _dm2.qrPadrao.FieldByName('totalpagamento').AsCurrency;
 end;
 
 procedure T_frmAltCustFornecedor.cboSetorEnter(Sender: TObject);
@@ -739,6 +798,24 @@ procedure T_frmAltCustFornecedor.gridCpSelectCell(Sender: TObject; ACol,
 begin
  linha:=arow;
  coluna:=acol;
+end;
+
+procedure T_frmAltCustFornecedor.RvCCboletosEOF(Connection: TRvCustomConnection;
+  var Eof: Boolean);
+begin
+eof := _dm.CdsFiliais.Eof;
+end;
+
+procedure T_frmAltCustFornecedor.RvCCboletosGetCols(
+  Connection: TRvCustomConnection);
+begin
+Connection.WriteField('logo', dtString, 120, '', '');
+end;
+
+procedure T_frmAltCustFornecedor.RvCCboletosGetRow(
+  Connection: TRvCustomConnection);
+begin
+    Connection.WriteStrData('', _dm2.cdsImagenslogomarca.AsString);
 end;
 
 procedure T_frmAltCustFornecedor.txtanaliseKeyPress(Sender: TObject; var Key: Char);
