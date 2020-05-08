@@ -75,7 +75,6 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 959
     object Label1: TLabel
       Left = 40
       Top = 13
@@ -97,7 +96,6 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
     Height = 80
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 959
     object Label2: TLabel
       Left = 16
       Top = 6
@@ -379,7 +377,7 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
     OnClick = BitBtn2Click
   end
   object pnlCp: TPanel
-    Left = 739
+    Left = 171
     Top = 8
     Width = 852
     Height = 497
@@ -395,8 +393,6 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
       Color = clWhite
       ParentBackground = False
       TabOrder = 5
-      ExplicitLeft = 0
-      ExplicitTop = 373
       object Label26: TLabel
         Left = 79
         Top = 8

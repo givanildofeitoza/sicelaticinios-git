@@ -171,7 +171,7 @@ begin
 
 
 
-  if(_dm.cdsAnalisedoclancado.AsString='N')then
+  if(_dm.cdsAnalisenrEntrada.AsString='')then
      begin
        Application.MessageBox('Essa compra de leite ainda não foi lançada no estoque!','',MB_ICONEXCLAMATION+mb_ok);
        exit;
