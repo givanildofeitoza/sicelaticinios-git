@@ -759,8 +759,8 @@ begin
     if( glb_continuar='N')then
     exit;
 
-   // if(application.MessageBox('Encerrar produção diária?','Pergunta',MB_ICONQUESTION+MB_YESNO)=id_no)then
-   // exit;
+    if(application.MessageBox(pchar('Encerrar produção numero '+_dm2.cdsMovproducaonumero.asstring+'?'),'Pergunta',MB_ICONQUESTION+MB_YESNO)=id_no)then
+    exit;
 
     //VERIFICA SE TEM PERMISSÃO
     {
@@ -1092,7 +1092,7 @@ end;
 
          _dm.ConnecDm.Connected:=false;
          _dm.qrPadrao2.SQL.Clear;
-         _dm.qrPadrao2.SQL.Add('CALL ProcessarEntrada('+quotedstr(glb_filial)+','+quotedstr(numeroNf)+','+quotedstr(_dm.cdsConfigLaticinioalterarcustoproducao.AsString )+','+quotedstr(glb_usuario)+',"0","0","0"); ');
+         _dm.qrPadrao2.SQL.Add('CALL ProcessarEntrada('+quotedstr(glb_filial)+','+quotedstr(numeroNf)+','+quotedstr(_dm.cdsConfigLaticinioalterarcustoproducao.AsString )+','+quotedstr(glb_usuario)+',"0","0","0",'+quotedstr(glb_ip)+'); ');
          _dm.qrPadrao2.execsql;
 
 
@@ -1157,7 +1157,7 @@ end;
   +quotedstr(glb_ip)+','
   +quotedstr('0')+','
   +quotedstr('0')+','
-  +quotedstr('6.102')+','
+  +quotedstr('5.927')+','
   +quotedstr('0.00')+','
   +quotedstr('P')+')');
   _dm.qrPadrao.ExecSQL();
@@ -2020,13 +2020,19 @@ begin
   if(application.MessageBox('Confirmar derivados?','Pergunta',MB_ICONQUESTION+MB_YESNO)=id_no)then
     exit;
 
-   {
+
    _dm2.ConnecDm2.Connected:=false;
    _dm2.qrPadrao2.SQL.Clear;
-   _dm2.qrPadrao2.SQL.add('SELECT SUM(totalmateriautilizada * custounitario) AS totalProducao FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+   _dm2.qrPadrao2.SQL.add('SELECT COUNT(1) AS total FROM producaoderivados WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND quantidade > 0');
    _dm2.qrPadrao2.open;
 
+   if( _dm2.qrPadrao2.FieldByName('total').AsInteger = 0)then
+    begin
+      application.MessageBox('Nenhum item derivado foi informado! Não é possível executar ação.','Aerta',MB_ICONEXCLAMATION+MB_OK);
+      exit;
+    end;
 
+   {
    // soma valor dos insumos predefinidos com o leite, creme e manteiga
     totalcustoproducao:= _dm2.qrPadrao2.FieldByName('totalProducao').AsCurrency + custoLeite + custocreme + customanteiga;
 
