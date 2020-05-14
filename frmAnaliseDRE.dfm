@@ -60,13 +60,21 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
       TabOrder = 1
     end
     object BitBtn1: TBitBtn
-      Left = 389
-      Top = 19
+      Left = 531
+      Top = 20
       Width = 100
       Height = 25
       Caption = 'Gerar dados'
       TabOrder = 2
       OnClick = BitBtn1Click
+    end
+    object chkvendia: TCheckBox
+      Left = 394
+      Top = 26
+      Width = 125
+      Height = 17
+      Caption = 'Apenas caixas abertos'
+      TabOrder = 3
     end
   end
   object Panel2: TPanel
@@ -312,7 +320,7 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
     Top = 49
     Width = 1207
     Height = 535
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 2
     object TabSheet1: TTabSheet
@@ -397,6 +405,7 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
         RowCount = 1
         FixedRows = 0
         TabOrder = 0
+        ExplicitHeight = 473
       end
     end
     object TabSheet3: TTabSheet

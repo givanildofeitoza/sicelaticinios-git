@@ -58,6 +58,7 @@ type
     lblvariavel: TLabel;
     Bevel3: TBevel;
     Label14: TLabel;
+    chkvendia: TCheckBox;
     procedure BitBtn1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure BitBtn4Click(Sender: TObject);
@@ -258,7 +259,7 @@ chktodas.Checked:=false;
       end;
 }
 
-         sql:=' SELECT SUM(total) AS valor,SUM(descontovalor) AS desconto, SUM(ratdesc) AS ratdesc, SUM(ABS(IF(vendaatacado = "S",(quantidade *embalagem),quantidade))*custo) as custo,documento FROM vendaarquivo '+
+    {     sql:=' SELECT SUM(total) AS valor,SUM(descontovalor) AS desconto, SUM(ratdesc) AS ratdesc, SUM(ABS(IF(vendaatacado = "S",(quantidade *embalagem),quantidade))*custo) as custo,documento FROM vendaarquivo '+
         ' WHERE data BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' and '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+
         ' AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento "'+
         ' AND codigofilial='+quotedstr(glb_filial)+' group by documento'+
@@ -274,7 +275,7 @@ _dm2.ConnecDm2.Connected:=false;
 qrVendas.Close;
 qrVendas.SQL.Clear;
 qrVendas.SQL.add(sql);
-qrVendas.Open;
+qrVendas.Open;          }
 
       totVendaBruta:=0;
       desconto:=0;
@@ -333,8 +334,14 @@ qrVendas.Open;
 
 
        _dm2.qrPadrao.SQL.Clear;
-       _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,preco,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM venda WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND codigofilial='+quotedstr(glb_filial)+' AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By codigo');
-       _dm2.qrPadrao.SQL.add('UNION ALL SELECT codigo,produto,unidade,sum(quantidade) as quantidade,preco,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM vendaarquivo  WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND codigofilial='+quotedstr(glb_filial)+'  AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By  codigo ORDER BY PRODUTO');
+       if(chkvendia.Checked=true)then
+    begin
+       _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,AVG(preco) as precomedio,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM venda WHERE DATA = current_date AND codigofilial='+quotedstr(glb_filial)+' AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By codigo  ');
+      // _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,AVG(preco) as precomedio,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM vendaarquivo  WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' OR DATA = current_date AND codigofilial='+quotedstr(glb_filial)+'  AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By  codigo ORDER BY PRODUTO');
+
+    end
+       else
+       _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,AVG(preco) as precomedio,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM vendaarquivo  WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND codigofilial='+quotedstr(glb_filial)+'  AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By  codigo ORDER BY PRODUTO');
        _dm2.qrPadrao.Open();
 
                _dm2.qrPadrao.First;
@@ -348,13 +355,15 @@ qrVendas.Open;
                    gridvendas.Cells[3,li]:= formatcurr('##0.00',_dm2.qrPadrao.FieldByName('quantidade').ascurrency);
                     if(_dm2.qrPadrao.FieldByName('descontovalor').Ascurrency>0)then
                     begin
-                    gridvendas.Cells[4,li]:= 'R$ '+formatcurr('##0.00',_dm2.qrPadrao.FieldByName('descontovalor').ascurrency);
+                  //  gridvendas.Cells[4,li]:= 'R$ '+formatcurr('##0.00',_dm2.qrPadrao.FieldByName('descontovalor').ascurrency);
+                    gridvendas.Cells[4,li]:= 'R$ '+formatcurr('##0.00',_dm2.qrPadrao.FieldByName('precomedio').ascurrency);
                     gridvendas.Cells[5,li]:= 'R$ '+formatcurr('##0.00',(_dm2.qrPadrao.FieldByName('total').ascurrency - _dm2.qrPadrao.FieldByName('descontovalor').ascurrency));
                     desconto:=desconto + _dm2.qrPadrao.FieldByName('descontovalor').ascurrency;
                     end
                     else
                     begin
-                     gridvendas.Cells[4,li]:= 'R$ '+formatcurr('##0.00',_dm2.qrPadrao.FieldByName('ratdesc').AsCurrency);
+                    // gridvendas.Cells[4,li]:= 'R$ '+formatcurr('##0.00',_dm2.qrPadrao.FieldByName('ratdesc').AsCurrency);
+                     gridvendas.Cells[4,li]:= 'R$ '+formatcurr('##0.00',_dm2.qrPadrao.FieldByName('precomedio').ascurrency);
                      gridvendas.Cells[5,li]:= 'R$ '+formatcurr('##0.00',(_dm2.qrPadrao.FieldByName('total').ascurrency - _dm2.qrPadrao.FieldByName('ratdesc').ascurrency));
                      desconto:=desconto + _dm2.qrPadrao.FieldByName('ratdesc').ascurrency;
                     end;
@@ -483,7 +492,7 @@ begin
  gridvendas.Cells[2,0]:=  'UN';
 // gridvendas.Cells[3,0]:=  'Preço R$';
  gridvendas.Cells[3,0]:=  'Quantidade';
- gridvendas.Cells[4,0]:=  'Desc. R$';
+ gridvendas.Cells[4,0]:=  'Preço M. R$';
  gridvendas.Cells[5,0]:=  'Total Liq. R$';
 
 
