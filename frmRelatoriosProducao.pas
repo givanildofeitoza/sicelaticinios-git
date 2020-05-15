@@ -84,6 +84,7 @@ type
     pnlobs: TPanel;
     Panel3: TPanel;
     memoobs: TMemo;
+    cdsrelProducaoparametrorendimento: TFMTBCDField;
     procedure BitBtn2Click(Sender: TObject);
     procedure btnimprimirClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
@@ -229,12 +230,13 @@ filtroProd:='';
    cdsrelProducao.Close;
    sdsrelProducao.CommandText:= 'SELECT p.numeroproducao, (SELECT DATA FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS dataproducao,  '+
     ' (SELECT hora FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS horaproducao,'+
+    ' (SELECT parametrorendimento FROM '+glb_produtos+' WHERE codigo=p.codigo AND codigofilial=p.codigofilial) AS parametrorendimento,'+
     ' (SELECT datafinalizacao FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS datafimproducao, '+
     ' (SELECT horafinalizacao FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS horafimproducao, '+
    ' p.codigo,p.produto,p.unidade,sum(p.quantidadeproduzida) as quantidadeproduzida, '+
    ' IFNULL((sum(p.quantidadeleite)  / sum(p.quantidadeproduzida)),0) AS rendleite, '+
-   ' IFNULL((sum(p.quantidadecreme) / sum(p.quantidadeproduzida)),0) AS rendCreme, ' +
-   ' IFNULL((sum(p.quantidademanteiga) / sum(p.quantidadeproduzida)),0) AS rendmanteiga, '+
+   ' IFNULL(sum(p.quantidadecreme),0) AS rendCreme, ' +
+   ' IFNULL(sum(p.quantidademanteiga),0) AS rendmanteiga, '+
    ' SUM(p.quantidadeleite ) as quantidadeleite,'+
    ' SUM(p.quantidadecreme ) as quantidadecreme,'+
    ' SUM(p.quantidademanteiga ) as quantidademanteiga'+
@@ -411,6 +413,17 @@ With DBGrid1.Canvas do
 
 
 
+  {     if Column.Field=cdsrelProducaorendleite then
+       begin
+             _dm.qrPadrao.SQL.Clear;
+             _dm.qrPadrao.SQL.Add('SELECT parametrorendimento FROM '+glb_produtos+' WHERE codigo='+quotedstr(cdsrelProducaocodigo.AsString)+' AND codigofilial='+quotedstr(glb_filial));
+             _dm.qrPadrao.open;
+        }
+             if(cdsrelProducaoparametrorendimento.AsCurrency > cdsrelProducaorendleite.AsCurrency )then
+             DBGrid1.Canvas.Font.Color:=clRed;
+             dbgrid1.DefaultDrawDataCell(Rect,dbgrid1.columns[datacol].field,state);
+
+     //  end;
 
 
 

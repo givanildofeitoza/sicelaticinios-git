@@ -336,14 +336,20 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       end
       item
         Expanded = False
+        FieldName = 'parametrorendimento'
+        Title.Caption = 'Rend. Estimado'
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'rendCreme'
-        Title.Caption = 'Rend. Creme'
+        Title.Caption = 'Qtd. Creme'
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'rendmanteiga'
-        Title.Caption = 'Rend. manteiga'
+        Title.Caption = 'Qtd. manteiga'
         Visible = True
       end
       item
@@ -575,10 +581,6 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Align = alClient
       ReadOnly = True
       TabOrder = 1
-      ExplicitLeft = 7
-      ExplicitTop = 32
-      ExplicitWidth = 495
-      ExplicitHeight = 230
     end
   end
   object RvPRelProd: TRvProject
@@ -6327,6 +6329,11 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Precision = 10
       Size = 2
     end
+    object cdsrelProducaoparametrorendimento: TFMTBCDField
+      FieldName = 'parametrorendimento'
+      Precision = 12
+      Size = 2
+    end
   end
   object dsrelProducao: TDataSetProvider
     DataSet = sdsrelProducao
@@ -6337,20 +6344,22 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
     CommandText = 
       'SELECT p.numeroproducao, (SELECT DATA FROM movproducaodiaria WHE' +
       'RE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS d' +
-      'ataproducao,'#13#10'(SELECT hora FROM movproducaodiaria WHERE numero=p' +
-      '.numeroproducao AND codigofilial=p.codigofilial) AS horaproducao' +
-      ','#13#10'(SELECT datafinalizacao FROM movproducaodiaria WHERE numero=p' +
-      '.numeroproducao AND codigofilial=p.codigofilial) AS datafimprodu' +
-      'cao,'#13#10'(SELECT horafinalizacao FROM movproducaodiaria WHERE numer' +
-      'o=p.numeroproducao AND codigofilial=p.codigofilial) AS horafimpr' +
-      'oducao,'#13#10'p.codigo,p.produto,p.unidade,p.quantidadeproduzida,'#13#10'IF' +
-      'NULL((p.quantidadeproduzida/p.quantidadeleite),0) AS rendleite,'#13 +
-      #10'IFNULL((p.quantidadeproduzida/p.quantidadecreme),0) AS rendCrem' +
-      'e,'#13#10'IFNULL((p.quantidadeproduzida/p.quantidademanteiga),0) AS re' +
-      'ndmanteiga,'#13#10'p.quantidadeleite,'#13#10'p.quantidadecreme,'#13#10'p.quantidad' +
-      'emanteiga'#13#10' FROM producaoitens AS p, movproducaodiaria AS m WHER' +
-      'E p.numeroproducao='#39'0'#39#13#10' AND p.codigofilial='#39'00001'#39#13#10' AND p.nume' +
-      'roproducao=m.numero'#13#10' AND p.codigofilial=m.codigofilial;'
+      'ataproducao,'#13#10' (SELECT parametrorendimento FROM produtos  WHERE ' +
+      'codigo=p.codigo AND codigofilial=p.codigofilial) AS parametroren' +
+      'dimento,'#13#10#13#10'(SELECT hora FROM movproducaodiaria WHERE numero=p.n' +
+      'umeroproducao AND codigofilial=p.codigofilial) AS horaproducao,'#13 +
+      #10'(SELECT datafinalizacao FROM movproducaodiaria WHERE numero=p.n' +
+      'umeroproducao AND codigofilial=p.codigofilial) AS datafimproduca' +
+      'o,'#13#10'(SELECT horafinalizacao FROM movproducaodiaria WHERE numero=' +
+      'p.numeroproducao AND codigofilial=p.codigofilial) AS horafimprod' +
+      'ucao,'#13#10'p.codigo,p.produto,p.unidade,p.quantidadeproduzida,'#13#10'IFNU' +
+      'LL((p.quantidadeproduzida/p.quantidadeleite),0) AS rendleite,'#13#10'I' +
+      'FNULL((p.quantidadeproduzida/p.quantidadecreme),0) AS rendCreme,' +
+      #13#10'IFNULL((p.quantidadeproduzida/p.quantidademanteiga),0) AS rend' +
+      'manteiga,'#13#10'p.quantidadeleite,'#13#10'p.quantidadecreme,'#13#10'p.quantidadem' +
+      'anteiga'#13#10' FROM producaoitens AS p, movproducaodiaria AS m WHERE ' +
+      'p.numeroproducao='#39'0'#39#13#10' AND p.codigofilial='#39'00001'#39#13#10' AND p.numero' +
+      'producao=m.numero'#13#10' AND p.codigofilial=m.codigofilial;'
     MaxBlobSize = -1
     Params = <>
     SQLConnection = _dm2.ConnecDm2

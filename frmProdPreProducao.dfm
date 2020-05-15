@@ -89,6 +89,12 @@ object _frmProdPreProducao: T_frmProdPreProducao
         Title.Caption = 'Filial'
         Width = 73
         Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'parametrorendimento'
+        Title.Caption = 'Rendimento estimado'
+        Visible = True
       end>
   end
   object Panel1: TPanel
@@ -163,8 +169,8 @@ object _frmProdPreProducao: T_frmProdPreProducao
     end
     object btnfechar: TBitBtn
       Left = 209
-      Top = 140
-      Width = 136
+      Top = 169
+      Width = 152
       Height = 38
       Caption = 'Fechar'
       TabOrder = 2
@@ -172,8 +178,8 @@ object _frmProdPreProducao: T_frmProdPreProducao
     end
     object BitBtn4: TBitBtn
       Left = 209
-      Top = 16
-      Width = 136
+      Top = 5
+      Width = 152
       Height = 33
       Caption = 'Composi'#231#227'o'
       TabOrder = 3
@@ -191,8 +197,8 @@ object _frmProdPreProducao: T_frmProdPreProducao
     end
     object BitBtn3: TBitBtn
       Left = 209
-      Top = 55
-      Width = 136
+      Top = 44
+      Width = 152
       Height = 35
       Caption = 'Produtos derivados'
       TabOrder = 5
@@ -200,12 +206,21 @@ object _frmProdPreProducao: T_frmProdPreProducao
     end
     object BitBtn7: TBitBtn
       Left = 209
-      Top = 97
-      Width = 136
+      Top = 86
+      Width = 152
       Height = 37
       Caption = 'Ordem de produ'#231#227'o'
       TabOrder = 6
       OnClick = BitBtn7Click
+    end
+    object BitBtn10: TBitBtn
+      Left = 209
+      Top = 126
+      Width = 152
+      Height = 37
+      Caption = 'Par'#226'metro de Rendimento'
+      TabOrder = 7
+      OnClick = BitBtn10Click
     end
   end
   object pnlProdPreProducao: TPanel
@@ -292,6 +307,59 @@ object _frmProdPreProducao: T_frmProdPreProducao
       Caption = 'Fechar'
       TabOrder = 4
       OnClick = BitBtn6Click
+    end
+  end
+  object pnlRendimento: TPanel
+    Left = 96
+    Top = 140
+    Width = 329
+    Height = 122
+    TabOrder = 5
+    Visible = False
+    object Panel5: TPanel
+      Left = 1
+      Top = 1
+      Width = 327
+      Height = 33
+      Align = alTop
+      Color = clMenuHighlight
+      ParentBackground = False
+      TabOrder = 0
+      ExplicitLeft = 2
+      ExplicitTop = 9
+      object Label2: TLabel
+        Left = 23
+        Top = 10
+        Width = 147
+        Height = 13
+        Caption = 'Par'#226'metro de rendimento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+    object txtParaRend: TCurrencyEdit
+      Left = 24
+      Top = 53
+      Width = 121
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 1
+      DisplayFormat = '0.00;-0.00'
+      TabOrder = 1
+      OnKeyPress = txtParaRendKeyPress
+    end
+    object BitBtn9: TBitBtn
+      Left = 168
+      Top = 50
+      Width = 110
+      Height = 25
+      Caption = 'Confirmar'
+      TabOrder = 2
+      OnClick = BitBtn9Click
     end
   end
 end

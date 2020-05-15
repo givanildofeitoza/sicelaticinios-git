@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Grids,
-  Vcl.DBGrids, Vcl.Buttons;
+  Vcl.DBGrids, Vcl.Buttons, Vcl.Mask, RxToolEdit, RxCurrEdit;
 
 type
   T_frmProdPreProducao = class(TForm)
@@ -34,6 +34,12 @@ type
     BitBtn3: TBitBtn;
     BitBtn7: TBitBtn;
     BitBtn8: TBitBtn;
+    pnlRendimento: TPanel;
+    Panel5: TPanel;
+    Label2: TLabel;
+    txtParaRend: TCurrencyEdit;
+    BitBtn9: TBitBtn;
+    BitBtn10: TBitBtn;
     procedure btnfecharClick(Sender: TObject);
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -51,6 +57,9 @@ type
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn7Click(Sender: TObject);
     procedure BitBtn8Click(Sender: TObject);
+    procedure BitBtn10Click(Sender: TObject);
+    procedure BitBtn9Click(Sender: TObject);
+    procedure txtParaRendKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -84,6 +93,24 @@ begin
 				_dm2.qrpadrao.sql.add(quotedstr(documento)+',');
 				_dm2.qrpadrao.sql.add(quotedstr(local)+')');
 				_dm2.qrpadrao.ExecSQL;
+
+
+end;
+
+procedure T_frmProdPreProducao.BitBtn10Click(Sender: TObject);
+begin
+    frm := Tform.Create(self);
+    frm.Width:=370;
+    frm.Height:=160;
+    frm.BorderStyle:=bsDialog;
+    frm.Position:=poDesktopCenter;
+
+    pnlRendimento.Parent:=frm;
+    pnlRendimento.Align:= alClient;
+    pnlRendimento.Visible:=true;
+    txtParaRend.value:=_dm.cdsPrd2parametrorendimento.AsCurrency;
+
+    frm.ShowModal;
 
 
 end;
@@ -324,6 +351,23 @@ begin
 
 end;
 
+procedure T_frmProdPreProducao.BitBtn9Click(Sender: TObject);
+begin
+  _dm2.ConnecDm2.Connected:=true;
+  _dm2.qrPadrao.SQL.Clear;
+  _dm2.qrPadrao.SQL.Add('UPDATE '+glb_produtos+' SET parametrorendimento ='+quotedstr(formatcurr('##0.00',txtParaRend.Value))+' WHERE codigo='+quotedstr(_dm.cdsprd2codigo.AsString)+' AND codigofilial='+quotedstr(glb_filial));
+  _dm2.qrPadrao.execsql;
+
+    try
+      _dm.cdsprd2.Refresh;
+    except
+    end;
+
+    frm.ModalResult:=-1;
+
+
+end;
+
 procedure T_frmProdPreProducao.txtNomePesquisaChange(Sender: TObject);
 var
 filtro:string;
@@ -356,6 +400,15 @@ begin
               _dm.cdsPrd2.Refresh;
 
         end;
+
+end;
+
+procedure T_frmProdPreProducao.txtParaRendKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if(key=#13)then
+  BitBtn9.SetFocus;
 
 end;
 

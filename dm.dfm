@@ -876,6 +876,11 @@ object _dm: T_dm
       Precision = 15
       Size = 2
     end
+    object cdsPrdparametrorendimento: TFMTBCDField
+      FieldName = 'parametrorendimento'
+      Precision = 12
+      Size = 2
+    end
   end
   object DSourcePrd: TDataSource
     DataSet = cdsPrd
@@ -4453,6 +4458,12 @@ object _dm: T_dm
     end
     object cdsprd2margemLucroAtacado: TFMTBCDField
       FieldName = 'margemLucroAtacado'
+      Precision = 12
+      Size = 2
+    end
+    object cdsprd2parametrorendimento: TFMTBCDField
+      FieldName = 'parametrorendimento'
+      DisplayFormat = '##0.00'
       Precision = 12
       Size = 2
     end

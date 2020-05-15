@@ -1057,6 +1057,8 @@ type
     cdsOrdemutilizado: TFMTBCDField;
     cdsOrdeminc_prod_producao: TIntegerField;
     cdsMovAnaliseobservacao: TWideMemoField;
+    cdsPrdparametrorendimento: TFMTBCDField;
+    cdsprd2parametrorendimento: TFMTBCDField;
     procedure ConnecDmBeforeConnect(Sender: TObject);
   private
     { Private declarations }
