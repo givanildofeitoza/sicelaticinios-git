@@ -226,7 +226,6 @@ type
     cdsImagensbackground: TWideStringField;
     cdsImagensip: TWideStringField;
     cdsImagenscodigofilial: TWideStringField;
-    cdsMovproducaoobservacao: TWideStringField;
     sdsCompEmbalagem: TSQLDataSet;
     dsCompEmbalagem: TDataSetProvider;
     cdsCompEmbalagem: TClientDataSet;
@@ -565,6 +564,7 @@ type
     cdsconffinancsubcontamulta: TWideStringField;
     cdsconffinancmarcacaoProdutosIP: TWideStringField;
     cdsconffinanchoraatualizacao: TWideStringField;
+    cdsMovproducaoobservacao: TWideMemoField;
     procedure ConnecDm2BeforeConnect(Sender: TObject);
   private
     { Private declarations }

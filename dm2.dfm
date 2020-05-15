@@ -107,10 +107,6 @@ object _dm2: T_dm2
       Precision = 14
       Size = 2
     end
-    object cdsMovproducaoobservacao: TWideStringField
-      FieldName = 'observacao'
-      Size = 100
-    end
     object cdsMovproducaocustoembalagens: TFMTBCDField
       FieldName = 'custoembalagens'
       Precision = 14
@@ -123,6 +119,10 @@ object _dm2: T_dm2
     object cdsMovproducaodescricao: TWideStringField
       FieldName = 'descricao'
       Size = 80
+    end
+    object cdsMovproducaoobservacao: TWideMemoField
+      FieldName = 'observacao'
+      BlobType = ftWideMemo
     end
   end
   object DSourceMovproducao: TDataSource

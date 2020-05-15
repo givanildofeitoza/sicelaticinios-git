@@ -79,6 +79,11 @@ type
     txttotmanteiga: TCurrencyEdit;
     Label17: TLabel;
     Label18: TLabel;
+    Panel1: TPanel;
+    Label19: TLabel;
+    pnlobs: TPanel;
+    Panel3: TPanel;
+    memoobs: TMemo;
     procedure BitBtn2Click(Sender: TObject);
     procedure btnimprimirClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
@@ -94,6 +99,7 @@ type
   public
     { Public declarations }
     imprimir:string;
+    frm:tform;
   end;
 
 var
@@ -309,8 +315,6 @@ begin
 end;
 
 procedure T_frmRelatoriosProducao.btnresumoClick(Sender: TObject);
-var
-frm:tform;
 begin
 
 try
@@ -433,6 +437,33 @@ begin
   cdsrelProducao.Prior;
    data1.SetFocus;
    end;
+
+    if(Key=vk_f3) and (cdsrelProducaonumeroproducao.AsString<>'')then
+    begin
+
+    _dm.qrPadrao.SQL.Clear;
+    _dm.qrPadrao.SQL.Add('SELECT observacao FROM movproducaodiaria WHERE numero ='+QuotedStr(cdsrelProducaonumeroproducao.AsString)+' LIMIT 1');
+     _dm.qrPadrao.Open;
+
+
+
+    frm:=Tform.create(self);
+
+    frm.Width:=780;
+    frm.Height:=445;
+    frm.Position:=poDesktopCenter;
+    frm.BorderStyle:=bsDialog;
+
+    pnlobs.Parent:=frm;
+    pnlobs.visible:=true;
+    pnlobs.Align:=alClient;
+
+    memoobs.Text:=  _dm.qrPadrao.FieldByName('observacao').AsString;;
+    frm.ShowModal;
+
+    end;
+
+
 end;
 
 procedure T_frmRelatoriosProducao.FormShow(Sender: TObject);

@@ -13,6 +13,7 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
   OldCreateOrder = False
   Position = poDesktopCenter
   WindowState = wsMaximized
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -306,7 +307,21 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     Width = 885
     Height = 100
     Align = alBottom
+    Enabled = False
     TabOrder = 3
+    object Label26: TLabel
+      Left = 9
+      Top = 41
+      Width = 103
+      Height = 14
+      Caption = 'F3 - Observa'#231#245'es'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
     object pnlDadosAnalise: TPanel
       Left = 1
       Top = 1
@@ -525,18 +540,21 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
         Expanded = False
         FieldName = 'dornic'
         Title.Caption = 'Dornic.'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'gordura'
         Title.Caption = 'Gordura'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'proteina'
         Title.Caption = 'Prote'#237'na'
+        Width = 64
         Visible = True
       end
       item
@@ -620,12 +638,14 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
         Expanded = False
         FieldName = 'quantidade'
         Title.Caption = 'Qtd. Coleta'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'qtdconferida'
         Title.Caption = 'Qtd.Conferida'
+        Width = 64
         Visible = True
       end>
   end
@@ -733,8 +753,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirColeta: TPanel
-    Left = -707
-    Top = 109
+    Left = -714
+    Top = 39
     Width = 757
     Height = 458
     Font.Charset = DEFAULT_CHARSET
@@ -843,8 +863,6 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       Font.Style = []
       ParentFont = False
       TabOrder = 2
-      ExplicitLeft = -38
-      ExplicitTop = 48
       object Label16: TLabel
         Left = 29
         Top = 44
@@ -953,8 +971,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirAnalise: TPanel
-    Left = 800
-    Top = 152
+    Left = 402
+    Top = 59
     Width = 748
     Height = 417
     Font.Charset = DEFAULT_CHARSET
@@ -1136,6 +1154,54 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       Caption = 'Excluir'
       TabOrder = 7
       OnClick = BitBtn7Click
+    end
+  end
+  object pnlobs: TPanel
+    Left = 48
+    Top = 162
+    Width = 511
+    Height = 294
+    TabOrder = 8
+    Visible = False
+    object Panel11: TPanel
+      Left = 1
+      Top = 1
+      Width = 509
+      Height = 25
+      Align = alTop
+      Caption = 'Observa'#231#245'es'
+      Color = clMenuHighlight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 0
+      ExplicitLeft = 2
+      ExplicitTop = 9
+    end
+    object memoobs: TMemo
+      Left = 7
+      Top = 32
+      Width = 495
+      Height = 230
+      Align = alCustom
+      TabOrder = 1
+    end
+    object BitBtn4: TBitBtn
+      Left = 1
+      Top = 268
+      Width = 509
+      Height = 25
+      Align = alBottom
+      Caption = 'Salvar'
+      TabOrder = 2
+      OnClick = BitBtn4Click
+      ExplicitLeft = 144
+      ExplicitTop = 240
+      ExplicitWidth = 75
     end
   end
   object RvSystem1: TRvSystem

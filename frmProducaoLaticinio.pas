@@ -227,6 +227,11 @@ type
     RvSystem1: TRvSystem;
     chktipo: TCheckBox;
     pnlaguarde: TPanel;
+    pnlobs: TPanel;
+    Panel10: TPanel;
+    memoobs: TMemo;
+    BitBtn13: TBitBtn;
+    Label52: TLabel;
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure BitBtn1Click(Sender: TObject);
@@ -307,6 +312,8 @@ type
     procedure BitBtn25Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure BitBtn13Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -889,6 +896,27 @@ begin
        salvardados('M',_dm2.cdsMovproducaonumero.AsString);
 
 
+end;
+
+procedure T_frmProducaoLaticinio.BitBtn13Click(Sender: TObject);
+begin
+if(_dm2.cdsMovproducaoencerrada.AsString='S')then
+begin
+   Application.MessageBox('Produção já finalizada, não é possível alterar observação! ','Alerta',MB_ICONEXCLAMATION+MB_ok);
+exit;
+end;
+
+  _dm2.ConnecDm2.Connected:=true;
+  _dm2.qrPadrao.SQL.Clear;
+  _dm2.qrPadrao.SQL.Add('UPDATE movproducaodiaria SET observacao ='+quotedstr(memoobs.Text)+' WHERE numero='+quotedstr(_dm2.cdsMovproducaonumero.AsString));
+  _dm2.qrPadrao.execsql;
+
+    try
+      _dm2.cdsMovproducao.Refresh;
+    except
+    end;
+
+    frm.ModalResult:=-1;
 end;
 
 procedure T_frmProducaoLaticinio.obtersaldoleiteClick(Sender: TObject);
@@ -3353,6 +3381,32 @@ begin
                       salvardados('T',_dm2.cdsMovproducaonumero.AsString);
 
                 end;
+end;
+
+procedure T_frmProducaoLaticinio.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+if(txtnumero.Text='0')then
+exit;
+
+    if(Key=vk_f3)then
+       begin
+    frm:=Tform.create(self);
+
+    frm.Width:=780;
+    frm.Height:=445;
+    frm.Position:=poDesktopCenter;
+    frm.BorderStyle:=bsDialog;
+
+    pnlobs.Parent:=frm;
+    pnlobs.visible:=true;
+    pnlobs.Align:=alClient;
+
+    memoobs.Text:= _dm2.cdsMovproducaoobservacao.AsString;
+    frm.ShowModal;
+
+       end;
 end;
 
 procedure T_frmProducaoLaticinio.FormShow(Sender: TObject);

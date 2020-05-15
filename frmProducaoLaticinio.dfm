@@ -11,9 +11,11 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poDesktopCenter
   OnClose = FormClose
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -654,6 +656,19 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           Height = 13
           Caption = 'Descri'#231#227'o:'
         end
+        object Label52: TLabel
+          Left = 387
+          Top = 70
+          Width = 97
+          Height = 14
+          Caption = 'F3 - Observa'#231#227'o'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
         object cboOperadorAbertura: TComboBox
           Left = 115
           Top = 36
@@ -976,6 +991,49 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
         ParentFont = False
         TabOrder = 10
         Visible = False
+      end
+      object pnlobs: TPanel
+        Left = 936
+        Top = 590
+        Width = 511
+        Height = 294
+        TabOrder = 11
+        Visible = False
+        object Panel10: TPanel
+          Left = 1
+          Top = 1
+          Width = 509
+          Height = 25
+          Align = alTop
+          Caption = 'Observa'#231#245'es'
+          Color = clMenuHighlight
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 0
+        end
+        object memoobs: TMemo
+          Left = 7
+          Top = 32
+          Width = 495
+          Height = 230
+          Align = alCustom
+          TabOrder = 1
+        end
+        object BitBtn13: TBitBtn
+          Left = 1
+          Top = 268
+          Width = 509
+          Height = 25
+          Align = alBottom
+          Caption = 'Salvar'
+          TabOrder = 2
+          OnClick = BitBtn13Click
+        end
       end
     end
     object tabDadosProducao: TTabSheet
@@ -2234,7 +2292,6 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
               Expanded = False
               FieldName = 'operadortermino'
               Title.Caption = 'Op. T'#233'rmino'
-              Width = 64
               Visible = True
             end>
         end
@@ -2887,7 +2944,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
     Left = 460
     Top = 353
     Bitmap = {
-      494C010103000800440010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101030008004C0010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0006132500794D9300EF58A800FF58A800FF58A800FF58A800FF58A800FF4D93

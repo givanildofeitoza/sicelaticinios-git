@@ -1610,10 +1610,6 @@ object _dm: T_dm
       FieldName = 'coletainformada'
       Size = 1
     end
-    object cdsMovAnaliseobservacao: TWideStringField
-      FieldName = 'observacao'
-      Size = 200
-    end
     object cdsMovAnaliseresponsavel: TWideStringField
       FieldName = 'responsavel'
       Size = 50
@@ -1669,6 +1665,10 @@ object _dm: T_dm
     object cdsMovAnalisenrEntrada: TWideStringField
       FieldName = 'nrEntrada'
       Size = 6
+    end
+    object cdsMovAnaliseobservacao: TWideMemoField
+      FieldName = 'observacao'
+      BlobType = ftWideMemo
     end
   end
   object dSourceMovAnalise: TDataSource

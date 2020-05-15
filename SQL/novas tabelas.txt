@@ -606,5 +606,7 @@ ALTER TABLE `producaomovmateria`     ADD COLUMN `inc_prod_producao` INT(6) DEFAU
 ALTER TABLE `analise`     CHANGE `codigotipoleite` `codigotipoleite` VARCHAR(8) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '0' NOT NULL;
 -----------------------------------------------------------
 
-
+---------- 15/05/2020--------------------------------------
+ALTER TABLE `movanalise`     CHANGE `observacao` `observacao` TEXT NULL ;
+ALTER TABLE `movproducaodiaria`     CHANGE `observacao` `observacao` TEXT NULL ;
 

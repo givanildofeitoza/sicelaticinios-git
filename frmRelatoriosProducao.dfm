@@ -42,43 +42,43 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
   end
   object GroupBox1: TGroupBox
     Left = 0
-    Top = 654
+    Top = 624
     Width = 1111
-    Height = 114
+    Height = 144
     Align = alBottom
     Caption = 'Por Produto'
     TabOrder = 1
     object Label1: TLabel
-      Left = 24
-      Top = 27
+      Left = 17
+      Top = 24
       Width = 25
       Height = 13
       Caption = 'In'#237'cio'
     end
     object Label2: TLabel
-      Left = 205
-      Top = 27
+      Left = 198
+      Top = 24
       Width = 16
       Height = 13
       Caption = 'Fim'
     end
     object Label3: TLabel
-      Left = 18
-      Top = 56
+      Left = 11
+      Top = 53
       Width = 38
       Height = 13
       Caption = 'Produto'
     end
     object Label4: TLabel
-      Left = 373
-      Top = 25
+      Left = 366
+      Top = 22
       Width = 53
       Height = 13
       Caption = 'Encerrada:'
     end
     object Label5: TLabel
-      Left = 169
-      Top = 82
+      Left = 162
+      Top = 79
       Width = 81
       Height = 13
       Caption = 'Qtd. Leite entre:'
@@ -107,24 +107,24 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Caption = 'Saldo atual de leite:'
     end
     object data1: TDateEdit
-      Left = 64
-      Top = 22
+      Left = 57
+      Top = 19
       Width = 121
       Height = 21
       NumGlyphs = 2
       TabOrder = 0
     end
     object data2: TDateEdit
-      Left = 227
-      Top = 22
+      Left = 220
+      Top = 19
       Width = 121
       Height = 21
       NumGlyphs = 2
       TabOrder = 1
     end
     object txtcod: TEdit
-      Left = 64
-      Top = 49
+      Left = 57
+      Top = 46
       Width = 61
       Height = 21
       Enabled = False
@@ -132,16 +132,16 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Text = '0'
     end
     object txtprod: TEdit
-      Left = 137
-      Top = 49
+      Left = 130
+      Top = 46
       Width = 352
       Height = 21
       Enabled = False
       TabOrder = 3
     end
     object BitBtn2: TBitBtn
-      Left = 501
-      Top = 47
+      Left = 494
+      Top = 44
       Width = 43
       Height = 25
       Caption = '...'
@@ -167,8 +167,8 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       OnClick = BitBtn1Click
     end
     object BitBtn3: TBitBtn
-      Left = 62
-      Top = 75
+      Left = 55
+      Top = 72
       Width = 91
       Height = 25
       Caption = 'Filtrar'
@@ -176,8 +176,8 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       OnClick = BitBtn3Click
     end
     object cboEncerradas: TComboBox
-      Left = 432
-      Top = 20
+      Left = 425
+      Top = 17
       Width = 57
       Height = 21
       ItemIndex = 0
@@ -199,8 +199,8 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       TabOrder = 9
     end
     object qtdleitI: TCurrencyEdit
-      Left = 257
-      Top = 74
+      Left = 250
+      Top = 71
       Width = 72
       Height = 21
       Margins.Left = 4
@@ -228,12 +228,35 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       TabOrder = 12
       OnClick = btnresumoClick
     end
+    object Panel1: TPanel
+      Left = 2
+      Top = 122
+      Width = 1107
+      Height = 20
+      Align = alBottom
+      Color = clMenuHighlight
+      ParentBackground = False
+      TabOrder = 13
+      object Label19: TLabel
+        Left = 23
+        Top = 2
+        Width = 131
+        Height = 16
+        Caption = 'F3 - Ver observa'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
   end
   object DBGrid1: TDBGrid
     Left = 0
     Top = 33
     Width = 1111
-    Height = 621
+    Height = 591
     Align = alClient
     DataSource = dSourcerelProducao
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -331,8 +354,8 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       end>
   end
   object pnlresumo: TPanel
-    Left = 288
-    Top = 208
+    Left = 1006
+    Top = 39
     Width = 561
     Height = 329
     TabOrder = 3
@@ -435,9 +458,6 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Color = clMenuHighlight
       ParentBackground = False
       TabOrder = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 1111
       object Label9: TLabel
         Left = 23
         Top = 7
@@ -521,6 +541,44 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       Margins.Top = 1
       DisplayFormat = '0.00;-0.00'
       TabOrder = 7
+    end
+  end
+  object pnlobs: TPanel
+    Left = 1007
+    Top = 302
+    Width = 511
+    Height = 294
+    TabOrder = 4
+    Visible = False
+    object Panel3: TPanel
+      Left = 1
+      Top = 1
+      Width = 509
+      Height = 25
+      Align = alTop
+      Caption = 'Observa'#231#245'es'
+      Color = clMenuHighlight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 0
+    end
+    object memoobs: TMemo
+      Left = 1
+      Top = 26
+      Width = 509
+      Height = 267
+      Align = alClient
+      ReadOnly = True
+      TabOrder = 1
+      ExplicitLeft = 7
+      ExplicitTop = 32
+      ExplicitWidth = 495
+      ExplicitHeight = 230
     end
   end
   object RvPRelProd: TRvProject

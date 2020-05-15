@@ -104,6 +104,11 @@ type
     txtStatus: TEdit;
     Panel8: TPanel;
     BitBtn7: TBitBtn;
+    pnlobs: TPanel;
+    Panel11: TPanel;
+    memoobs: TMemo;
+    BitBtn4: TBitBtn;
+    Label26: TLabel;
     procedure BitBtn5Click(Sender: TObject);
     procedure dbGridAnaliseDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -138,6 +143,9 @@ type
     procedure RvCustomConnection1GetRow(Connection: TRvCustomConnection);
     procedure BitBtn7Click(Sender: TObject);
     procedure btnpesqKeyPress(Sender: TObject; var Key: Char);
+    procedure BitBtn9Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -391,7 +399,7 @@ begin
     lblConfirmacao.Caption:= '0000';
     lblTotColeta.Caption:=  '0000';
     pnlDadosColeta.Enabled:=true;
-
+    pnlRodape.Enabled:=true;
 
     atualizarTotais(lblNrAnalise.Caption);
 
@@ -572,7 +580,7 @@ numeroAnalise:= _dm.cdsMovAnalisenumero.AsString;
     txtProcedimento.Text:=_dm.cdsMovAnaliseprocedimento.AsString;
     txtAcaoCorretiva.Text:= _dm.cdsMovAnaliseacaocorretiva.AsString;
     lblNrAnalise.Caption:=_dm.cdsMovAnalisenumero.AsString;
-
+    pnlRodape.Enabled:=true;
     atualizarTotais(numeroAnalise);
 
 
@@ -629,6 +637,29 @@ numeroAnalise:= _dm.cdsMovAnalisenumero.AsString;
 
 
 frm.Close;
+end;
+
+procedure T_frmAnaliseColeta.BitBtn4Click(Sender: TObject);
+begin
+
+if(_dm.cdsMovAnalisefinalizada.AsString='S')then
+begin
+   Application.MessageBox('Análise já finalizada, não é possível alterar observação! ','Alerta',MB_ICONEXCLAMATION+MB_ok);
+exit;
+end;
+
+  _dm.ConnecDm.Connected:=true;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('UPDATE movanalise SET observacao ='+quotedstr(memoobs.Text)+' WHERE numero='+quotedstr(_dm.cdsMovAnalisenumero.AsString));
+  _dm.qrPadrao.execsql;
+
+    try
+      _dm.cdsMovAnalise.Refresh;
+    except
+    end;
+
+    frm.ModalResult:=-1;
+
 end;
 
 procedure T_frmAnaliseColeta.btnAlterarDadosClick(Sender: TObject);
@@ -920,6 +951,25 @@ _frmPreencherPadrao.Release;
 
 end;
 
+procedure T_frmAnaliseColeta.BitBtn9Click(Sender: TObject);
+begin
+  frm:=Tform.create(self);
+
+    frm.Width:=780;
+    frm.Height:=445;
+    frm.Position:=poDesktopCenter;
+    frm.BorderStyle:=bsDialog;
+
+    pnlobs.Parent:=frm;
+    pnlobs.visible:=true;
+    pnlobs.Align:=alClient;
+
+    memoobs.Text:= _dm.cdsMovAnaliseobservacao.AsString;
+    frm.ShowModal;
+
+
+end;
+
 procedure T_frmAnaliseColeta.dbGridAbrirColetaDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 begin
@@ -1003,6 +1053,28 @@ end;
                  _dm.cdsMovColeta.Open;
                  _dm.cdsMovColeta.refresh;
 
+end;
+
+procedure T_frmAnaliseColeta.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+       if(Key=vk_f3)then
+       begin
+    frm:=Tform.create(self);
+
+    frm.Width:=780;
+    frm.Height:=445;
+    frm.Position:=poDesktopCenter;
+    frm.BorderStyle:=bsDialog;
+
+    pnlobs.Parent:=frm;
+    pnlobs.visible:=true;
+    pnlobs.Align:=alClient;
+
+    memoobs.Text:= _dm.cdsMovAnaliseobservacao.AsString;
+    frm.ShowModal;
+
+       end;
 end;
 
 procedure T_frmAnaliseColeta.FormShow(Sender: TObject);

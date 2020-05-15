@@ -335,7 +335,6 @@ type
     cdsMovAnaliseqtdtotalinformado: TFMTBCDField;
     cdsMovAnaliseqtdperca: TFMTBCDField;
     cdsMovAnalisecoletainformada: TWideStringField;
-    cdsMovAnaliseobservacao: TWideStringField;
     cdsMovAnaliseresponsavel: TWideStringField;
     cdsMovAnalisedescricao: TWideStringField;
     cdsMovAnalisefrequencia: TWideStringField;
@@ -1057,6 +1056,7 @@ type
     cdsOrdemquantidadeajustada: TFMTBCDField;
     cdsOrdemutilizado: TFMTBCDField;
     cdsOrdeminc_prod_producao: TIntegerField;
+    cdsMovAnaliseobservacao: TWideMemoField;
     procedure ConnecDmBeforeConnect(Sender: TObject);
   private
     { Private declarations }
