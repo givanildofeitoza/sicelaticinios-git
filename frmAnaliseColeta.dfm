@@ -971,8 +971,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirAnalise: TPanel
-    Left = 402
-    Top = 59
+    Left = 818
+    Top = -21
     Width = 748
     Height = 417
     Font.Charset = DEFAULT_CHARSET
@@ -1157,8 +1157,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlobs: TPanel
-    Left = 48
-    Top = 162
+    Left = 776
+    Top = 196
     Width = 511
     Height = 294
     TabOrder = 8
@@ -1179,16 +1179,18 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       ParentBackground = False
       ParentFont = False
       TabOrder = 0
-      ExplicitLeft = 2
-      ExplicitTop = 9
     end
     object memoobs: TMemo
-      Left = 7
-      Top = 32
-      Width = 495
-      Height = 230
-      Align = alCustom
+      Left = 1
+      Top = 26
+      Width = 509
+      Height = 242
+      Align = alClient
       TabOrder = 1
+      ExplicitLeft = 7
+      ExplicitTop = 32
+      ExplicitWidth = 495
+      ExplicitHeight = 230
     end
     object BitBtn4: TBitBtn
       Left = 1
@@ -1199,9 +1201,6 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       Caption = 'Salvar'
       TabOrder = 2
       OnClick = BitBtn4Click
-      ExplicitLeft = 144
-      ExplicitTop = 240
-      ExplicitWidth = 75
     end
   end
   object RvSystem1: TRvSystem

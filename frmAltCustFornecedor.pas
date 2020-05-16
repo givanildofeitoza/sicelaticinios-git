@@ -147,6 +147,8 @@ dm,dm2,main,frmfornecedores,clipbrd,frmConferenciaQtd;
 procedure T_frmAltCustFornecedor.BitBtn10Click(Sender: TObject);
 begin
 RvProject1.setparam( 'valorpagar','R$  '+formatcurr('##0.00',txttotalpagar.value));
+RvProject1.setparam( 'qtdtotal','R$  '+formatcurr('##0.00',txtqtd.value));
+
 RvProject1.Execute;
 end;
 
@@ -690,7 +692,7 @@ end;
 procedure T_frmAltCustFornecedor.DBGrid1DblClick(Sender: TObject);
 begin
 
-     if(_dm.cdsAnalisedoclancado.AsString='N')then
+     if(_dm.cdsAnalisenrEntrada.AsString='')then
      begin
        Application.MessageBox('Essa compra de leite ainda não foi lançada no estoque!','',MB_ICONEXCLAMATION+mb_ok);
        exit;
