@@ -1183,12 +1183,13 @@ object _dm: T_dm
     end
     object cdsAnalisequantidade: TFMTBCDField
       FieldName = 'quantidade'
-      DisplayFormat = '#,#0.00'
+      DisplayFormat = '##0.00'
       Precision = 10
       Size = 2
     end
     object cdsAnalisecusto: TFMTBCDField
       FieldName = 'custo'
+      DisplayFormat = '##0.00'
       Precision = 10
       Size = 2
     end

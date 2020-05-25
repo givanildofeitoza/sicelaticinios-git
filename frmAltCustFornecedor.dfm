@@ -261,12 +261,14 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
         Expanded = False
         FieldName = 'nrEntrada'
         Title.Caption = 'Nr. Entrada'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'doclancado'
         Title.Caption = 'Documento Lanc.'
+        Width = 64
         Visible = True
       end>
   end
@@ -283,33 +285,33 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
     Left = 201
     Top = 256
     Width = 424
-    Height = 171
+    Height = 164
     TabOrder = 4
     Visible = False
     object lblfornecedor: TLabel
       Left = 31
-      Top = 64
+      Top = 45
       Width = 59
       Height = 13
       Caption = 'Fornecedor:'
     end
     object lblanalise: TLabel
       Left = 31
-      Top = 86
+      Top = 67
       Width = 55
       Height = 13
       Caption = 'Nr. an'#225'lise:'
     end
     object Label9: TLabel
       Left = 31
-      Top = 140
+      Top = 116
       Width = 32
       Height = 13
       Caption = 'Custo:'
     end
     object lblcoleta: TLabel
       Left = 31
-      Top = 105
+      Top = 86
       Width = 53
       Height = 13
       Caption = 'Nr. Coleta:'
@@ -339,7 +341,7 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
     end
     object txtcusto: TCurrencyEdit
       Left = 70
-      Top = 134
+      Top = 110
       Width = 133
       Height = 21
       Margins.Left = 4
@@ -348,7 +350,7 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
     end
     object BitBtn5: TBitBtn
       Left = 209
-      Top = 132
+      Top = 108
       Width = 75
       Height = 25
       Caption = 'Alterar'
@@ -357,12 +359,20 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
     end
     object BitBtn6: TBitBtn
       Left = 329
-      Top = 132
+      Top = 108
       Width = 75
       Height = 25
       Caption = 'Fechar'
       TabOrder = 3
       OnClick = BitBtn6Click
+    end
+    object chktodos: TCheckBox
+      Left = 31
+      Top = 135
+      Width = 172
+      Height = 17
+      Caption = 'Alterar todos do filtro'
+      TabOrder = 4
     end
   end
   object BitBtn2: TBitBtn

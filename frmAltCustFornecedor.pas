@@ -98,6 +98,7 @@ type
     BitBtn10: TBitBtn;
     txttotalpagar: TCurrencyEdit;
     Label18: TLabel;
+    chktodos: TCheckBox;
     procedure BitBtn1Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -293,9 +294,19 @@ end;
 procedure T_frmAltCustFornecedor.BitBtn5Click(Sender: TObject);
 begin
 
+
+
 if(application.MessageBox('Alterar custo do lançamento de leite desse fornecedor?','Pergunta',MB_ICONQUESTION+MB_YESNO)=IDNO)then
  exit;
 
+    if(_dm.cdsAnalisenrEntrada.AsString='')then
+     begin
+       Application.MessageBox('Essa compra de leite ainda não foi lançada no estoque!','',MB_ICONEXCLAMATION+mb_ok);
+       exit;
+     end;
+
+  if(chktodos.Checked<> true)then
+  begin
   _dm.ConnecDm.Connected:=false;
   _dm.qrPadrao.SQL.Clear;
   _dm.qrPadrao.SQL.Add('UPDATE analise SET custo='+quotedstr(currtostr(txtcusto.value))+' Where inc ='+quotedstr(_dm.cdsAnaliseinc.AsString));
@@ -309,9 +320,56 @@ if(application.MessageBox('Alterar custo do lançamento de leite desse fornecedor
   _dm.qrPadrao.execsql;
   //clipboard.astext:=_dm.qrPadrao.SQL.text;
 
+  end
+  else
+  begin
+
+        while not _dm.cdsAnalise.Eof do
+        begin
+
+             if(_dm.cdsAnalisenrEntrada.AsString<>'')then
+             begin
+
+                  _dm.qrPadrao.SQL.Clear;
+                  _dm.qrPadrao.SQL.Add('UPDATE analise SET custo='+quotedstr(currtostr(txtcusto.value))+' Where inc ='+quotedstr(_dm.cdsAnaliseinc.AsString));
+                  _dm.qrPadrao.execsql;
+
+
+                  _dm.ConnecDm.Connected:=false;
+                  _dm.qrPadrao.SQL.Clear;
+                  _dm.qrPadrao.SQL.Add('UPDATE entradas SET custo='+quotedstr(currtostr(txtcusto.value))+', custocalculado='+quotedstr(currtostr(txtcusto.value))+'  WHERE  numero='+quotedstr(_dm.cdsAnalisenrEntrada.AsString)+
+                  ' AND codigo='+quotedstr(_dm.cdsConfigLaticiniocodprodpadraoleite.AsString)+' AND fornecedor='+quotedstr(_dm.cdsAnalisefornecedor.AsString));
+                  _dm.qrPadrao.execsql;
+
+
+             end;
+
+
+             _dm.cdsAnalise.next;
+
+
+
+
+        end;
+
+
+
+  end;
+
+
+
+
+
+
+
   application.MessageBox('Alterado com sucesso!','Informação',MB_ICONINFORMATION+MB_OK);
   _dm.cdsAnalise.Refresh;
   frm.ModalResult:=-1;
+
+
+
+
+
 
 end;
 
@@ -692,11 +750,7 @@ end;
 procedure T_frmAltCustFornecedor.DBGrid1DblClick(Sender: TObject);
 begin
 
-     if(_dm.cdsAnalisenrEntrada.AsString='')then
-     begin
-       Application.MessageBox('Essa compra de leite ainda não foi lançada no estoque!','',MB_ICONEXCLAMATION+mb_ok);
-       exit;
-     end;
+  
 
 
      frm:=Tform.Create(self);
