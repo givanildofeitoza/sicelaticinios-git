@@ -419,7 +419,7 @@ With DBGrid1.Canvas do
              _dm.qrPadrao.SQL.Add('SELECT parametrorendimento FROM '+glb_produtos+' WHERE codigo='+quotedstr(cdsrelProducaocodigo.AsString)+' AND codigofilial='+quotedstr(glb_filial));
              _dm.qrPadrao.open;
         }
-             if(cdsrelProducaoparametrorendimento.AsCurrency > cdsrelProducaorendleite.AsCurrency )then
+             if(cdsrelProducaoparametrorendimento.AsCurrency < cdsrelProducaorendleite.AsCurrency )then
              DBGrid1.Canvas.Font.Color:=clRed;
              dbgrid1.DefaultDrawDataCell(Rect,dbgrid1.columns[datacol].field,state);
 
