@@ -27,6 +27,7 @@ type
     chkAgrupados: TCheckBox;
     txtcusto: TCurrencyEdit;
     Label1: TLabel;
+    BitBtn6: TBitBtn;
     procedure gridMateriaDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure BitBtn2Click(Sender: TObject);
@@ -39,6 +40,7 @@ type
     procedure ccLogoEmbGetRow(Connection: TRvCustomConnection);
     procedure BitBtn5Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure BitBtn6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -112,7 +114,7 @@ begin
            _dm2.qrPadrao2.SQL.Add('((select custo from '+glb_produtos+' where codigo=codigoembalagem and codigofilial='+quotedstr(glb_filial)+') * '+_dm2.qrPadrao.FieldByName('quantidade').AsString+'),');//tipo
 
           _dm2.qrPadrao2.SQL.Add(quotedstr('Normal')+',');//tipo
-          _dm2.qrPadrao2.SQL.Add(quotedstr('S')+','); //solicitado
+          _dm2.qrPadrao2.SQL.Add(quotedstr('N')+','); //solicitado
           _dm2.qrPadrao2.SQL.Add(quotedstr(glb_usuario)+',');//operadorsolicita
           _dm2.qrPadrao2.SQL.Add(quotedstr(glb_filial)); //codigofilial
           _dm2.qrPadrao2.SQL.Add(' FROM formacaoembalagem WHERE codigoprodproducao='+quotedstr(_dm2.qrPadrao.FieldByName('codigopreproducao').AsString));
@@ -254,6 +256,66 @@ begin
 
 end;
 
+procedure T_frmMovEmbalagem.BitBtn6Click(Sender: TObject);
+begin
+
+
+               if(_dm2.cdsMovproducaoencerrada.AsString='S')then
+               exit;
+
+
+
+
+
+               if(application.MessageBox('Atualizar estoque das embalagens?','Pergunta',MB_ICONQUESTION+MB_YESNO)=ID_NO)then
+                exit;
+
+
+
+
+                _dm.qrPadrao.SQL.Clear;
+                _dm.qrPadrao.SQL.Add('select count(1) as qtdEmbLanc from producaomovembalagem where numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND solicitado="N" ');
+                _dm.qrPadrao.Open();
+
+                if(_dm.qrPadrao.FieldByName('qtdEmbLanc').AsInteger=0)then
+                exit;
+
+                _dm2.ConnecDm2.Connected:=false;
+                _dm2.cdsprodmovembalagem.Close;
+                _dm2.sdsprodmovembalagem.CommandText:='SELECT   id,  numeroproducao,  codigopreproducao,  descricaopreproducao,  codigoderivado,  descricaoderivado,  codigoembalagem,'+
+               '  descricaoembalagem,  qtdnecessaria,  custounitario,  custototal, qtdproduzido,  qtdutilizado,  tipo,  solicitado,'+
+               '  operadorsolicita,  operadorsolicitaadicional,  codigofilial'+
+               '  FROM producaomovembalagem WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+
+               '  AND solicitado="N"  ORDER BY tipo desc';
+                _dm2.sdsprodmovembalagem.ExecSQL();
+                _dm2.cdsprodmovembalagem.Open;
+                _dm2.cdsprodmovembalagem.Refresh;
+
+
+                 _dm2.cdsprodmovembalagem.First;
+                while not  _dm2.cdsprodmovembalagem.Eof do
+                begin
+                    //altera a qtdanterior nas embalagens produção
+
+                    _dm.qrPadrao.SQL.Clear;
+                    _dm.qrPadrao.SQL.Add('UPDATE producaomovembalagem SET solicitado="S", qtdanterior = (select quantidade from '+glb_produtos+' where codigo ='+quotedstr(_dm2.cdsprodmovembalagemcodigoembalagem.Asstring)+' ),'+
+                     ' qtdatual=(select quantidade from '+glb_produtos+' where codigo ='+quotedstr(_dm2.cdsprodmovembalagemcodigoembalagem.Asstring)+' ) - '+quotedstr(_dm2.cdsprodmovembalagemqtdutilizado.Asstring)+', datafinalizacao=current_date, horafinalizacao=current_time WHERE codigoembalagem='+quotedstr(_dm2.cdsprodmovembalagemcodigoembalagem.Asstring)+
+                     ' and numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' and solicitado="N"');
+                    _dm.qrPadrao.ExecSQL();
+
+
+
+                    //altera estoque de produtos
+                    _dm.qrPadrao.SQL.Clear;
+                    _dm.qrPadrao.SQL.Add('UPDATE '+glb_produtos+' SET quantidade = quantidade-'+quotedstr(_dm2.cdsprodmovembalagemqtdutilizado.Asstring)+' WHERE codigo='+quotedstr(_dm2.cdsprodmovembalagemcodigoembalagem.Asstring)+' and codigofilial='+quotedstr(glb_filial) );
+                    _dm.qrPadrao.ExecSQL();
+
+
+                 _dm2.cdsprodmovembalagem.Next;
+                end;
+
+end;
+
 procedure T_frmMovEmbalagem.ccLogoEmbEOF(Connection: TRvCustomConnection;
   var Eof: Boolean);
 begin
@@ -281,7 +343,7 @@ begin
                ' descricaoembalagem,  qtdnecessaria,  custounitario,  custototal,  SUM(qtdproduzido) AS qtdproduzido, SUM(qtdutilizado) AS qtdutilizado,  tipo,  solicitado,'+
                ' operadorsolicita,  operadorsolicitaadicional,  codigofilial'+
                ' FROM producaomovembalagem WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+
-               '  AND solicitado="S" GROUP BY codigoembalagem,tipo ORDER BY tipo desc';
+               ' GROUP BY codigoembalagem,tipo ORDER BY tipo desc';
              end
              else
              begin
@@ -289,7 +351,7 @@ begin
                ' descricaoembalagem,  qtdnecessaria,  custounitario,  custototal, qtdproduzido,  qtdutilizado,  tipo,  solicitado,'+
                ' operadorsolicita,  operadorsolicitaadicional,  codigofilial'+
                ' FROM producaomovembalagem WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+
-               '  AND solicitado="S"  ORDER BY tipo desc';
+               '    ORDER BY tipo desc';
 
              end;
 

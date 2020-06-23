@@ -1220,6 +1220,12 @@ end;
     end;
    // fim perca do leite
 
+
+   {
+
+    BAIXA NAS EMBALAGENS -> MUDADO PARA JANELA DE EMBALAGENS
+
+
                 _dm2.ConnecDm2.Connected:=false;
                 _dm2.cdsprodmovembalagem.Close;
                 _dm2.sdsprodmovembalagem.CommandText:='SELECT   id,  numeroproducao,  codigopreproducao,  descricaopreproducao,  codigoderivado,  descricaoderivado,  codigoembalagem,'+
@@ -1254,7 +1260,7 @@ end;
                  _dm2.cdsprodmovembalagem.Next;
                 end;
 
-
+              }  //fIM EMBALAGENS
 
 
 
@@ -2547,7 +2553,7 @@ sql:='SELECT   id,  numeroproducao,  codigopreproducao,  descricaopreproducao,  
  ' descricaoembalagem,  qtdnecessaria,  custounitario,  custototal,  SUM(qtdproduzido) AS qtdproduzido, SUM(qtdutilizado) AS qtdutilizado,  tipo,  solicitado,'+
  ' operadorsolicita,  operadorsolicitaadicional,  codigofilial'+
  ' FROM producaomovembalagem WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+
- '  AND solicitado="S" GROUP BY tipo,codigoembalagem ORDER BY tipo desc';
+ ' GROUP BY tipo,codigoembalagem ORDER BY tipo desc';
 
 
       _dm2.ConnecDm2.Connected:=false;

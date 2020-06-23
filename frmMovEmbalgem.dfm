@@ -120,7 +120,7 @@ object _frmMovEmbalagem: T_frmMovEmbalagem
     OnClick = BitBtn2Click
   end
   object BitBtn3: TBitBtn
-    Left = 212
+    Left = 335
     Top = 517
     Width = 129
     Height = 41
@@ -129,7 +129,7 @@ object _frmMovEmbalagem: T_frmMovEmbalagem
     OnClick = BitBtn3Click
   end
   object BitBtn4: TBitBtn
-    Left = 363
+    Left = 486
     Top = 517
     Width = 129
     Height = 41
@@ -138,7 +138,7 @@ object _frmMovEmbalagem: T_frmMovEmbalagem
     OnClick = BitBtn4Click
   end
   object BitBtn5: TBitBtn
-    Left = 600
+    Left = 683
     Top = 517
     Width = 131
     Height = 41
@@ -192,6 +192,15 @@ object _frmMovEmbalagem: T_frmMovEmbalagem
       ParentFont = False
       TabOrder = 1
     end
+  end
+  object BitBtn6: TBitBtn
+    Left = 164
+    Top = 517
+    Width = 156
+    Height = 41
+    Caption = 'Baixar do Estoque'
+    TabOrder = 8
+    OnClick = BitBtn6Click
   end
   object rvpEmbalagens: TRvProject
     Engine = RvSystem1
