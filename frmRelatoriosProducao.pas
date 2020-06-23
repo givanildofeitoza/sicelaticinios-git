@@ -150,9 +150,9 @@ imprimir:='N';
              Try
                 While not cdsrelProducao.Eof do
                 Begin
-                   PLANILHA.Cells[Linha,1]:=  cdsrelProducaodataproducao.asstring;
+                   PLANILHA.Cells[Linha,1]:=  cdsrelProducaodataproducao.AsDateTime;
                    PLANILHA.Cells[linha,2] := cdsrelProducaohoraproducao.asstring;
-                   PLANILHA.Cells[linha,3] := cdsrelProducaodatafimproducao.asstring;
+                   PLANILHA.Cells[linha,3] := cdsrelProducaodatafimproducao.AsDateTime;
                    PLANILHA.Cells[linha,4] := cdsrelProducaohorafimproducao.asstring;
                    PLANILHA.Cells[Linha,5] := cdsrelProducaocodigo.asstring;
                    PLANILHA.Cells[Linha,6] := cdsrelProducaoproduto.asstring;
