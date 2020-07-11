@@ -275,7 +275,7 @@ begin
       _dm2.qrPadrao.SQL.Add(quotedstr('0.00')+','); //qtdproduzido
       _dm2.qrPadrao.SQL.Add(quotedstr(currtostr(txtQtd.Value))+','); //qtdutilizado
       _dm2.qrPadrao.SQL.Add(quotedstr('Adicional')+','); //tipo
-      _dm2.qrPadrao.SQL.Add(quotedstr('S')+','); //solicitado
+      _dm2.qrPadrao.SQL.Add(quotedstr('N')+','); //solicitado
       _dm2.qrPadrao.SQL.Add(quotedstr(glb_usuario)+','); //operadorsolicita
       _dm2.qrPadrao.SQL.Add(quotedstr(glb_usuario)+','); //operadorsolicitaadicional
       _dm2.qrPadrao.SQL.Add(quotedstr(glb_filial)+')'); //codigofilial

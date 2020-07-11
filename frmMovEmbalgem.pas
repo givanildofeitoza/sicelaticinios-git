@@ -162,8 +162,8 @@ begin
  exit;
 
 
-   if(_dm2.cdsMovproducaoitensderivadosconfirmados.AsString='N')then
-   exit;
+   //if(_dm2.cdsMovproducaoitensderivadosconfirmados.AsString='N')then
+   //exit;
 
 
    if(_dm2.cdsprodmovembalagem.RecordCount=0)then
@@ -314,6 +314,8 @@ begin
                  _dm2.cdsprodmovembalagem.Next;
                 end;
 
+
+                _dm2.cdsprodmovembalagem.Refresh;
 end;
 
 procedure T_frmMovEmbalagem.ccLogoEmbEOF(Connection: TRvCustomConnection;
