@@ -138,7 +138,7 @@ object _main: T_main
     TabOrder = 2
     object Image2: TImage
       Left = 1
-      Top = 522
+      Top = 521
       Width = 205
       Height = 120
       Cursor = crHandPoint
@@ -419,7 +419,7 @@ object _main: T_main
     end
     object Image1: TImage
       Left = 1
-      Top = 402
+      Top = 401
       Width = 205
       Height = 120
       Cursor = crHandPoint
@@ -632,7 +632,7 @@ object _main: T_main
     end
     object Image3: TImage
       Left = 1
-      Top = 282
+      Top = 281
       Width = 205
       Height = 120
       Cursor = crHandPoint
@@ -878,7 +878,7 @@ object _main: T_main
     end
     object Image4: TImage
       Left = 1
-      Top = 162
+      Top = 161
       Width = 205
       Height = 120
       Cursor = crHandPoint
@@ -1209,7 +1209,7 @@ object _main: T_main
     end
     object Image5: TImage
       Left = 1
-      Top = 42
+      Top = 41
       Width = 205
       Height = 120
       Cursor = crHandPoint
@@ -1433,11 +1433,8 @@ object _main: T_main
       Left = 1
       Top = 1
       Width = 205
-      Height = 41
+      Height = 40
       Align = alTop
-      ExplicitLeft = 80
-      ExplicitTop = 24
-      ExplicitWidth = 105
     end
     object Label4: TLabel
       Left = 40

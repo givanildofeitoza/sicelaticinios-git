@@ -932,7 +932,7 @@ begin
 
    _dm.ConnecDm.Connected:=false;
    _dm.qrPadrao3.SQL.Clear;
-   _dm.qrPadrao3.SQL.add('SELECT codigofilial,numero,codigofornecedor,fornecedor,SUM(qtdconferida*custo) AS vlrTotProdutos from analise where numero ='+quotedstr(_dm.cdsAnalisenumero.AsString)+' group by fornecedor');
+   _dm.qrPadrao3.SQL.add('SELECT codigofilial,numero,codigofornecedor,fornecedor,SUM(qtdconferida*custo) AS vlrTotProdutos from analise where numero ='+quotedstr(_dm.cdsAnalisenumero.AsString)+' group by codigofornecedor');
    _dm.qrPadrao3.open;
 
 
@@ -1064,13 +1064,13 @@ begin
         _dm.qrPadrao.SQL.Add('CALL ProcessarEntrada('+quotedstr(lblfilial.Caption)+','+quotedstr(numeroNf)+','+quotedstr(altCusto)+','+quotedstr(glb_usuario)+',"0","0","0",'+quotedstr(glb_ip)+'); ');
         _dm.qrPadrao.execsql;
 
-
+     {
         //doclancado
        qrNumeroEntrada.SQL.clear;
        qrNumeroEntrada.SQL.Add('update analise set doclancado="S"  where  nrEntrada='+quotedstr(numeroNf)+' and numero='+quotedstr(_dm.cdsAnalisenumero.AsString)+
        ' and codigofornecedor='+quotedstr(_dm.qrPadrao3.FieldByName('codigofornecedor').AsString));
        qrNumeroEntrada.execsql;
-
+      }
 
 
         _dm.qrPadrao2.SQL.clear;
