@@ -753,8 +753,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
     end
   end
   object pnlAbrirColeta: TPanel
-    Left = -714
-    Top = 39
+    Left = -73
+    Top = 20
     Width = 757
     Height = 458
     Font.Charset = DEFAULT_CHARSET
@@ -863,6 +863,8 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       Font.Style = []
       ParentFont = False
       TabOrder = 2
+      ExplicitLeft = 20
+      ExplicitTop = 51
       object Label16: TLabel
         Left = 29
         Top = 44
@@ -1187,10 +1189,6 @@ object _frmAnaliseColeta: T_frmAnaliseColeta
       Height = 242
       Align = alClient
       TabOrder = 1
-      ExplicitLeft = 7
-      ExplicitTop = 32
-      ExplicitWidth = 495
-      ExplicitHeight = 230
     end
     object BitBtn4: TBitBtn
       Left = 1

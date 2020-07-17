@@ -215,7 +215,7 @@ begin
 //verifica se a coleta já foi lançada em outra análise
     _dm.ConnecDm.Connected:=false;
     _dm.qrPadrao.SQL.clear;
-    _dm.qrPadrao.SQL.Add('select count(1) as total, numero from movanalise where numero <> '+quotedstr(_dm.cdsMovAnalisenumero.AsString)+' and numerocoleta='+quotedstr(_dm.cdsMovColetanumero.AsString)+' and codigofilial='+quotedstr(copy(cbofilial.Text,1,5)));
+    _dm.qrPadrao.SQL.Add('select count(1) as total, numero from movanalise where numero <> abs('+quotedstr(lblNrAnalise.Caption)+') and numerocoleta='+quotedstr(_dm.cdsMovColetanumero.AsString)+' and codigofilial='+quotedstr(copy(cbofilial.Text,1,5)));
     _dm.qrPadrao.open();
 
 
@@ -650,7 +650,7 @@ end;
 
   _dm.ConnecDm.Connected:=true;
   _dm.qrPadrao.SQL.Clear;
-  _dm.qrPadrao.SQL.Add('UPDATE movanalise SET observacao ='+quotedstr(memoobs.Text)+' WHERE numero='+quotedstr(_dm.cdsMovAnalisenumero.AsString));
+  _dm.qrPadrao.SQL.Add('UPDATE movanalise SET observacao ='+quotedstr(memoobs.Text)+' WHERE numero=abs('+quotedstr(lblNrAnalise.Caption)+')');
   _dm.qrPadrao.execsql;
 
     try
@@ -875,7 +875,7 @@ exit;
   _dm.ConnecDm.Connected:=false;
   _dm.qrpadrao.SQL.Clear;
   _dm.qrpadrao.SQL.Add(' select count(1) as total from analise where codigotipoleite=""');
-  _dm.qrpadrao.SQL.Add(' and numero='+quotedstr(_dm.cdsMovAnalisenumero.AsString));
+  _dm.qrpadrao.SQL.Add(' and numero=abs('+quotedstr(lblNrAnalise.Caption)+')');
   _dm.qrpadrao.open;
 
 if(_dm.qrpadrao.FieldByName('total').AsInteger>0)then
@@ -903,7 +903,8 @@ begin
   _dm.ConnecDm.Connected:=false;
   _dm.qrpadrao.SQL.Clear;
   _dm.qrpadrao.SQL.Add(' update movanalise set confirmada="S", dataconfirmacao=current_date,operadorconfirmacao='+quotedstr(_frmlogin.txtUsuario.Text));
-  _dm.qrpadrao.SQL.Add(' where numero='+quotedstr(_dm.cdsMovAnalisenumero.AsString));
+ // _dm.qrpadrao.SQL.Add(' where numero='+quotedstr(_dm.cdsMovAnalisenumero.AsString));
+  _dm.qrpadrao.SQL.Add(' where numero=abs('+quotedstr(lblNrAnalise.Caption)+')');
   _dm.qrpadrao.execsql;
 
  _dm.cdsMovAnalise.Close;
