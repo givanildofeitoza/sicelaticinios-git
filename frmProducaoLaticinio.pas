@@ -900,12 +900,12 @@ end;
 
 procedure T_frmProducaoLaticinio.BitBtn13Click(Sender: TObject);
 begin
-if(_dm2.cdsMovproducaoencerrada.AsString='S')then
+{if(_dm2.cdsMovproducaoencerrada.AsString='S')then
 begin
    Application.MessageBox('Produção já finalizada, não é possível alterar observação! ','Alerta',MB_ICONEXCLAMATION+MB_ok);
 exit;
 end;
-
+ }
   _dm2.ConnecDm2.Connected:=true;
   _dm2.qrPadrao.SQL.Clear;
   _dm2.qrPadrao.SQL.Add('UPDATE movproducaodiaria SET observacao ='+quotedstr(memoobs.Text)+' WHERE numero='+quotedstr(_dm2.cdsMovproducaonumero.AsString));

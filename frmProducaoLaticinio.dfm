@@ -993,8 +993,8 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
         Visible = False
       end
       object pnlobs: TPanel
-        Left = 936
-        Top = 590
+        Left = 925
+        Top = 226
         Width = 511
         Height = 294
         TabOrder = 11
@@ -1015,14 +1015,18 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
+          ExplicitLeft = 33
+          ExplicitTop = -5
         end
         object memoobs: TMemo
-          Left = 7
-          Top = 32
-          Width = 495
-          Height = 230
-          Align = alCustom
+          Left = 1
+          Top = 26
+          Width = 509
+          Height = 242
+          Align = alClient
           TabOrder = 1
+          ExplicitLeft = 35
+          ExplicitTop = 28
         end
         object BitBtn13: TBitBtn
           Left = 1
@@ -1033,6 +1037,8 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
           Caption = 'Salvar'
           TabOrder = 2
           OnClick = BitBtn13Click
+          ExplicitLeft = -7
+          ExplicitTop = 260
         end
       end
     end
@@ -2292,6 +2298,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
               Expanded = False
               FieldName = 'operadortermino'
               Title.Caption = 'Op. T'#233'rmino'
+              Width = 64
               Visible = True
             end>
         end
@@ -2944,7 +2951,7 @@ object _frmProducaoLaticinio: T_frmProducaoLaticinio
     Left = 460
     Top = 353
     Bitmap = {
-      494C0101030008004C0010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010103000800500010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0006132500794D9300EF58A800FF58A800FF58A800FF58A800FF58A800FF4D93
