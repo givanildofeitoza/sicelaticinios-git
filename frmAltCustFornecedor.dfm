@@ -261,14 +261,12 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
         Expanded = False
         FieldName = 'nrEntrada'
         Title.Caption = 'Nr. Entrada'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'doclancado'
         Title.Caption = 'Documento Lanc.'
-        Width = 64
         Visible = True
       end>
   end
@@ -750,11 +748,11 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
       end
     end
     object gridCp: TStringGrid
-      Left = 9
-      Top = 56
+      Left = 1
+      Top = 58
       Width = 850
       Height = 312
-      Align = alCustom
+      Align = alClient
       ColCount = 13
       FixedCols = 0
       RowCount = 1
@@ -770,6 +768,8 @@ object _frmAltCustFornecedor: T_frmAltCustFornecedor
       OnDblClick = gridCpDblClick
       OnDrawCell = gridCpDrawCell
       OnSelectCell = gridCpSelectCell
+      ExplicitLeft = 9
+      ExplicitTop = 56
     end
     object pnlAltDados: TPanel
       Left = 28

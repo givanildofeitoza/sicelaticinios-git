@@ -197,7 +197,7 @@ begin
 
     _dm.ConnecDm.Connected:=false;
     _dm.qrPadrao.SQL.Clear;
-    _dm.qrPadrao.SQL.Add('SELECT   numero, fornecedor, SUM(custo * qtdconferida) AS valor FROM  analise ');
+    _dm.qrPadrao.SQL.Add('SELECT   numero,data,datacoleta, fornecedor, SUM(custo * qtdconferida) AS valor FROM  analise ');
     _dm.qrPadrao.SQL.Add('WHERE numero = '+quotedstr(_dm.cdsAnalisenumero.AsString)+' and doclancado="N" GROUP BY fornecedor');
     _dm.qrPadrao.open;
 
@@ -243,7 +243,7 @@ begin
     gridCp.Cells[1,i]:=_dm.qrPadrao.FieldByName('numero').AsString;
     gridCp.Cells[2,i]:=_dm.qrPadrao.FieldByName('fornecedor').AsString;
     gridCp.Cells[3,i]:=formatcurr('###0.00',_dm.qrPadrao.FieldByName('valor').Ascurrency);
-    gridCp.Cells[4,i]:=formatdatetime('dd/mm/yyyy',now);
+    gridCp.Cells[4,i]:=formatdatetime('dd/mm/yyyy',_dm.qrPadrao.FieldByName('datacoleta').AsDateTime);
     gridCp.Cells[5,i]:='30';
     gridCp.Cells[6,i]:='1';
 
@@ -252,7 +252,7 @@ begin
 
     gridCp.Cells[9,i]:='0.00';
     gridCp.Cells[10,i]:='0.00';
-    gridCp.Cells[11,i]:=formatdatetime('dd/mm/yyyy',incmonth(now,1));
+    gridCp.Cells[11,i]:=formatdatetime('dd/mm/yyyy',incmonth(_dm.qrPadrao.FieldByName('datacoleta').AsDateTime,1));
 
     _dm.qrPadrao.next;
     end;
