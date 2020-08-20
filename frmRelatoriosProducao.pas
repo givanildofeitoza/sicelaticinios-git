@@ -142,7 +142,7 @@ imprimir:='N';
              PLANILHA.Cells[1,10] := 'REND. LEITE';
              PLANILHA.Cells[1,11] := 'REND. CREME';
              PLANILHA.Cells[1,12] := 'REND. MANTEIGA';
-
+             PLANILHA.Cells[1,13] := 'REND. MANTEIGA';
 
              cdsrelProducao.DisableControls;
              cdsrelProducao.First;
@@ -165,7 +165,11 @@ imprimir:='N';
 
 
 
+                     _dm.qrPadrao.SQL.Clear;
+                     _dm.qrPadrao.SQL.Add('SELECT observacao FROM movproducaodiaria WHERE numero ='+QuotedStr(cdsrelProducaonumeroproducao.AsString)+' LIMIT 1');
+                     _dm.qrPadrao.Open;
 
+                PLANILHA.Cells[Linha,13] := _dm.qrPadrao.FieldByName('observacao').AsString;
 
 
                    Linha := Linha + 1;
@@ -471,7 +475,7 @@ begin
     pnlobs.visible:=true;
     pnlobs.Align:=alClient;
 
-    memoobs.Text:=  _dm.qrPadrao.FieldByName('observacao').AsString;;
+    memoobs.Text:=  _dm.qrPadrao.FieldByName('observacao').AsString;
     frm.ShowModal;
 
     end;
