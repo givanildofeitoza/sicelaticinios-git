@@ -87,7 +87,7 @@ begin
 
   totalLeite := _dm.qrPadrao.FieldByName('total').ascurrency;
 
-    _dm.ConnecDm.Connected:=false;
+  _dm.ConnecDm.Connected:=false;
   _dm.qrPadrao.SQL.Clear;
   _dm.qrPadrao.SQL.Add('SELECT SUM(d.utilizado) AS total,p.numero,p.DATA FROM dadosproducaocreme AS d, movproducaodiaria AS p '+
     ' WHERE p.DATA BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" AND p.codigofilial = "'+glb_filial+'" '+
@@ -101,7 +101,7 @@ begin
   totalCreme :=   _dm.qrPadrao.FieldByName('total').ascurrency;
 
 
-    _dm.ConnecDm.Connected:=false;
+  _dm.ConnecDm.Connected:=false;
   _dm.qrPadrao.SQL.Clear;
   _dm.qrPadrao.SQL.Add('SELECT SUM(d.manteigautilizada) AS total,p.numero,p.DATA FROM dadosproducaomanteiga AS d, movproducaodiaria AS p '+
     ' WHERE p.DATA BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" AND p.codigofilial = "'+glb_filial+'" '+
@@ -121,8 +121,51 @@ begin
 
 
     if(txtcod.Text<>'')then
+    begin
     produto:=' AND codigoproduto='+quotedstr(txtcod.text);
 
+
+  _dm.ConnecDm.Connected:=false;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('SELECT SUM(r.quantidadeajustada) AS total  FROM resumoprodleite as r, movproducaodiaria AS p '+
+    ' WHERE  r.codigo='+quotedstr(txtcod.text)+' AND  p.DATA BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" AND p.codigofilial = "'+glb_filial+'" '+
+    ' AND r.numeroproducao = p.numero  ');
+    if(chkEncerradas.Checked=true)then
+    _dm.qrPadrao.SQL.Add(' AND p.encerrada="S"');
+  _dm.qrPadrao.open;
+
+
+
+  totalLeite := _dm.qrPadrao.FieldByName('total').ascurrency;
+
+
+
+    _dm.ConnecDm.Connected:=false;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('SELECT SUM(r.quantidadeajustada) AS total  FROM resumoprodcreme as r, movproducaodiaria AS p '+
+    ' WHERE  r.codigo='+quotedstr(txtcod.text)+' AND  p.DATA BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" AND p.codigofilial = "'+glb_filial+'" '+
+    ' AND r.numeroproducao = p.numero  ');
+    if(chkEncerradas.Checked=true)then
+    _dm.qrPadrao.SQL.Add(' AND p.encerrada="S"');
+  _dm.qrPadrao.open;
+
+     totalCreme :=   _dm.qrPadrao.FieldByName('total').ascurrency;
+
+
+    _dm.ConnecDm.Connected:=false;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('SELECT SUM(r.quantidadeajustada) AS total  FROM resumoprodmanteiga as r, movproducaodiaria AS p '+
+    ' WHERE  r.codigo='+quotedstr(txtcod.text)+' AND  p.DATA BETWEEN "'+formatdatetime('yyyy-mm-dd',dataini.date)+'" AND "'+formatdatetime('yyyy-mm-dd',datafim.date)+'" AND p.codigofilial = "'+glb_filial+'" '+
+    ' AND r.numeroproducao = p.numero  ');
+    if(chkEncerradas.Checked=true)then
+    _dm.qrPadrao.SQL.Add(' AND p.encerrada="S"');
+  _dm.qrPadrao.open;
+
+
+      totalManteiga :=  _dm.qrPadrao.FieldByName('total').ascurrency;
+
+
+    end;
 
 
     if(chkgrupo.Checked=true)then
@@ -148,7 +191,7 @@ begin
   _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+' GROUP BY codigomateria';
   _dm2.sdsMateria.ExecSQL();
 
- clipboard.AsText:=  _dm2.sdsMateria.CommandText;
+
 
   _dm2.cdsmateria.Open;
   _dm2.cdsmateria.refresh;
@@ -177,7 +220,7 @@ begin
   _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+' GROUP BY codigomateria';
 
 
-  clipboard.astext:=  _dm2.sdsMateria.CommandText;
+
 
   _dm2.sdsMateria.ExecSQL();
   _dm2.cdsmateria.Open;
@@ -197,7 +240,7 @@ begin
 
   RvPConsumo.SetParam('data1',dataini.Text);
   RvPConsumo.SetParam('data2',datafim.Text);
-  RvPConsumo.SetParam('produto',txtcod.text);
+  RvPConsumo.SetParam('produto',txtcod.text+'-'+txtProduto.Text);
 
 
   RvPConsumo.Execute;
