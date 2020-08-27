@@ -40,6 +40,8 @@ type
     txtParaRend: TCurrencyEdit;
     BitBtn9: TBitBtn;
     BitBtn10: TBitBtn;
+    BitBtn11: TBitBtn;
+    Label5: TLabel;
     procedure btnfecharClick(Sender: TObject);
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -60,6 +62,8 @@ type
     procedure BitBtn10Click(Sender: TObject);
     procedure BitBtn9Click(Sender: TObject);
     procedure txtParaRendKeyPress(Sender: TObject; var Key: Char);
+    procedure rgTipoPesqClick(Sender: TObject);
+    procedure BitBtn11Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -74,7 +78,7 @@ implementation
 
 {$R *.dfm}
  uses
- main,dm,dm2,frmComposicao,frmProdEmbalagens,frmProcProducao;
+ main,dm,dm2,frmComposicao,frmProdEmbalagens,frmProcProducao,ComObj;
  procedure incluirAuditoria(local:string; documento:string; acao:string; tabela:string);
 begin
 
@@ -112,6 +116,95 @@ begin
 
     frm.ShowModal;
 
+
+end;
+
+procedure T_frmProdPreProducao.BitBtn11Click(Sender: TObject);
+var
+  PLANILHA : Variant;
+  Linha : Integer;
+begin
+
+
+
+   try
+
+        _dm.cdsPrd2.Filtered  := False;
+        PLANILHA := CreateOleObject('Excel.Application');
+        PLANILHA.Caption := 'SICElaticínios - Produtos';
+        PLANILHA.Visible := False;
+        PLANILHA.WorkBooks.add(1);
+        PLANILHA.Cells[1,1] := 'FICHA TÉCNICA DE PRODUTOS';
+        Linha :=3;
+
+
+      Try
+        _dm.cdsPrd2.first;
+        while not _dm.cdsPrd2.Eof do
+        begin
+
+         PLANILHA.Cells[linha,1] := _dm.cdsprd2codigo.AsString+' - '+_dm.cdsprd2descricao.AsString;
+          PLANILHA.Cells[linha,2] := 'COMPOSIÇÃO';
+         LINHA:=LINHA+1;
+         // TITULO DAS COLUNAS
+         PLANILHA.Cells[linha,2] := 'MATÉRIA';
+         PLANILHA.Cells[linha,3] := 'PARÂMETRO UTIL. ';
+         PLANILHA.Cells[linha,4] := 'VALOR PARÂMETRO L/KG';
+         PLANILHA.Cells[linha,5] := 'QTD. UTIL. P/PARÂMETRO L/KG';
+         LINHA:=LINHA+1;
+
+
+              _dm2.cdsComposicao.Close;
+              _dm2.sdsComposicao.CommandText:='SELECT * FROM composicaolaticinio WHERE codpreproducao='+quotedstr(_dm.cdsprd2codigo.AsString)+' AND codigofilial='+quotedstr(glb_filial);
+              _dm2.sdsComposicao.ExecSQL();
+              _dm2.cdsComposicao.Open;
+              _dm2.cdsComposicao.Refresh;
+
+
+              _dm2.cdsComposicao.First;
+              while not _dm2.cdsComposicao.Eof do
+              begin
+
+
+
+                 PLANILHA.Cells[linha,2] := _dm2.cdsComposicaocodigo.AsString+'-'+_dm2.cdsComposicaoproduto.AsString;
+
+                 if(_dm2.cdsComposicaotipoparametro.AsString='L')then
+                 PLANILHA.Cells[linha,3] := 'LEITE';
+                 if(_dm2.cdsComposicaotipoparametro.AsString='C')then
+                 PLANILHA.Cells[linha,3] := 'CREME';
+                 if(_dm2.cdsComposicaotipoparametro.AsString='M')then
+                 PLANILHA.Cells[linha,3] := 'MANTEIGA';
+
+                 PLANILHA.Cells[linha,4] := _dm2.cdsComposicaoparametroleite.AsFloat;
+                 PLANILHA.Cells[linha,5] := _dm2.cdsComposicaoQUANTIDADE.AsFloat;
+
+                 LINHA:=LINHA+1;
+
+
+              _dm2.cdsComposicao.Next;
+              end;
+
+              LINHA:=LINHA+2;
+
+         _dm.cdsPrd2.next;
+         application.ProcessMessages;
+         end;
+         PLANILHA.Columns.AutoFit;
+
+                 PLANILHA.Visible := True;
+             Finally
+                 _dm.cdsPrd2.EnableControls;
+                PLANILHA := Unassigned;
+             end; // TRY
+
+             except on e:exception do
+             begin
+             application.messagebox(pchar(e.Message),'Erro',mb_ok+mb_iconexclamation);
+             // T_frmmensagens.Mensagem(mensagem, 'E',[mbOk]);
+              exit;
+             end;
+             end; //try
 
 end;
 
@@ -327,8 +420,18 @@ filtro:string;
 begin
 
           case rgTipoPesq.ItemIndex of
-          0:filtro:=' WHERE descricao LIKE( ';
-          1:filtro:=' WHERE codigo LIKE( ';
+          0:filtro:=' AND descricao LIKE( '+quotedstr(txtNomePesquisa.Text+'%')+')';
+          1:filtro:=' AND codigo ='+quotedstr(txtNomePesquisa.Text);
+          2:
+          begin
+          filtro:=' AND marcado ="X" ';
+           txtNomePesquisa.Text:='';
+          end;
+          3:
+           begin
+           filtro:='  ';
+           txtNomePesquisa.Text:='';
+          end;
           end;
 
              { _dm2.ConnecDm2.Connected:=false;
@@ -343,7 +446,7 @@ begin
               _dm.ConnecDm.Connected:=false;
               _dm.cdsPrd2.Close;
               _dm.sdsPrd2.Close;
-              _dm.sdsPrd2.commandtext:='select * from produtos '+filtro+quotedstr(txtNomePesquisa.Text+'%')+') and codigofilial='+quotedstr(glb_filial);
+              _dm.sdsPrd2.commandtext:='SELECT * FROM produtos  WHERE codigofilial='+quotedstr(glb_filial)+filtro;
               _dm.sdsPrd2.ExecSQL();
               _dm.cdsPrd2.open;
               _dm.cdsPrd2.Refresh;
@@ -433,6 +536,38 @@ begin
     txtNomePesquisa.SetFocus;
    end;
 
+     if(Key=VK_F2)then
+   begin
+
+
+              _dm.ConnecDm.Connected:=false;
+
+            if(trim(_dm.cdsprd2marcado.AsString)='')then
+            begin
+              _dm.qrPadrao.SQL.Clear;
+              _dm.qrPadrao.SQL.Add('UPDATE '+glb_produtos+' SET marcado='+quotedstr('X')+' WHERE codigo='+quotedstr(_dm.cdsprd2codigo.AsString)+' AND codigofilial='+quotedstr(glb_filial));
+              _dm.qrPadrao.ExecSql;
+            end
+            else
+            begin
+
+              _dm.qrPadrao.SQL.Clear;
+              _dm.qrPadrao.SQL.Add('UPDATE '+glb_produtos+' SET marcado='+quotedstr('')+' WHERE codigo='+quotedstr(_dm.cdsprd2codigo.AsString)+' AND codigofilial='+quotedstr(glb_filial));
+              _dm.qrPadrao.ExecSql;
+
+            end;
+
+              _dm.cdsPrd2.open;
+              _dm.cdsPrd2.Refresh;
+
+
+   end;
+
+
+
+
+
+
 
 end;
 
@@ -485,6 +620,11 @@ begin
       btnExcluir.Click;
   end;
 
+end;
+
+procedure T_frmProdPreProducao.rgTipoPesqClick(Sender: TObject);
+begin
+txtNomePesquisa.SetFocus;
 end;
 
 end.

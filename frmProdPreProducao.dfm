@@ -59,6 +59,12 @@ object _frmProdPreProducao: T_frmProdPreProducao
     Columns = <
       item
         Expanded = False
+        FieldName = 'marcado'
+        Title.Caption = 'Marcado'
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'codigo'
         Title.Caption = 'C'#243'digo'
         Visible = True
@@ -94,6 +100,7 @@ object _frmProdPreProducao: T_frmProdPreProducao
         Expanded = False
         FieldName = 'parametrorendimento'
         Title.Caption = 'Rendimento estimado'
+        Width = 131
         Visible = True
       end>
   end
@@ -110,6 +117,13 @@ object _frmProdPreProducao: T_frmProdPreProducao
       Height = 13
       Caption = 'Pesquisa r'#225'pida'
     end
+    object Label5: TLabel
+      Left = 24
+      Top = 176
+      Width = 116
+      Height = 13
+      Caption = 'F2 - Marcar / Desmarcar'
+    end
     object txtNomePesquisa: TEdit
       Left = 24
       Top = 56
@@ -122,14 +136,17 @@ object _frmProdPreProducao: T_frmProdPreProducao
     object rgTipoPesq: TRadioGroup
       Left = 24
       Top = 83
-      Width = 297
+      Width = 361
       Height = 46
-      Columns = 2
+      Columns = 4
       ItemIndex = 0
       Items.Strings = (
         'Descri'#231#227'o'
-        'C'#243'digo')
+        'C'#243'digo'
+        'Marcados'
+        'Todos')
       TabOrder = 1
+      OnClick = rgTipoPesqClick
     end
     object BitBtn8: TBitBtn
       Left = 327
@@ -221,6 +238,15 @@ object _frmProdPreProducao: T_frmProdPreProducao
       Caption = 'Par'#226'metro de Rendimento'
       TabOrder = 7
       OnClick = BitBtn10Click
+    end
+    object BitBtn11: TBitBtn
+      Left = 40
+      Top = 140
+      Width = 137
+      Height = 41
+      Caption = 'Exportar ficha t'#233'cnica'#13' para Excel'
+      TabOrder = 8
+      OnClick = BitBtn11Click
     end
   end
   object pnlProdPreProducao: TPanel
@@ -325,8 +351,6 @@ object _frmProdPreProducao: T_frmProdPreProducao
       Color = clMenuHighlight
       ParentBackground = False
       TabOrder = 0
-      ExplicitLeft = 2
-      ExplicitTop = 9
       object Label2: TLabel
         Left = 23
         Top = 10
