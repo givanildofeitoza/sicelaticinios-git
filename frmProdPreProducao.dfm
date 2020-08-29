@@ -67,12 +67,14 @@ object _frmProdPreProducao: T_frmProdPreProducao
         Expanded = False
         FieldName = 'codigo'
         Title.Caption = 'C'#243'digo'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'descricao'
         Title.Caption = 'Descricao'
+        Width = 64
         Visible = True
       end
       item
@@ -123,6 +125,13 @@ object _frmProdPreProducao: T_frmProdPreProducao
       Width = 116
       Height = 13
       Caption = 'F2 - Marcar / Desmarcar'
+    end
+    object Label6: TLabel
+      Left = 205
+      Top = 176
+      Width = 156
+      Height = 13
+      Caption = 'F8 - Marcar / Desmarcar (Todos)'
     end
     object txtNomePesquisa: TEdit
       Left = 24

@@ -42,6 +42,7 @@ type
     BitBtn10: TBitBtn;
     BitBtn11: TBitBtn;
     Label5: TLabel;
+    Label6: TLabel;
     procedure btnfecharClick(Sender: TObject);
     procedure gridProdPreDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -564,6 +565,32 @@ begin
    end;
 
 
+  if( application.MessageBox('Esse processo pode demora, deseja continuar?','Confirmação',mb_iconquestion+MB_YESNO)=ID_YES)then
+   begin
+   if(Key=VK_F8)then
+   begin
+              _dm.ConnecDm.Connected:=false;
+
+            if(trim(_dm.cdsprd2marcado.AsString)='')then
+            begin
+              _dm.qrPadrao.SQL.Clear;
+              _dm.qrPadrao.SQL.Add('UPDATE '+glb_produtos+' SET marcado='+quotedstr('X')+' WHERE  codigofilial='+quotedstr(glb_filial));
+              _dm.qrPadrao.ExecSql;
+            end
+            else
+            begin
+
+              _dm.qrPadrao.SQL.Clear;
+              _dm.qrPadrao.SQL.Add('UPDATE '+glb_produtos+' SET marcado='+quotedstr('')+' WHERE  codigofilial='+quotedstr(glb_filial));
+              _dm.qrPadrao.ExecSql;
+
+            end;
+
+              _dm.cdsPrd2.open;
+              _dm.cdsPrd2.Refresh;
+   end;
+
+   end;
 
 
 
