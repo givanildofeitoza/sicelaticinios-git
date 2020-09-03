@@ -2151,8 +2151,14 @@ begin
    ' custounitario,'+
    ' precounitario,'+
    '  "C",'+
-   ' grupo,'+
-   ' subgrupo,'+
+
+   '(select produtos.grupo from produtos where codigo=producaomovmateria.codigomateria),'+
+   '(select produtos.subgrupo from produtos where codigo=producaomovmateria.codigomateria),'+
+  // ' grupo,'+
+  //' subgrupo,'+
+
+
+
    ' (SELECT p.situacao FROM '+glb_produtos+' as p WHERE p.codigo=codigomateria AND p.codigofilial='+quotedstr(glb_filial)+'),'+
    ' "" FROM producaomovmateria WHERE idproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigoproduto='+quotedstr(_dm2.cdsproducaoitenscodigo.AsString)+' AND codigofilial='+quotedstr(glb_filial)+';');
     _dm.qrPadrao.execsql;
