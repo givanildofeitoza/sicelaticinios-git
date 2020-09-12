@@ -23,11 +23,15 @@ type
     Label1: TLabel;
     RvRenderPDF1: TRvRenderPDF;
     Label2: TLabel;
+    txtcodigo: TEdit;
+    Label3: TLabel;
+    BitBtn2: TBitBtn;
     procedure BitBtn1Click(Sender: TObject);
     procedure RVccEOF(Connection: TRvCustomConnection;
       var Eof: Boolean);
     procedure RVccGetCols(Connection: TRvCustomConnection);
     procedure RVccGetRow(Connection: TRvCustomConnection);
+    procedure BitBtn2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -40,12 +44,16 @@ var
 implementation
 
 {$R *.dfm}
-uses dm2,dm,main,clipbrd;
+uses dm2,dm,main,clipbrd,frmProdPreProducao;
 
 procedure T_frmRelProdDerivados.BitBtn1Click(Sender: TObject);
 var
-sql:string;
+sql,codigo:string;
 begin
+
+
+
+
 
 sql:=' SELECT pri.lote,CAST(IF(pri.validade="1899-12-30","",pri.validade) AS DATE) AS validade,pd.codigoembalagem,pd.produtoembalagem,pd.id,pd.numeroproducao,pd.embadicionais,pd.codigofilial,pd.codigopreproducao,pri.produto AS prodpreproducao, '+
 ' pd.codigoderivado,pd.produtoderivado,pd.quantidadeembalagem,pd.operadorreqembadicional,pd.operadorreqemb,pd.embadicinalrequisitada,pd.embrequisitada, '+
@@ -66,9 +74,13 @@ sql:=sql+'  sum(pri.quantidadeproduzida) as quantidadetotal,pd.quantidade,'+
 
 end;
 
+if(txtcodigo.Text<>'')then
+sql:=sql+'  FROM producaoderivados AS pd, producaoitens AS pri, movproducaodiaria AS mv WHERE pd.codigopreproducao='+quotedstr(txtcodigo.text)+' AND pd.quantidade>0 AND mv.datafinalizacao BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.date))+' AND pri.numeroproducao=mv.numero  '
+else
+sql:=sql+'  FROM producaoderivados AS pd, producaoitens AS pri, movproducaodiaria AS mv WHERE pd.quantidade>0 AND mv.datafinalizacao BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.date))+' AND pri.numeroproducao=mv.numero  ';
 
-sql:=sql+'  FROM producaoderivados AS pd, producaoitens AS pri, movproducaodiaria AS mv WHERE pd.quantidade>0 AND mv.datafinalizacao BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.date))+' AND pri.numeroproducao=mv.numero  '+
-'  AND pd.numeroproducao=mv.numero  AND pri.codigo=pd.codigopreproducao and mv.codigofilial='+quotedstr(glb_filial)+' and mv.encerrada="S" GROUP BY pd.numeroproducao, pri.codigo,pd.codigoderivado ORDER BY pd.numeroproducao,mv.numero ';
+
+sql:=sql+'  AND pd.numeroproducao=mv.numero  AND pri.codigo=pd.codigopreproducao and mv.codigofilial='+quotedstr(glb_filial)+' and mv.encerrada="S" GROUP BY pd.numeroproducao, pri.codigo,pd.codigoderivado ORDER BY pd.numeroproducao,mv.numero ';
 
 
 
@@ -90,8 +102,13 @@ sql:=sql+'  FROM producaoderivados AS pd, producaoitens AS pri, movproducaodiari
 
     _dm2.ConnecDm2.Connected;
     _dm2.qrPadrao.SQL.Clear;
+    if(txtcodigo.Text<>'')then
+    _dm2.qrPadrao.SQL.Add( 'SELECT SUM(rp.quantidadeajustada) AS total_leite FROM movproducaodiaria AS mp, resumoprodleite AS rp WHERE rp.codigo='+quotedstr(txtcodigo.Text)+' AND mp.datafinalizacao BETWEEN "'+formatdatetime('yyyy-mm-dd',data1.date)+'" AND "'+formatdatetime('yyyy-mm-dd',data2.date)+'" AND rp.numeroproducao = mp.numero')
+    else
     _dm2.qrPadrao.SQL.Add( 'SELECT SUM(rp.quantidadeajustada) AS total_leite FROM movproducaodiaria AS mp, resumoprodleite AS rp WHERE mp.datafinalizacao BETWEEN "'+formatdatetime('yyyy-mm-dd',data1.date)+'" AND "'+formatdatetime('yyyy-mm-dd',data2.date)+'" AND rp.numeroproducao = mp.numero');
-     _dm2.qrPadrao.Open;
+
+
+    _dm2.qrPadrao.Open;
 
        if(_dm2.cdsproducaoderivados.RecordCount=0)then
        begin
@@ -104,6 +121,18 @@ sql:=sql+'  FROM producaoderivados AS pd, producaoitens AS pri, movproducaodiari
         rvpProducao.SetParam('totalleite',formatcurr('##0.00',_dm2.qrPadrao.FieldByName('total_leite').Ascurrency));
 
         rvpProducao.Execute;
+
+end;
+
+procedure T_frmRelProdDerivados.BitBtn2Click(Sender: TObject);
+begin
+_frmProdPreProducao:=T_frmProdPreProducao.Create(self);
+_frmProdPreProducao.ShowModal;
+
+txtcodigo.Text:= _dm.cdsPrd2codigo.AsString;
+//txtcodigo.Text:=  _dm.cdsPrd2descricao.AsString;
+
+_frmProdPreProducao.Release;
 
 end;
 

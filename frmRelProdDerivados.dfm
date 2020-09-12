@@ -2,7 +2,7 @@ object _frmRelProdDerivados: T_frmRelProdDerivados
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  ClientHeight = 171
+  ClientHeight = 214
   ClientWidth = 569
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -27,6 +27,13 @@ object _frmRelProdDerivados: T_frmRelProdDerivados
     Width = 6
     Height = 13
     Caption = 'e'
+  end
+  object Label3: TLabel
+    Left = 32
+    Top = 117
+    Width = 101
+    Height = 13
+    Caption = 'C'#243'digo pr'#233'-produ'#231#227'o'
   end
   object Panel3: TPanel
     Left = 0
@@ -53,7 +60,7 @@ object _frmRelProdDerivados: T_frmRelProdDerivados
   end
   object BitBtn1: TBitBtn
     Left = 32
-    Top = 122
+    Top = 181
     Width = 121
     Height = 25
     Caption = 'Imprimir'
@@ -75,6 +82,23 @@ object _frmRelProdDerivados: T_frmRelProdDerivados
     Height = 21
     NumGlyphs = 2
     TabOrder = 3
+  end
+  object txtcodigo: TEdit
+    Left = 32
+    Top = 136
+    Width = 121
+    Height = 21
+    ReadOnly = True
+    TabOrder = 4
+  end
+  object BitBtn2: TBitBtn
+    Left = 159
+    Top = 134
+    Width = 58
+    Height = 25
+    Caption = '...'
+    TabOrder = 5
+    OnClick = BitBtn2Click
   end
   object RvDSpreProd: TRvDataSetConnection
     RuntimeVisibility = rtDeveloper
