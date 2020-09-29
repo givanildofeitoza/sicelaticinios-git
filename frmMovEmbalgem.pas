@@ -139,7 +139,7 @@ begin
        txtcusto.Value:= _dm2.cdsMovproducaocustoembalagens.ascurrency;   }
 
        atualizarCustoEmb(_dm2.cdsMovproducaonumero.AsString);
-
+         _dm2.cdsMovproducao.Refresh;
         chkAgrupados.Checked:=true;
         chkAgrupadosClick(sender);
 
@@ -313,6 +313,52 @@ begin
 
                  _dm2.cdsprodmovembalagem.Next;
                 end;
+
+
+ //embalagens no consumo
+ {$region}
+
+  _dm.ConnecDm.Connected:=false;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('INSERT INTO contperdas(DATA,encerrada,codigofilial,operador,ip,nf,nfserie,cfop,total,tipo) VALUES ( '+
+  'CURRENT_DATE,"S",'
+  +quotedstr(glb_filial)+','
+  +quotedstr(glb_usuario)+','
+  +quotedstr(glb_ip)+','
+  +quotedstr('0')+','
+  +quotedstr('0')+','
+  +quotedstr('5.927')+','
+  +quotedstr('0.00')+','
+  +quotedstr('C')+')');
+  _dm.qrPadrao.ExecSQL();
+
+
+  _dm.ConnecDm.Connected:=false;
+   _dm.qrPadrao.SQL.Clear;
+   _dm.qrPadrao.SQL.Add(' INSERT INTO produtosperdas (encerrada,numero,codigofilial,codigo,produto,quantidade,DATA,operador,destino,observacao,custo,preco,tipo,grupo,subgrupo,situacao,fornecedor)'+
+   ' SELECT "S",(SELECT numero FROM contperdas WHERE operador='+quotedstr(glb_usuario)+' AND ip='+quotedstr(glb_ip)+' AND DATA=CURRENT_DATE ORDER BY numero DESC LIMIT 1),codigofilial,'+
+   ' (SELECT codigo FROM produtos WHERE codigo=codigoembalagem),'+
+   ' (SELECT descricao FROM produtos WHERE codigo=codigoembalagem),'+
+   ' qtdutilizado,'+
+   ' CURRENT_DATE,'+
+      quotedstr(glb_usuario)+','+
+      quotedstr('EMBALAGENS USO/CONSUMO PRODUCAO')+','+
+      quotedstr('PERDA NA PRODUÇÃO N°'+_dm2.cdsMovproducaonumero.AsString)+','+
+   ' (SELECT custo FROM '+glb_produtos+' WHERE codigo=codigoembalagem  AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT precovenda FROM '+glb_produtos+' WHERE codigo=codigoembalagem  AND codigofilial='+quotedstr(glb_filial)+'),'+
+   '  "C",'+
+   ' (SELECT grupo FROM '+glb_produtos+' WHERE codigo=codigoembalagem  AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT subgrupo FROM '+glb_produtos+' WHERE codigo=codigoembalagem AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' (SELECT situacao FROM '+glb_produtos+' WHERE codigo=codigoembalagem AND codigofilial='+quotedstr(glb_filial)+'),'+
+   ' "" FROM producaomovembalagem WHERE numeroproducao='+quotedstr(_dm2.cdsMovproducaonumero.AsString)+' AND codigofilial='+quotedstr(glb_filial)+' AND tipo<>"Adicional"  and solicitado="S"');
+
+   _dm.qrPadrao.ExecSQL;
+
+
+
+ {$endregion}
+
+
 
 
                 _dm2.cdsprodmovembalagem.Refresh;
