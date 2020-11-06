@@ -72,8 +72,9 @@ end;
 procedure T_frmRelConsumo.btnImpClick(Sender: TObject);
 var
 produto,sql:string;
-totalLeite, totalCreme,totalManteiga:currency;
+totalLeite, totalCreme,totalManteiga,totalproduzido:currency;
 begin
+
 
 
 
@@ -81,6 +82,18 @@ begin
     if(trim(txtcod.Text)<>'')then
     begin
     produto:=' AND codigoproduto='+quotedstr(txtcod.text);
+
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.add(' SELECT SUM(p.quantidadeproduzida) as totalproduzido FROM producaoitens AS p, movproducaodiaria AS m ');
+  _dm.qrPadrao.SQL.add(' WHERE m.DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',dataini.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',datafim.Date)));
+  _dm.qrPadrao.SQL.add(' AND p.numeroproducao=m.numero ');
+  _dm.qrPadrao.SQL.add(' AND p.codigo='+quotedstr(txtcod.Text));
+  if(chkEncerradas.Checked=true)then
+  _dm.qrPadrao.SQL.Add(' AND m.encerrada="S"');
+  _dm.qrPadrao.Open;
+
+  totalproduzido:=   _dm.qrPadrao.FieldByName('totalproduzido').ascurrency;
+
 
 
   _dm.ConnecDm.Connected:=false;
@@ -241,6 +254,7 @@ begin
   RvPConsumo.SetParam('data1',dataini.Text);
   RvPConsumo.SetParam('data2',datafim.Text);
   RvPConsumo.SetParam('produto',txtcod.text+'-'+txtProduto.Text);
+  RvPConsumo.SetParam('totalprod','Total produzido KG/L: '+formatcurr('##0.00',totalproduzido));
 
 
   RvPConsumo.Execute;

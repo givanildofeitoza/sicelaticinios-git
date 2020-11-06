@@ -193,7 +193,10 @@ chktodas.Checked:=false;
 //============= PRODUÇÃO =============================================================
    _dm2.ConnecDm2.Connected:=false;
    qrProducao.SQL.Clear;
-   qrProducao.SQL.Add('SELECT i.codigo,i.produto,SUM(i.quantidadeproduzida) AS totalproduzido,i.numeroproducao  '+
+   qrProducao.SQL.Add('SELECT i.codigo,i.produto,SUM(i.quantidadeproduzida) AS totalproduzido,i.numeroproducao,  '+
+   ' IFNULL(sum(i.quantidadeleite),0) AS qtdleite, '+
+   ' IFNULL(sum(i.quantidadecreme),0) AS qtdCreme, ' +
+   ' IFNULL(sum(i.quantidademanteiga),0) AS qtdmanteiga '+
    ' FROM producaoitens AS i, movproducaodiaria AS m WHERE m.DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.date))+
    ' AND m.encerrada="S" AND i.numeroproducao=m.numero GROUP BY codigo ORDER BY i.produto ; ');
    qrProducao.open;
@@ -209,6 +212,9 @@ chktodas.Checked:=false;
    gridProducao.Cells[0,li]:=  qrProducao.fieldbyname('codigo').AsString;
    gridProducao.Cells[1,li]:=  qrProducao.fieldbyname('produto').AsString;
    gridProducao.Cells[2,li]:=  qrProducao.fieldbyname('totalproduzido').AsString;
+   gridProducao.Cells[3,li]:=  qrProducao.fieldbyname('qtdleite').AsString;
+   gridProducao.Cells[4,li]:=  qrProducao.fieldbyname('qtdCreme').AsString;
+   gridProducao.Cells[5,li]:=  qrProducao.fieldbyname('qtdmanteiga').AsString;
 
 
    li:=li+1;
@@ -221,7 +227,7 @@ chktodas.Checked:=false;
    _dm2.ConnecDm2.Connected:=false;
    qrProducao.SQL.Clear;
    qrProducao.SQL.Add('SELECT SUM(i.quantidadeproduzida * (SELECT precovenda FROM produtos WHERE codigo=i.codigo)) AS valorProducao  '+
-   ' FROM producaoitens AS i, movproducaodiaria AS m WHERE m.DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.date))+
+      ' FROM producaoitens AS i, movproducaodiaria AS m WHERE m.DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.date))+
    ' AND m.encerrada="S" AND i.numeroproducao=m.numero  ');
    qrProducao.open;
 
@@ -517,6 +523,15 @@ begin
    gridProducao.Cells[1,0]:=  'Produto';
    gridProducao.ColWidths[2] :=150;
    gridProducao.Cells[2,0]:=  'Produzido (KG/L)';
+
+    gridProducao.ColWidths[3] :=150;
+   gridProducao.Cells[3,0]:=  'Qtd.Utl. Leite';
+
+    gridProducao.ColWidths[4] :=150;
+   gridProducao.Cells[4,0]:=  'Qtd.Utl. Creme';
+
+    gridProducao.ColWidths[5] :=150;
+   gridProducao.Cells[5,0]:=  'Qtd.Utl. Manteiga';
 end;
 
 procedure T_frmAnaliseDRE.gridDespesasDrawCell(Sender: TObject; ACol,

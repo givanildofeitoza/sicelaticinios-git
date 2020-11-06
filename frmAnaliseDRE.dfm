@@ -320,7 +320,7 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
     Top = 49
     Width = 1207
     Height = 535
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 2
     object TabSheet1: TTabSheet
@@ -405,7 +405,6 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
         RowCount = 1
         FixedRows = 0
         TabOrder = 0
-        ExplicitHeight = 473
       end
     end
     object TabSheet3: TTabSheet
@@ -434,7 +433,7 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
         Width = 1199
         Height = 507
         Align = alClient
-        ColCount = 3
+        ColCount = 6
         TabOrder = 0
       end
     end
