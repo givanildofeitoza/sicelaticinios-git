@@ -1127,7 +1127,7 @@ object _dm2: T_dm2
     end
     object cdsMateriatotalmateriautilizada: TFMTBCDField
       FieldName = 'totalmateriautilizada'
-      DisplayFormat = '#,#0.00'
+      DisplayFormat = '#,#0.00000'
       Precision = 12
       Size = 2
     end

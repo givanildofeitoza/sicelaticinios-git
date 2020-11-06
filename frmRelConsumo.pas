@@ -28,6 +28,10 @@ type
     chkgrupo: TCheckBox;
     BitBtn4: TBitBtn;
     chkEncerradas: TCheckBox;
+    rvCons: TRvSystem;
+    rvpCons: TRvProject;
+    RvDSetConnection1: TRvDataSetConnection;
+    chklista: TCheckBox;
     procedure BitBtn1Click(Sender: TObject);
     procedure btnImpClick(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
@@ -247,7 +251,26 @@ begin
   if(imprimir='S')then
   begin
 
-  RvPConsumo.SetParam('tleite',formatcurr('##0.00',totalLeite));
+
+  if(chklista.Checked=true)then
+  begin
+
+  rvpCons.SetParam('tleite','Qtd.Leite: '+formatcurr('##0.00',totalLeite));
+  rvpCons.SetParam('tcreme','Qtd.Creme:  '+formatcurr('##0.00',totalCreme));
+  rvpCons.SetParam('tmanteiga','Qtd.Manteiga:  '+formatcurr('##0.00',totalManteiga));
+
+  rvpCons.SetParam('data1',dataini.Text);
+  rvpCons.SetParam('data2',datafim.Text);
+  rvpCons.SetParam('produto',txtcod.text+'-'+txtProduto.Text);
+  rvpCons.SetParam('totalprod','Total produzido KG/L:   '+formatcurr('##0.00',totalproduzido));
+
+
+  rvpCons.Execute;
+
+  end
+  else
+  begin
+     RvPConsumo.SetParam('tleite',formatcurr('##0.00',totalLeite));
   RvPConsumo.SetParam('tcreme',formatcurr('##0.00',totalCreme));
   RvPConsumo.SetParam('tmanteiga',formatcurr('##0.00',totalManteiga));
 
@@ -259,6 +282,8 @@ begin
 
   RvPConsumo.Execute;
 
+
+  end;
   imprimir:='S';
   end;
 
