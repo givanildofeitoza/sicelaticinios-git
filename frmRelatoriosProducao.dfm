@@ -251,6 +251,14 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
         ParentFont = False
       end
     end
+    object chkagruparprod: TCheckBox
+      Left = 366
+      Top = 73
+      Width = 139
+      Height = 17
+      Caption = 'Agrupar por produto'
+      TabOrder = 14
+    end
   end
   object DBGrid1: TDBGrid
     Left = 0
@@ -360,8 +368,8 @@ object _frmRelatoriosProducao: T_frmRelatoriosProducao
       end>
   end
   object pnlresumo: TPanel
-    Left = 1006
-    Top = 39
+    Left = 1007
+    Top = 79
     Width = 561
     Height = 329
     TabOrder = 3

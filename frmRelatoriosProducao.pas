@@ -85,6 +85,7 @@ type
     Panel3: TPanel;
     memoobs: TMemo;
     cdsrelProducaoparametrorendimento: TFMTBCDField;
+    chkagruparprod: TCheckBox;
     procedure BitBtn2Click(Sender: TObject);
     procedure btnimprimirClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
@@ -110,7 +111,7 @@ implementation
 
 {$R *.dfm}
  uses
- dm,dm2,main,frmprodutos,frmprodpreproducao,ComObj,clipbrd;
+ dm,dm2,main,frmprodutos,frmprodpreproducao,ComObj;
 procedure T_frmRelatoriosProducao.BitBtn1Click(Sender: TObject);
 var
   PLANILHA : Variant;
@@ -221,7 +222,10 @@ filtroProd:string;
 begin
 filtroProd:='';
 
-
+if(chkagruparprod.Checked=true)then
+begin
+  application.MessageBox('Ao marcar o filtro agrupado por produto, as informações de data de produção,hora da produção, número da produção não serão precisas.','Alerta',MB_ICONWARNING+MB_OK);
+end;
 
     if(txtcod.Text<>'0')then
     filtroProd:=' and p.codigo='+quotedstr(txtcod.Text);
@@ -239,8 +243,8 @@ filtroProd:='';
     ' (SELECT horafinalizacao FROM movproducaodiaria WHERE numero=p.numeroproducao AND codigofilial=p.codigofilial) AS horafimproducao, '+
    ' p.codigo,p.produto,p.unidade,sum(p.quantidadeproduzida) as quantidadeproduzida, '+
    ' IFNULL((sum(p.quantidadeleite)  / sum(p.quantidadeproduzida)),0) AS rendleite, '+
-   ' IFNULL(sum(p.quantidadecreme),0) AS rendCreme, ' +
-   ' IFNULL(sum(p.quantidademanteiga),0) AS rendmanteiga, '+
+   ' IFNULL((sum(p.quantidadecreme)  / sum(p.quantidadeproduzida)),0) AS rendCreme, ' +
+   ' IFNULL((sum(p.quantidademanteiga)  / sum(p.quantidadeproduzida)),0) AS rendmanteiga, '+
    ' SUM(p.quantidadeleite ) as quantidadeleite,'+
    ' SUM(p.quantidadecreme ) as quantidadecreme,'+
    ' SUM(p.quantidademanteiga ) as quantidademanteiga'+
@@ -248,9 +252,19 @@ filtroProd:='';
    '  AND p.codigofilial='+quotedstr(glb_filial)+
    '  AND p.numeroproducao=m.numero ' +
    '  AND p.codigofilial=m.codigofilial '+
-    filtroProd+
+    filtroProd;
+
+  if(chkagruparprod.Checked=true)then
+  begin
+      sdsrelProducao.CommandText:= sdsrelProducao.CommandText+' GROUP BY  p.codigo ORDER BY p.produto';
+  end
+  else
+  begin
+   sdsrelProducao.CommandText:= sdsrelProducao.CommandText+
    '   GROUP BY p.numeroproducao, p.codigo /*HAVING quantidadeleite BETWEEN '+QUOTEDSTR(formatcurr('##0.00',qtdleitI.Value))+' AND '+QUOTEDSTR(formatcurr('##0.00',qtdleitF.Value))+'*/  ORDER BY m.data, m.numero';
    // clipboard.astext:=sdsrelProducao.CommandText;
+
+  end;
     sdsrelProducao.ExecSQL();
 
     cdsrelProducao.Open;
