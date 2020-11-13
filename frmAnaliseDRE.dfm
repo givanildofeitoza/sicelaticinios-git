@@ -12,6 +12,7 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  WindowState = wsMaximized
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
