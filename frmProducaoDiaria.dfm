@@ -630,9 +630,9 @@ object _frmProducaoDiaria: T_frmProducaoDiaria
     object Label6: TLabel
       Left = 566
       Top = 2
-      Width = 290
+      Width = 307
       Height = 14
-      Caption = 'Distribui'#231#227'o em pacotes - Destinar quantidades'
+      Caption = 'Distribui'#231#227'o em pacotes - Controle de embalagens'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
       Font.Height = -12

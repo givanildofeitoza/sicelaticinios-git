@@ -26,6 +26,9 @@ type
     RvClogo: TRvCustomConnection;
     RvRenderPDF1: TRvRenderPDF;
     BitBtn3: TBitBtn;
+    rvCons: TRvSystem;
+    rvpCons: TRvProject;
+    chklista: TCheckBox;
     procedure btnImpClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure RvClogoEOF(Connection: TRvCustomConnection;
@@ -64,11 +67,59 @@ end;
 procedure T_frmRelConsumoEmb.btnImpClick(Sender: TObject);
 var
 sql,ProdCod:string;
+totalLeite, totalCreme,totalManteiga,totalproduzido:currency;
 begin
     ProdCod:='';
 
     if(txtcodProduto.Text<>'')then
+    begin
     ProdCod:=' AND codigopreproducao='+quotedstr(txtcodProduto.Text);
+
+
+
+     _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.add(' SELECT SUM(p.quantidadeproduzida) as totalproduzido FROM producaoitens AS p, movproducaodiaria AS m ');
+  _dm.qrPadrao.SQL.add(' WHERE m.DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date)));
+  _dm.qrPadrao.SQL.add(' AND p.numeroproducao=m.numero ');
+  _dm.qrPadrao.SQL.add(' AND p.codigo='+quotedstr(txtcodProduto.Text));
+ { if(chkEncerradas.Checked=true)then
+  _dm.qrPadrao.SQL.Add(' AND m.encerrada="S"');}
+  _dm.qrPadrao.Open;
+
+  totalproduzido:=   _dm.qrPadrao.FieldByName('totalproduzido').ascurrency;
+
+
+
+  _dm.ConnecDm.Connected:=false;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('SELECT SUM(r.quantidadeajustada) AS total  FROM resumoprodleite as r, movproducaodiaria AS p '+
+    ' WHERE  r.codigo='+quotedstr(txtcodProduto.text)+' AND  p.DATA BETWEEN "'+formatdatetime('yyyy-mm-dd',data1.date)+'" AND "'+formatdatetime('yyyy-mm-dd',data2.date)+'" AND p.codigofilial = "'+glb_filial+'" '+
+    ' AND r.numeroproducao = p.numero  ');
+   { if(chkEncerradas.Checked=true)then
+    _dm.qrPadrao.SQL.Add(' AND p.encerrada="S"');}
+  _dm.qrPadrao.open;
+
+
+
+  totalLeite := _dm.qrPadrao.FieldByName('total').ascurrency;
+
+
+
+    _dm.ConnecDm.Connected:=false;
+  _dm.qrPadrao.SQL.Clear;
+  _dm.qrPadrao.SQL.Add('SELECT SUM(r.quantidadeajustada) AS total  FROM resumoprodcreme as r, movproducaodiaria AS p '+
+    ' WHERE  r.codigo='+quotedstr(txtcodProduto.text)+' AND  p.DATA BETWEEN "'+formatdatetime('yyyy-mm-dd',data1.date)+'" AND "'+formatdatetime('yyyy-mm-dd',data2.date)+'" AND p.codigofilial = "'+glb_filial+'" '+
+    ' AND r.numeroproducao = p.numero  ');
+    {if(chkEncerradas.Checked=true)then
+    _dm.qrPadrao.SQL.Add(' AND p.encerrada="S"');}
+  _dm.qrPadrao.open;
+
+     totalCreme :=   _dm.qrPadrao.FieldByName('total').ascurrency;
+
+
+    end;
+
+
 
     sql:='SELECT   pe.id,  numeroproducao,  codigopreproducao,  (SELECT descricao FROM produtos WHERE codigo=pe.codigopreproducao) AS descricaopreproducao,  codigoderivado,  descricaoderivado,  codigoembalagem,'+
                ' descricaoembalagem,  qtdnecessaria,  TRUNCATE((SUM(custototal) / SUM(qtdutilizado)),5) AS custounitario,  sum(custototal) as custototal, sum(qtdproduzido) as qtdproduzido,  sum(qtdutilizado) as qtdutilizado,  tipo,  solicitado,'+
@@ -88,11 +139,34 @@ begin
 
    if(imprimir='S')then
    begin
+
+    if(chklista.Checked=true)then
+  begin
+
+  rvpCons.SetParam('tleite','Qtd.Leite: '+formatcurr('##0.00',totalLeite));
+  rvpCons.SetParam('tcreme','Qtd.Creme:  '+formatcurr('##0.00',totalCreme));
+  rvpCons.SetParam('tmanteiga','Qtd.Manteiga:  '+formatcurr('##0.00',totalManteiga));
+
+  rvpCons.SetParam('data1',data1.Text);
+  rvpCons.SetParam('data2',data2.Text);
+  rvpCons.SetParam('produto',txtcodproduto.text+'-'+txtProduto.Text);
+  rvpCons.SetParam('totalprod','Total produzido KG/L:   '+formatcurr('##0.00',totalproduzido));
+
+
+  rvpCons.Execute;
+  imprimir:='S';
+
+  end
+  else
+  begin
+
+
     rvpEmbalagens.SetParam('periodo','Período: '+data1.Text+' e '+data2.Text);
     rvpEmbalagens.SetParam('filial','Filial: '+glb_filial);
 
     rvpEmbalagens.execute;
    imprimir:='S';
+   end;
    end;
 end;
 

@@ -153,6 +153,7 @@ object _frmRelConsumo: T_frmRelConsumo
     Checked = True
     State = cbChecked
     TabOrder = 11
+    Visible = False
   end
   object RvPConsumo: TRvProject
     Engine = RvSconsumo

@@ -252,7 +252,7 @@ begin
   begin
 
 
-  if(chklista.Checked=true)then
+ { if(chklista.Checked=true)then
   begin
 
   rvpCons.SetParam('tleite','Qtd.Leite: '+formatcurr('##0.00',totalLeite));
@@ -269,8 +269,8 @@ begin
 
   end
   else
-  begin
-     RvPConsumo.SetParam('tleite',formatcurr('##0.00',totalLeite));
+  begin }
+  RvPConsumo.SetParam('tleite',formatcurr('##0.00',totalLeite));
   RvPConsumo.SetParam('tcreme',formatcurr('##0.00',totalCreme));
   RvPConsumo.SetParam('tmanteiga',formatcurr('##0.00',totalManteiga));
 
@@ -283,7 +283,7 @@ begin
   RvPConsumo.Execute;
 
 
-  end;
+  //end;
   imprimir:='S';
   end;
 
