@@ -116,7 +116,7 @@ object _frmRelConsumoEmb: T_frmRelConsumoEmb
     Top = 127
     Width = 207
     Height = 17
-    Caption = 'Imprimir lista de insumos'
+    Caption = 'Imprimir lista de embalagens'
     Checked = True
     State = cbChecked
     TabOrder = 8

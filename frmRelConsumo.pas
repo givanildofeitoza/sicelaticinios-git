@@ -205,7 +205,7 @@ begin
 
   if(chkEncerradas.Checked=true)then
   _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+'  AND finalizado="S" ';
-  _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+' GROUP BY codigomateria';
+  _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+'  GROUP BY codigomateria HAVING totalmateriautilizada>0 ';
   _dm2.sdsMateria.ExecSQL();
 
 
@@ -234,7 +234,7 @@ begin
    if(chkEncerradas.Checked=true)then
    _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+'  AND finalizado="S" ';
 
-  _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+' GROUP BY codigomateria';
+  _dm2.sdsMateria.CommandText:= _dm2.sdsMateria.CommandText+' GROUP BY codigomateria  HAVING totalmateriautilizada>0 ';
 
 
 
