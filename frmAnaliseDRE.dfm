@@ -398,14 +398,41 @@ object _frmAnaliseDRE: T_frmAnaliseDRE
       ImageIndex = 1
       object gridVendas: TStringGrid
         Left = 0
-        Top = 0
+        Top = 41
         Width = 1199
-        Height = 507
+        Height = 466
         Align = alClient
         ColCount = 6
         RowCount = 1
         FixedRows = 0
         TabOrder = 0
+        ExplicitTop = 40
+        ExplicitHeight = 467
+      end
+      object Panel3: TPanel
+        Left = 0
+        Top = 0
+        Width = 1199
+        Height = 41
+        Align = alTop
+        TabOrder = 1
+        ExplicitLeft = 96
+        ExplicitTop = 16
+        ExplicitWidth = 185
+        object Label15: TLabel
+          Left = 24
+          Top = 8
+          Width = 120
+          Height = 13
+          Caption = 'Cod. Produto refer'#234'ncia:'
+        end
+        object txtcodigo: TEdit
+          Left = 150
+          Top = 4
+          Width = 121
+          Height = 21
+          TabOrder = 0
+        end
       end
     end
     object TabSheet3: TTabSheet

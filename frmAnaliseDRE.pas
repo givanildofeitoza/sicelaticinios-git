@@ -59,6 +59,9 @@ type
     Bevel3: TBevel;
     Label14: TLabel;
     chkvendia: TCheckBox;
+    Panel3: TPanel;
+    txtcodigo: TEdit;
+    Label15: TLabel;
     procedure BitBtn1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure BitBtn4Click(Sender: TObject);
@@ -339,16 +342,50 @@ qrVendas.Open;          }
 
 
 
-       _dm2.qrPadrao.SQL.Clear;
-       if(chkvendia.Checked=true)then
-    begin
-       _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,AVG(preco) as precomedio,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM venda WHERE DATA = current_date AND codigofilial='+quotedstr(glb_filial)+' AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By codigo  ');
-      // _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,AVG(preco) as precomedio,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM vendaarquivo  WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' OR DATA = current_date AND codigofilial='+quotedstr(glb_filial)+'  AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By  codigo ORDER BY PRODUTO');
+      if(trim(txtcodigo.Text)<>'')then
+      begin
 
-    end
-       else
-       _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,AVG(preco) as precomedio,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM vendaarquivo  WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND codigofilial='+quotedstr(glb_filial)+'  AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By  codigo ORDER BY PRODUTO');
-       _dm2.qrPadrao.Open();
+            _dm2.qrPadrao.SQL.Clear;
+              if(chkvendia.Checked=true)then
+              begin
+                 _dm2.qrPadrao.SQL.add('SELECT v.codigo,v.produto,v.unidade,sum(v.quantidade) as quantidade,AVG(v.preco) as precomedio,sum(v.descontovalor) as descontovalor,'+
+                 ' sum(v.ratdesc) as ratdesc,sum(v.total) as total FROM venda as v, produtosembalagens as e'+
+                 ' WHERE v.DATA = current_date AND v.codigofilial='+quotedstr(glb_filial)+' AND v.cancelado="N"  AND v.documento<>0  AND v.dpfinanceiro<> "Recebimento "'+
+                 ' AND e.codprodpreproducao='+quotedstr(txtcodigo.Text)+' AND v.codigo = e.codigo  GROUP By v.codigo  ');
+
+                // _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,AVG(preco) as precomedio,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM vendaarquivo  WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' OR DATA = current_date AND codigofilial='+quotedstr(glb_filial)+'  AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By  codigo ORDER BY PRODUTO');
+
+              end
+                 else
+                 _dm2.qrPadrao.SQL.add('SELECT v.codigo,v.produto,v.unidade,sum(v.quantidade) as quantidade,AVG(v.preco) as precomedio,sum(v.descontovalor) as descontovalor,sum(v.ratdesc) as ratdesc,sum(v.total) as total FROM vendaarquivo  as v,produtosembalagens as e'+
+                 ' WHERE v.DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND v.codigofilial='+quotedstr(glb_filial)+
+                 '  AND  v.codigo=e.codigo AND e.codprodpreproducao='+quotedstr(txtcodigo.Text)+' AND v.cancelado="N"  AND v.documento<>0  AND v.dpfinanceiro<> "Recebimento " GROUP By  v.codigo ORDER BY v.PRODUTO');
+                 _dm2.qrPadrao.Open();
+
+
+      end
+      else
+      begin
+
+
+
+
+              _dm2.qrPadrao.SQL.Clear;
+              if(chkvendia.Checked=true)then
+              begin
+                 _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,AVG(preco) as precomedio,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM venda WHERE DATA = current_date AND codigofilial='+quotedstr(glb_filial)+' AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By codigo  ');
+                // _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,AVG(preco) as precomedio,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM vendaarquivo  WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' OR DATA = current_date AND codigofilial='+quotedstr(glb_filial)+'  AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By  codigo ORDER BY PRODUTO');
+
+              end
+                 else
+                 _dm2.qrPadrao.SQL.add('SELECT codigo,produto,unidade,sum(quantidade) as quantidade,AVG(preco) as precomedio,sum(descontovalor) as descontovalor,sum(ratdesc) as ratdesc,sum(total) as total FROM vendaarquivo  WHERE DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+' AND codigofilial='+quotedstr(glb_filial)+'  AND cancelado="N"  AND documento<>0  AND dpfinanceiro<> "Recebimento " GROUP By  codigo ORDER BY PRODUTO');
+                 _dm2.qrPadrao.Open();
+
+
+      end;
+
+
+
 
                _dm2.qrPadrao.First;
                while not _dm2.qrPadrao.Eof do
