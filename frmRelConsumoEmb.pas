@@ -135,6 +135,20 @@ begin
                 _dm2.cdsprodmovembalagem.Open;
                 _dm2.cdsprodmovembalagem.Refresh;
 
+
+
+
+    sql:='   SELECT   TRUNCATE(SUM(custototal),5) AS custo_total FROM producaomovembalagem AS pe, movproducaodiaria AS mp '+
+         '  WHERE  mp.DATA BETWEEN '+quotedstr(formatdatetime('yyyy-mm-dd',data1.Date))+' AND '+quotedstr(formatdatetime('yyyy-mm-dd',data2.Date))+
+         ProdCod+
+         '   AND mp.numero = pe.numeroproducao AND solicitado="S" ';
+
+          _dm.qrPadrao.SQL.Clear;
+          _dm.qrPadrao.SQL.Add(sql);
+          _dm.qrPadrao.open;
+
+
+
    // rvpEmbalagens.SetParam('numero','');
 
    if(imprimir='S')then
@@ -151,6 +165,7 @@ begin
   rvpCons.SetParam('data2',data2.Text);
   rvpCons.SetParam('produto',txtcodproduto.text+'-'+txtProduto.Text);
   rvpCons.SetParam('totalprod','Total produzido KG/L:   '+formatcurr('##0.00',totalproduzido));
+  rvpCons.SetParam('custototal','Custo total R$:   '+formatcurr('##0.00', _dm.qrPadrao.FieldByName('custo_total').AsCurrency));
 
 
   rvpCons.Execute;
