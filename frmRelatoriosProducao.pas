@@ -140,10 +140,12 @@ imprimir:='N';
              PLANILHA.Cells[1,7] := 'UN';
              PLANILHA.Cells[1,8] := 'QTD. PRODUZIDA';
              PLANILHA.Cells[1,9] := 'LEITE UTIL.';
-             PLANILHA.Cells[1,10] := 'REND. LEITE';
-             PLANILHA.Cells[1,11] := 'REND. CREME';
-             PLANILHA.Cells[1,12] := 'REND. MANTEIGA';
-             PLANILHA.Cells[1,13] := 'REND. MANTEIGA';
+             PLANILHA.Cells[1,10] := 'CREME UTIL.';
+             PLANILHA.Cells[1,11] := 'MANTEIGA UTIL.';
+             PLANILHA.Cells[1,12] := 'REND. LEITE';
+             PLANILHA.Cells[1,13] := 'REND. CREME';
+             PLANILHA.Cells[1,14] := 'REND. MANTEIGA';
+             PLANILHA.Cells[1,15] := 'OBS:';
 
              cdsrelProducao.DisableControls;
              cdsrelProducao.First;
@@ -160,9 +162,11 @@ imprimir:='N';
                    PLANILHA.Cells[Linha,7] := cdsrelProducaounidade.asstring;
                    PLANILHA.Cells[Linha,8] := cdsrelProducaoquantidadeproduzida.asfloat;
                    PLANILHA.Cells[Linha,9] := cdsrelProducaoquantidadeleite.asfloat;
-                   PLANILHA.Cells[Linha,10] := cdsrelProducaorendleite.asfloat;
-                   PLANILHA.Cells[Linha,11] := cdsrelProducaorendcreme.asfloat;
-                   PLANILHA.Cells[Linha,12] := cdsrelProducaorendmanteiga.asfloat;
+                   PLANILHA.Cells[Linha,10] := cdsrelProducaoquantidadecreme.asfloat;
+                   PLANILHA.Cells[Linha,11] := cdsrelProducaoquantidademanteiga.asfloat;
+                   PLANILHA.Cells[Linha,12] := cdsrelProducaorendleite.asfloat;
+                   PLANILHA.Cells[Linha,13] := cdsrelProducaorendcreme.asfloat;
+                   PLANILHA.Cells[Linha,14] := cdsrelProducaorendmanteiga.asfloat;
 
 
 
@@ -170,7 +174,7 @@ imprimir:='N';
                      _dm.qrPadrao.SQL.Add('SELECT observacao FROM movproducaodiaria WHERE numero ='+QuotedStr(cdsrelProducaonumeroproducao.AsString)+' LIMIT 1');
                      _dm.qrPadrao.Open;
 
-                PLANILHA.Cells[Linha,13] := _dm.qrPadrao.FieldByName('observacao').AsString;
+                PLANILHA.Cells[Linha,15] := _dm.qrPadrao.FieldByName('observacao').AsString;
 
 
                    Linha := Linha + 1;
